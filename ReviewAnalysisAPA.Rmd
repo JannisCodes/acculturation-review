@@ -1,0 +1,436 @@
+---
+title             : "Integration of Migrants: Annotated Analysis"
+shorttitle        : "integration of migrants -- analysis"
+author: 
+  - name          : "Jannis Kreienkamp"
+    affiliation   : "1,2"
+    corresponding : yes    # Define only one corresponding author
+    address       : "Grote Kruisstraat 2/1, 9712 TS Groningen, The Netherlands"
+    email         : "j.kreienkamp@rug.nl"
+    #role:         # Contributorship roles (e.g., CRediT, https://casrai.org/credit/)
+      #- Conceptualization
+      #- Writing - Original Draft Preparation
+      #- Writing - Review & Editing
+  - name          : "Kai Epstude"
+    affiliation   : "1,2"
+    #role:
+      #- Writing - Review & Editing
+  - name          : "Laura F. Bringmann"
+    affiliation   : "1,2"
+    #role:
+      #- Writing - Review & Editing
+  - name          : "Peter de Jonge"
+    affiliation   : "1,2"
+    #role:
+      #- Writing - Review & Editing
+affiliation:
+  - id            : "1"
+    institution   : "University of Groningen; Department of Psychology"
+  - id            : "2"
+    institution   : "Author order still to be decided (sorted alphabetically by first name)"
+authornote: |
+  \addORCIDlink{* Jannis Kreienkamp}{0000-0002-1831-5604}
+  
+  We have no known conflict of interest to declare.
+abstract: |
+  Abstract goes here.
+  
+keywords          : "Acculturation, Integration, Systematic Review"
+wordcount         : "`r stringr::str_count(rmarkdown::metadata$abstract, '\\S+')`"
+bibliography      : ["references.bib"]
+#appendix:
+#  - "appendix-1.Rmd"
+floatsintext      : no
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+linenumbers       : no
+mask              : no
+draft             : no
+lang              : "en-US"
+documentclass     : "apa7"
+classoption       : "man"
+csl               : "apa.csl"
+output            : papaja::apa6_pdf
+
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+# R Studio Clean-Up
+  cat("\014") # clear console
+  #rm(list=ls()) # clear workspace - use restart R instead
+  gc() # garbage collector
+
+# Install and Load Packages
+lib <- c("rmarkdown", "knitr", "citr", "remedy", "bookdown", "papaja", "rmdfiltr", "psych",
+         "ggplot2", "ggthemes", "haven", "RColorBrewer", "plotly", "forcats", "wordcloud", "visNetwork", "ggwordcloud",
+         "rworldmap", "rnaturalearth", "rnaturalearthdata", "rgeos", "sp", "ggspatial",
+         "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
+         "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes",
+         "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet")
+invisible(lapply(lib, library, character.only = TRUE))  
+rm(lib)  
+
+r_refs("references.bib")
+
+# Load Custom Packages  
+  source("./scripts/functions/fun.panel.R")
+  source("./scripts/functions/themes.R")
+
+# Markdown Options
+  knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file()) # set working directory
+  knitr::opts_knit$get("root.dir") # check working directory
+  options(scipen = 999, digits = 4, width = 400) #removes scientific quotation
+  
+# Global Chunk Options
+  knitr::opts_chunk$set(out.width="\\textwidth", fig.path='Figures/',
+                      echo=FALSE, warning=FALSE, message=FALSE)
+```
+
+# Data Preparation
+
+## Import Data  
+In a first step we import the raw data of the review from the shared coding \href{https://docs.google.com/spreadsheets/d/1j3j7q15lhNqPxp3qGnRtc2zuaE7plxWYR7tWKltkdU8/edit?usp=sharing}{Google Sheet}. We, primarily, import the database of the scale validations and the review of the empirical papers. Beyond that we also import the separate lists of codes used.  
+
+```{r importCoding, warning=F, message=F}
+urlPsycInfo <- gsheet::construct_download_url('https://docs.google.com/spreadsheets/d/1j3j7q15lhNqPxp3qGnRtc2zuaE7plxWYR7tWKltkdU8/edit?usp=sharing',
+                                              format = "csv", sheetid = "1151157759")
+urlScales <- gsheet::construct_download_url('https://docs.google.com/spreadsheets/d/1j3j7q15lhNqPxp3qGnRtc2zuaE7plxWYR7tWKltkdU8/edit?usp=sharing',
+                                             format = "csv", sheetid = "799109777")
+urlInput <- gsheet::construct_download_url('https://docs.google.com/spreadsheets/d/1j3j7q15lhNqPxp3qGnRtc2zuaE7plxWYR7tWKltkdU8/edit?usp=sharing',
+                                             format = "csv", sheetid = "168002198")
+urlDomains <- gsheet::construct_download_url('https://docs.google.com/spreadsheets/d/1j3j7q15lhNqPxp3qGnRtc2zuaE7plxWYR7tWKltkdU8/edit?usp=sharing',
+                                             format = "csv", sheetid = "1826792378")
+
+
+dt.PsycInfo <- gsheet::gsheet2tbl(urlPsycInfo)
+dt.Scales <- gsheet::gsheet2tbl(urlScales)
+dt.Input <- gsheet::gsheet2tbl(urlInput)
+dt.Domains <- gsheet::gsheet2tbl(urlDomains)
+
+rm(list = ls(pattern='^url'))
+```
+
+```{r importJournals, warning=F, message=F}
+fileNam = list.files(path = "data/JournalDatabase", pattern="scimagojr 2019  Subject Area")
+fieldNam <- gsub("scimagojr 2019  Subject Area - |.csv", "", fileNam)
+
+#for (i in 1:length(fileNam)) assign(fieldNam[i], read.csv2(paste0("data/JournalDatabase/",fileNam[i])))
+fieldList <- list()
+for (i in 1:length(fileNam)) fieldList[[fieldNam[i]]] <- read.csv2(paste0("data/JournalDatabase/",fileNam[i])) 
+
+# There are some more Publishers in the individual field databases.
+dfJournals <- plyr::ldply(fieldList, data.frame)
+#length(unique(dfJournals$Title))
+
+PublisherInfo <- read.csv2("data/JournalDatabase/scimagojr 2019.csv") 
+PublisherInfo$fields <- ""
+for (i in 1:nrow(PublisherInfo)) {
+  for(j in 1:length(fileNam)) {
+    PublisherInfo$fields[i] <- ifelse(PublisherInfo$Title[i] %in% fieldList[[fieldNam[j]]]$Title, 
+                                       paste(PublisherInfo$fields[i],fieldNam[j], sep = "; "), 
+                                       PublisherInfo$fields[i])
+  }
+}
+PublisherInfo$fields <- gsub("^; ", "", PublisherInfo$fields)
+
+colNam <- gsub("\\.", "", names(PublisherInfo))
+colNam <- gsub("^Title$", "PublicationTitleDb", colNam)
+colNam <- gsub("^Type$", "PublicationTypeDb", colNam)
+colNam <- gsub("^Country$", "PublisherCountry", colNam)
+colNam <- gsub("^Region$", "PublisherRegion", colNam)
+colNam <- gsub("^Publisher$", "PublisherName", colNam)
+
+names(PublisherInfo) <- colNam
+
+rm(fileNam, fieldNam, fieldList, colNam)
+```
+
+## Prepare Data Frames  
+
+We then go on to clean the data sets in order to use them in later analyses and keep track of exclusion filters.  
+
+```{r cleanScales, results='asis'}
+# Frequency of all scales within the 
+n_occur_ScaleDT <- data.frame(table(Scale = dt.Scales$Scale)) 
+
+# Extract publication year (crude but seems to work)
+dt.Scales$year <- str_extract(dt.Scales$`reference with doi`, "([0-9]{4})")
+
+# remove duplicates
+dt.Scales.Unique <- dt.Scales %>%
+  filter(Duplicate == "Unique")
+
+# remove non-available scales
+dt.Scales.Added <- dt.Scales %>%
+  filter(Duplicate == "Unique",
+         added == 1)
+
+# remove excluded scales
+dt.Scales.Included <- dt.Scales %>%
+  filter(Duplicate == "Unique",
+         added == 1, 
+         is.na(Comment)
+         )
+```
+
+```{r cleanEmpirical, results='asis'}
+# remove duplicates
+dt.psych <- dt.PsycInfo 
+
+# title screening
+dt.psych.title <- dt.PsycInfo %>%
+  filter(FinalTitle == 1)
+
+# abstract screening
+dt.psych.abstract <- dt.PsycInfo %>%
+  filter(FinalTitle == 1,
+         FinalAbstract == 1)
+
+# empirical
+dt.psych.empirical <- dt.PsycInfo %>%
+  filter(FinalTitle == 1,
+         FinalAbstract == 1,
+         empirical != 0)
+
+# included
+dt.psych.included <- dt.PsycInfo %>%
+  filter(FinalTitle == 1,
+         FinalAbstract == 1,
+         empirical != 0,
+         MissingABCD == 0)
+```
+
+```{r mergeJournalInfo, results='asis', warning=F}
+psychData <- dt.psych.included %>%
+  mutate(ISSN = gsub("-", "", ISSN))
+PublisherInfo <- PublisherInfo %>%
+  separate(Issn, c("Issn01", "Issn02"), remove = FALSE)
+
+psychData <- sqldf("SELECT l.*, r.*
+              FROM psychData as l
+              LEFT JOIN PublisherInfo as r
+              on l.PublicationTitle = r.PublicationTitleDb OR l.ISSN = r.Issn01 OR l.ISSN = r.Issn02")
+```
+
+# Analysis  
+
+## Scale Validations  
+The first data set we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review we found five major reviews that reviewed the measurement of acculturation [@Celenk2011; @Maestas2000; @Matsudaira2006; @Wallace2010; @Zane2004].  
+
+### Exclusions  
+Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Review != "own",])` scales, of which `r nrow(dt.Scales[dt.Scales$Duplicate == "Duplicate" & dt.Scales$Review != "own",])` were duplicates. From our own review we added `r nrow(dt.Scales[dt.Scales$Review == "own review",])` additional validation studies. After removing duplicates this meant that we considered a total of `r nrow(dt.Scales[dt.Scales$Duplicate == "Unique",])` unique scales for our coding. Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$Comment),])`, because they were either not accessible or did not fit the the topic of our review (see Table \@ref(tab:ScalesExclusion)).  
+
+```{r ScalesExclusion, results='asis'}
+data.frame(table(Exclusion = dt.Scales$Comment)) %>%
+  arrange(desc(Freq)) %>%
+  kbl(., caption = "Reasons for Exclusion",
+      col.names = c("Exclusion Reason",
+                    "Frequency"),
+      format = "latex",
+      booktabs = T,
+      align = c("l", "c"))  %>%
+kable_styling(latex_options = c("repeat_header"),
+              position = "left")
+```
+
+The remaining `r nrow(dt.Scales[dt.Scales$Duplicate == "Unique" & is.na(dt.Scales$Comment),])` scales are listed in the HTML version as well as on OSF (table too large for PDF).  
+
+```{r ScaleTbl}
+# Table would be too large for PDF, save HTML Table:
+ScaleTbl <- dt.Scales.Included %>%
+  mutate(SourceShort = stri_replace_all_fixed(Source,
+                                         pattern = c("@Celenk2011", "@Maestas2000", "@Matsudaira2006", "@Wallace2010", "@Zane2004", "own review"), 
+                                         replacement = c("CEL", "MAE", "MAT", "WAL", "ZAN", "OWN"), 
+                                         vectorize_all = FALSE)) %>%
+  dplyr::select(Scale, Reference, `Source a` = SourceShort, 
+                Affect, 	Behavior,	Cognition,	Desire,
+                `domain scale`,Sample,	`Includes Majority`, 
+                `Host Country Comb`,	`Origin Country Comb`) %>%
+  mutate_at(vars(Affect, 	Behavior,	Cognition, Desire), ~replace_na(., 0)) %>%
+  kbl(., caption = "Integration Scales",
+      format = "html") %>%
+  add_footnote(c("CEL = @Celenk2011, MAE = @Maestas2000, MAT = @Matsudaira2006, WAL = @Wallace2010, ZAN = @Zane2004, OWN = own review (only additional)"),
+               notation = "alphabet") %>%
+  kable_classic(full_width = F,
+                lightable_options = "hover",
+                html_font = "Cambria") %>%
+   scroll_box(width = "110%", height = "750px")
+```
+
+### Interest over time
+
+Of the scale we included we also plotted the publication years of the scale validations in order to gain an understanding of the interest in scale development over time.   
+
+```{r HistTime, fig.cap="Histogram of Scale Validations over Time."}
+ggplot(dt.Scales.Included %>% mutate(year = as.numeric(year)), aes(x=year)) + 
+  geom_histogram(bins = length(unique(dt.Scales.Included$year)), fill = "grey14")+
+  ylab("Number of Validations")+
+  xlab("Year") +
+  ggtitle("Scales in Review over Time") +
+  theme_Publication() +
+  theme(strip.background =element_rect(fill="grey14", color="grey14"),
+        strip.text = element_text(colour = 'white', face="bold"),
+        legend.position="none")
+```
+
+### Sample  
+
+The study sample a scale is validated in can be fairly important if one plans to use a scale for a context-specific phenomenon such as a cultural adaptation of two specific cultures. We, therefore, coded the type of sample the original authors used in their validation studies (see Figure \@ref(fig:SampleFreq)).  
+
+```{r SampleFreq, fig.cap="Bar graph of the study samples used in the original validation studies."}
+# tally different samples
+SampleFreq <- as.data.frame(table(Sample = dt.Scales.Included$Sample)) %>%
+  arrange(Freq) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(Sample=factor(Sample, levels=Sample)) # update factor levels
+  
+# barplot of sample frequency
+ggplot(data=SampleFreq, aes(x=Sample, y=Freq)) +
+  geom_bar(stat="identity", fill="grey14") +
+  ylab("Frequency") +
+  ggtitle("Validation Sample") +
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background =element_rect(fill="grey14", color="grey14"),
+        strip.text = element_text(colour = 'white', face="bold"),
+        legend.position="none")
+```
+
+### Dimensions  
+
+One major focus of our coding efforts was put on identifying the phenomenological dimensions that were assessed by each individual scale. Based the ABCD framework of human experiences, we independently distinguished between emotional (affect), behavioral, cognitive, and need-based measurements of of acculturation. Examples of concepts that fell into the individual dimensions are shown in Table \@ref(tab:Dimensions):  
+</br>
+
+Table: (\#tab:Dimensions) Examples for Dimensions of Acculturation Measurements.  
+
+| Dimension | Concept                                                             | Wording                                            |
+|-----------|---------------------------------------------------------------------|----------------------------------------------------|
+| Affect    | belonging, loneliness, satisfaction                                 | "I feel ...",                                      |
+| Behavior  | language learning, media consumption, voting                        | "I do ...", "I speak ...", "I meet ..."            |
+| Cognition | cultural identification, cultural values, attitude towards majority | "I prefer ...", "I think ...", "I identify as ..." |
+| Desire    | needs, goals, wants                                                 | "I want ...", "I would like to ...", "I need ..."  |
+
+Note that this also means that we do not include scales that measure aspects of acculturation that do can be measured without consideration of the individual's experiences, such as physical changes, cultural changes, or societal changes.  
+
+Figure \@ref(fig:ABCDFreq) shows how often each of the dimensions was coded.  
+
+```{r ABCDFreq, fig.cap="Bar graph of the counts for each of the dimensions."}
+# Count the times each dimension is measured
+DimensionFreq <- dt.Scales.Included %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
+  mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+  colSums(., na.rm = FALSE, dims = 1) 
+
+# transform to data frame and make row names name variable
+DimensionFreq <- data.frame(Dimension = names(DimensionFreq), Frequency = DimensionFreq)
+
+# barplot of dimension frequency
+ggplot(data=DimensionFreq, aes(x=Dimension, y=Frequency)) +
+  geom_bar(stat="identity", fill="grey14") +
+  ggtitle("Overall Dimension Frequency") +
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background =element_rect(fill="grey14", color="grey14"),
+        strip.text = element_text(colour = 'white', face="bold"),
+        legend.position="none")
+```
+
+We also plot how often each of the dimensions were measured together. A bar graph of the compound frequencies is shown Figure \@ref(fig:ABCDCombFreq) and a network graph of frequencies and co-occurrences is shown in Figure \@ref(fig:dimensionNetwork).  
+
+```{r ABCDCombFreq, message=F, fig.cap="Bar graph of the counts for each of the dimension combinations."}
+# frequency of unique combinations
+ABCD_comb <- dt.Scales.Included %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
+  #mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., "")) %>%
+  group_by(Affect, Behavior, Cognition, Desire) %>%
+  summarise(count = n())
+
+# fill replace ones with colnames to be combined
+for (i in 1:(length(ABCD_comb)-1)) {
+    ABCD_comb[[i]] <- str_replace(as.character(ABCD_comb[[i]]), "1", colnames(ABCD_comb)[i])
+}
+
+# collect dimensions names for each combination
+ABCD_comb <- ABCD_comb %>%
+  unite("Dimension Combination",c("Affect", "Behavior", "Cognition", "Desire"), na.rm = TRUE, sep = ", ") %>%
+  mutate(`Dimension Combination` = fct_reorder(`Dimension Combination`, count))
+
+# bar plot frequencies
+ggplot(ABCD_comb %>% mutate(Frequency = count), aes(x=`Dimension Combination`, y=Frequency)) +
+  geom_bar(stat="identity", fill="grey14") +
+  ggtitle("Compound Dimension Frequency") +
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background =element_rect(fill="grey14", color="grey14"),
+        strip.text = element_text(colour = 'white', face="bold"),
+        legend.position="none")
+```
+
+```{r dimensionNetwork, fig.cap="Network graph of the dimension frequencies and co-occurences. The nodes (i.e., circles) represent the concepts so that the size of the circle indicates the number of times concept was coded and the edges (i.e., connections) represent the co-occurences so that the width of the line indicates how often the concepts were measured in one scale."}
+# # make crossproduct matrix to condense co-occurrences (off-diagonals) and get frequencies (diagonals)
+# X <- as.matrix(dt.Scales.Included %>% 
+#                  dplyr::select(Affect, Behavior, Cognition, Desire) %>% 
+#                  mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)))
+# out <- crossprod(X)  # Same as: t(X) %*% X
+# #diag(out) <- 0       # remove frequencies on diagonals
+# 
+# # information on the concepts themselves
+# nodes <- data.frame(id    = colnames(out), 
+#                     title = paste0(colnames(out), "<br>Frequency: ", diag(out)), 
+#                     value = diag(out),
+#                     size  = diag(out),
+#                     shape = "dot")
+# 
+# # information on the co-occurrences
+# edges           <- as.data.frame(t(combn(colnames(out),2)))
+# colnames(edges) <- c('from','to')
+# edges$width     <- NA
+# for (i in 1:nrow(edges)) {
+#     edges$width[i] <- out %>%
+#       as.data.frame(.) %>%
+#       rownames_to_column('dim') %>%
+#       filter(dim == edges$to[i]) %>%
+#       dplyr::select(any_of(edges$from[i])) %>%
+#       as.numeric(.)
+# }
+# edges$label <- edges$width
+# edges$title <- paste0(edges$from, " - ", edges$to, "<br>Co-occurences: ", edges$width)
+# 
+# # plot network graph
+# visNetwork(nodes, edges %>% mutate(width = scales::rescale(edges$width, to=c(10,30))), 
+#            heigth = "100%", width = "100%", main = "Network Graph Scale Validation Phenomenological Dimensions") %>%
+#             visIgraphLayout(layout = "layout_in_circle") %>%
+#             visNodes(
+#                 shape = "dot",
+#                 color = list(
+#                     background = "#0085AF",
+#                     border = "#013848",
+#                     highlight = "#FF8000"
+#                 )
+#             ) %>%
+#             visEdges(
+#                 shadow = FALSE,
+#                 color = list(color = "#0085AF", highlight = "#C62F4B")
+#             ) %>%
+#             visOptions(highlightNearest = list(enabled = T, degree = 1, hover = T), 
+#                        nodesIdSelection = list(main = "Select variable")) %>% 
+#             visInteraction(keyboard = TRUE, tooltipDelay = 0) %>%
+#             visLayout(randomSeed = 11)
+```
+
+
+# Software Information
+For our analyses we used `r cite_r("references.bib")`.
+
+\newpage
+
+# References
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+<div id="refs" custom-style="Bibliography"></div>
+\endgroup

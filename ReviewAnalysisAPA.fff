@@ -1,0 +1,26 @@
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\includegraphics[width=\textwidth]{Figures/HistTime-1} \caption{Histogram of Scale Validations over Time.}\label{fig:HistTime}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\includegraphics[width=\textwidth]{Figures/SampleFreq-1} \caption{Bar graph of the study samples used in the original validation studies.}\label{fig:SampleFreq}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\includegraphics[width=\textwidth]{Figures/ABCDFreq-1} \caption{Bar graph of the counts for each of the dimensions.}\label{fig:ABCDFreq}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\includegraphics[width=\textwidth]{Figures/ABCDCombFreq-1} \caption{Bar graph of the counts for each of the dimension combinations.}\label{fig:ABCDCombFreq}
+\end{figure*}
