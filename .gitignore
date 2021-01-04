@@ -10,4 +10,4 @@ Icon^M^M
 **/Icon?
 data/backup
 *.gsheet
-!data/*.docx
+data/*.docx
