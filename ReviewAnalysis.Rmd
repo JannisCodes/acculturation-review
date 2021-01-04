@@ -1,12 +1,12 @@
 ---
-title: "Systematic Review Integration"
+title: "Integration of Migrants"
 subtitle: "Annotated Analysis"
 author:
 - Jannis Kreienkamp^1^
 - ^1^University of Groningen
 date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
 output: 
-  bookdown::html_document2: 
+  bookdown::html_document2:
     fig_caption: yes
     md_extensions: +footnotes
     code_folding: hide
@@ -38,7 +38,7 @@ csl: apa.csl
 ```{r setup, include=FALSE}
 # R Studio Clean-Up
   cat("\014") # clear console
-  #rm(list=ls()) # clear workspace - use restart R instead: 
+  #rm(list=ls()) # clear workspace - use restart R instead
   gc() # garbage collector
   
 # Install and Load Packages
