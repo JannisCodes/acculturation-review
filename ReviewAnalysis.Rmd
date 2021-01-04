@@ -279,8 +279,7 @@ dt.Scales.Included %>%
   mutate(SourceShort = stri_replace_all_fixed(Source,
                                          pattern = c("@Celenk2011", "@Maestas2000", "@Matsudaira2006", "@Wallace2010", "@Zane2004", "own review"), 
                                          replacement = c("CEL", "MAE", "MAT", "WAL", "ZAN", "OWN"), 
-                                         vectorize_all = FALSE)) %>%#,
-         #Reference = paste0(gsub("@", "\\citet{", Reference,fixed = TRUE), "}")) %>%
+                                         vectorize_all = FALSE)) %>%
   dplyr::select(Scale, Reference, `Source [note]"` = SourceShort, 
                 Affect, 	Behavior,	Cognition,	Desire,
                 `domain scale`,Sample,	`Includes Majority`, 
