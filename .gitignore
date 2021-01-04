@@ -9,5 +9,5 @@ Icon?
 Icon^M^M
 **/Icon?
 data/backup
-data/*.gsheet
-data/.docx
+*.gsheet
+!data/*.docx
