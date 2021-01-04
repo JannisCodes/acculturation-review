@@ -236,6 +236,21 @@ data.frame(table(Exclusion = dt.Scales$Comment)) %>%
   kable_classic(full_width = F, 
                 lightable_options = "hover", 
                 html_font = "Cambria")
+
+data.frame(table(Exclusion = dt.Scales$Comment)) %>%
+  arrange(desc(Freq)) %>%
+  kbl(., 
+      label = "ScalesExclusion",
+      caption = "Reasons for Exclusion",
+      format = "latex",
+      col.names = c("Exclusion Reason",
+                    "Frequency"), 
+      linesep = "",
+      booktabs = T,
+      align = c("l", "c"))  %>%
+  kable_styling(latex_options = c("repeat_header"),
+                position = "left") %>%
+  save_kable("Tables/ScalesExclusion.tex")
 ```
 
 The remaining `r nrow(dt.Scales[dt.Scales$Duplicate == "Unique" & is.na(dt.Scales$Comment),])` scales are listed in Table \@ref(tab:ScaleTbl).  
@@ -260,6 +275,30 @@ dt.Scales.Included %>%
                 html_font = "Cambria") %>%
    scroll_box(width = "110%", height = "750px")
 
+dt.Scales.Included %>%
+  mutate(SourceShort = stri_replace_all_fixed(Source,
+                                         pattern = c("@Celenk2011", "@Maestas2000", "@Matsudaira2006", "@Wallace2010", "@Zane2004", "own review"), 
+                                         replacement = c("CEL", "MAE", "MAT", "WAL", "ZAN", "OWN"), 
+                                         vectorize_all = FALSE),
+         Reference = paste0(gsub("@", "\\citet{", Reference,fixed = TRUE), "}")) %>%
+  dplyr::select(Scale, Reference, `Source [note]"` = SourceShort, 
+                Affect, 	Behavior,	Cognition,	Desire,
+                `domain scale`,Sample,	`Includes Majority`, 
+                `Host Country Comb`,	`Origin Country Comb`) %>%
+  mutate_at(vars(Affect, 	Behavior,	Cognition, Desire), ~replace_na(., 0)) %>%
+  kbl(., 
+      label = "ScaleTbl",
+      caption = "Cultural Adaptation Scales",
+      format = "latex",
+      linesep = "",
+      booktabs = T,
+      longtable = T,
+      align = c("l", "c"))  %>%
+  add_footnote(c("CEL = @Celenk2011, MAE = @Maestas2000, MAT = @Matsudaira2006, WAL = @Wallace2010, ZAN = @Zane2004, OWN = own review (only additional)"), 
+               notation = "alphabet") %>%
+  kable_styling(latex_options = c("repeat_header"),
+                position = "left") %>%
+  save_kable("Tables/ScaleTbl.tex")
 ```
 
 ### Interest over time
