@@ -224,81 +224,9 @@ psychData <- sqldf("SELECT l.*, r.*
 The first data set we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review we found five major reviews that reviewed the measurement of acculturation [@Celenk2011; @Maestas2000; @Matsudaira2006; @Wallace2010; @Zane2004].  
 
 ### Exclusions  
-Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Review != "own",])` scales, of which `r nrow(dt.Scales[dt.Scales$Duplicate == "Duplicate" & dt.Scales$Review != "own",])` were duplicates. From our own review we added `r nrow(dt.Scales[dt.Scales$Review == "own review",])` additional validation studies. After removing duplicates this meant that we considered a total of `r nrow(dt.Scales[dt.Scales$Duplicate == "Unique",])` unique scales for our coding. Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$Comment),])`, because they were either not accessible or did not fit the the topic of our review (see Table \@ref(tab:ScalesExclusion)).  
 
-```{r ScalesExclusion, results='asis'}
-data.frame(table(Exclusion = dt.Scales$Comment)) %>%
-  arrange(desc(Freq)) %>%
-  kbl(., caption = "Reasons for Exclusion",
-      format = "html",
-      col.names = c("Exclusion Reason",
-                    "Frequency")) %>%
-  kable_classic(full_width = F, 
-                lightable_options = "hover", 
-                html_font = "Cambria")
-
-data.frame(table(Exclusion = dt.Scales$Comment)) %>%
-  arrange(desc(Freq)) %>%
-  kbl(., 
-      label = "ScalesExclusion",
-      caption = "Reasons for Exclusion",
-      format = "latex",
-      col.names = c("Exclusion Reason",
-                    "Frequency"), 
-      linesep = "",
-      booktabs = T,
-      align = c("l", "c"))  %>%
-  kable_styling(latex_options = c("repeat_header"),
-                position = "left") %>%
-  save_kable("Tables/ScalesExclusion.tex")
-save(dt.Scales, file = "data/LaTeX/scales.RData")
-```
-
-The remaining `r nrow(dt.Scales[dt.Scales$Duplicate == "Unique" & is.na(dt.Scales$Comment),])` scales are listed in Table \@ref(tab:ScaleTbl).  
-
-```{r ScaleTbl}
-dt.Scales.Included %>%
-  mutate(SourceShort = stri_replace_all_fixed(Source,
-                                         pattern = c("@Celenk2011", "@Maestas2000", "@Matsudaira2006", "@Wallace2010", "@Zane2004", "own review"), 
-                                         replacement = c("CEL", "MAE", "MAT", "WAL", "ZAN", "OWN"), 
-                                         vectorize_all = FALSE)) %>%
-  dplyr::select(Scale, Reference, `Source ^a^` = SourceShort, 
-                Affect, 	Behavior,	Cognition,	Desire,
-                `domain scale`,Sample,	`Includes Majority`, 
-                `Host Country Comb`,	`Origin Country Comb`) %>%
-  mutate_at(vars(Affect, 	Behavior,	Cognition, Desire), ~replace_na(., 0)) %>%
-  kbl(., caption = "Integration Scales",
-      format = "html") %>%
-  add_footnote(c("CEL = @Celenk2011, MAE = @Maestas2000, MAT = @Matsudaira2006, WAL = @Wallace2010, ZAN = @Zane2004, OWN = own review (only additional)"), 
-               notation = "alphabet") %>%
-  kable_classic(full_width = F, 
-                lightable_options = "hover", 
-                html_font = "Cambria") %>%
-   scroll_box(width = "110%", height = "750px")
-
-dt.Scales.Included %>%
-  mutate(SourceShort = stri_replace_all_fixed(Source,
-                                         pattern = c("@Celenk2011", "@Maestas2000", "@Matsudaira2006", "@Wallace2010", "@Zane2004", "own review"), 
-                                         replacement = c("CEL", "MAE", "MAT", "WAL", "ZAN", "OWN"), 
-                                         vectorize_all = FALSE)) %>%
-  dplyr::select(Scale, Reference, `Source [note]"` = SourceShort, 
-                Affect, 	Behavior,	Cognition,	Desire,
-                `domain scale`,Sample,	`Includes Majority`, 
-                `Host Country Comb`,	`Origin Country Comb`) %>%
-  mutate_at(vars(Affect, 	Behavior,	Cognition, Desire), ~replace_na(., 0)) %>%
-  kbl(., 
-      label = "ScaleTbl",
-      caption = "Cultural Adaptation Scales",
-      format = "latex",
-      linesep = "",
-      booktabs = T,
-      longtable = T,
-      align = c("l", "c"))  %>%
-  add_footnote(c("CEL = @Celenk2011, MAE = @Maestas2000, MAT = @Matsudaira2006, WAL = @Wallace2010, ZAN = @Zane2004, OWN = own review (only additional)"), 
-               notation = "alphabet") %>%
-  kable_styling(latex_options = c("repeat_header"),
-                position = "left") %>%
-  save_kable("Tables/ScaleTbl.tex")
+```{r child = 'RmdSections/ScaleExclusion.Rmd'}
+rmarkdown::render("RmdSections/ScaleExclusion.Rmd", output_format = latex_document())
 ```
 
 ### Interest over time

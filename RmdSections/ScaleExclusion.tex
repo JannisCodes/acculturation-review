@@ -1,0 +1,195 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+Taken together these five reviews collected a total of 197 scales, of
+which 75 were duplicates. From our own review we added 25 additional
+validation studies. After removing duplicates this meant that we
+considered a total of 122 unique scales for our coding. Of these scales
+we ultimately had to exclude 41, because they were either not accessible
+or did not fit the the topic of our review (see Table
+@ref(tab:ScalesExclusion)). The remaining 87 scales are listed in Table
+@ref(tab:ScaleTbl).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# data.frame(table(Exclusion = dt.Scales$Comment)) \%\textgreater{}\%}
+\CommentTok{\#   arrange(desc(Freq)) \%\textgreater{}\%}
+\CommentTok{\#   kbl(., caption = "Reasons for Exclusion",}
+\CommentTok{\#       format = "html",}
+\CommentTok{\#       col.names = c("Exclusion Reason",}
+\CommentTok{\#                     "Frequency")) \%\textgreater{}\%}
+\CommentTok{\#   kable\_classic(full\_width = F, }
+\CommentTok{\#                 lightable\_options = "hover", }
+\CommentTok{\#                 html\_font = "Cambria")}
+
+\FunctionTok{data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(}\AttributeTok{Exclusion =}\NormalTok{ dt.Scales}\SpecialCharTok{$}\NormalTok{Comment)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(Freq)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kbl}\NormalTok{(., }
+      \AttributeTok{label =} \StringTok{"ScalesExclusion"}\NormalTok{,}
+      \AttributeTok{caption =} \StringTok{"Reasons for Exclusion"}\NormalTok{,}
+      \AttributeTok{format =} \StringTok{"latex"}\NormalTok{,}
+      \AttributeTok{col.names =} \FunctionTok{c}\NormalTok{(}\StringTok{"Exclusion Reason"}\NormalTok{,}
+                    \StringTok{"Frequency"}\NormalTok{), }
+      \AttributeTok{linesep =} \StringTok{""}\NormalTok{,}
+      \AttributeTok{booktabs =}\NormalTok{ T,}
+      \AttributeTok{align =} \FunctionTok{c}\NormalTok{(}\StringTok{"l"}\NormalTok{, }\StringTok{"c"}\NormalTok{))  }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{latex\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"repeat\_header"}\NormalTok{),}
+                \AttributeTok{position =} \StringTok{"left"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{save\_kable}\NormalTok{(}\StringTok{"Tables/ScalesExclusion.tex"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# dt.Scales.Included \%\textgreater{}\%}
+\CommentTok{\#   mutate(SourceShort = stri\_replace\_all\_fixed(Source,}
+\CommentTok{\#                                          pattern = c("@Celenk2011", "@Maestas2000", "@Matsudaira2006", "@Wallace2010", "@Zane2004", "own review"), }
+\CommentTok{\#                                          replacement = c("CEL", "MAE", "MAT", "WAL", "ZAN", "OWN"), }
+\CommentTok{\#                                          vectorize\_all = FALSE)) \%\textgreater{}\%}
+\CommentTok{\#   dplyr::select(Scale, Reference, \textasciigrave{}Source \^{}a\^{}\textasciigrave{} = SourceShort, }
+\CommentTok{\#                 Affect,   Behavior,   Cognition,  Desire,}
+\CommentTok{\#                 \textasciigrave{}domain scale\textasciigrave{},Sample,    \textasciigrave{}Includes Majority\textasciigrave{}, }
+\CommentTok{\#                 \textasciigrave{}Host Country Comb\textasciigrave{},  \textasciigrave{}Origin Country Comb\textasciigrave{}) \%\textgreater{}\%}
+\CommentTok{\#   mutate\_at(vars(Affect,  Behavior,   Cognition, Desire), \textasciitilde{}replace\_na(., 0)) \%\textgreater{}\%}
+\CommentTok{\#   kbl(., caption = "Integration Scales",}
+\CommentTok{\#       format = "html") \%\textgreater{}\%}
+\CommentTok{\#   add\_footnote(c("CEL = @Celenk2011, MAE = @Maestas2000, MAT = @Matsudaira2006, WAL = @Wallace2010, ZAN = @Zane2004, OWN = own review (only additional)"), }
+\CommentTok{\#                notation = "alphabet") \%\textgreater{}\%}
+\CommentTok{\#   kable\_classic(full\_width = F, }
+\CommentTok{\#                 lightable\_options = "hover", }
+\CommentTok{\#                 html\_font = "Cambria") \%\textgreater{}\%}
+\CommentTok{\#    scroll\_box(width = "110\%", height = "750px")}
+
+\NormalTok{dt.Scales.Included }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{SourceShort =} \FunctionTok{stri\_replace\_all\_fixed}\NormalTok{(Source,}
+                                         \AttributeTok{pattern =} \FunctionTok{c}\NormalTok{(}\StringTok{"@Celenk2011"}\NormalTok{, }\StringTok{"@Maestas2000"}\NormalTok{, }\StringTok{"@Matsudaira2006"}\NormalTok{, }\StringTok{"@Wallace2010"}\NormalTok{, }\StringTok{"@Zane2004"}\NormalTok{, }\StringTok{"own review"}\NormalTok{), }
+                                         \AttributeTok{replacement =} \FunctionTok{c}\NormalTok{(}\StringTok{"CEL"}\NormalTok{, }\StringTok{"MAE"}\NormalTok{, }\StringTok{"MAT"}\NormalTok{, }\StringTok{"WAL"}\NormalTok{, }\StringTok{"ZAN"}\NormalTok{, }\StringTok{"OWN"}\NormalTok{), }
+                                         \AttributeTok{vectorize\_all =} \ConstantTok{FALSE}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(Scale, Reference, }\StringTok{\textasciigrave{}}\AttributeTok{Source [note]"}\StringTok{\textasciigrave{}} \OtherTok{=}\NormalTok{ SourceShort, }
+\NormalTok{                Affect,     Behavior,   Cognition,  Desire,}
+                \StringTok{\textasciigrave{}}\AttributeTok{domain scale}\StringTok{\textasciigrave{}}\NormalTok{,Sample,  }\StringTok{\textasciigrave{}}\AttributeTok{Includes Majority}\StringTok{\textasciigrave{}}\NormalTok{, }
+                \StringTok{\textasciigrave{}}\AttributeTok{Host Country Comb}\StringTok{\textasciigrave{}}\NormalTok{,    }\StringTok{\textasciigrave{}}\AttributeTok{Origin Country Comb}\StringTok{\textasciigrave{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate\_at}\NormalTok{(}\FunctionTok{vars}\NormalTok{(Affect,    Behavior,   Cognition, Desire), }\SpecialCharTok{\textasciitilde{}}\FunctionTok{replace\_na}\NormalTok{(., }\DecValTok{0}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kbl}\NormalTok{(., }
+      \AttributeTok{label =} \StringTok{"ScaleTbl"}\NormalTok{,}
+      \AttributeTok{caption =} \StringTok{"Cultural Adaptation Scales"}\NormalTok{,}
+      \AttributeTok{format =} \StringTok{"latex"}\NormalTok{,}
+      \AttributeTok{linesep =} \StringTok{""}\NormalTok{,}
+      \AttributeTok{booktabs =}\NormalTok{ T,}
+      \AttributeTok{longtable =}\NormalTok{ T,}
+      \AttributeTok{align =} \FunctionTok{c}\NormalTok{(}\StringTok{"l"}\NormalTok{, }\StringTok{"c"}\NormalTok{))  }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{add\_footnote}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"CEL = @Celenk2011, MAE = @Maestas2000, MAT = @Matsudaira2006, WAL = @Wallace2010, ZAN = @Zane2004, OWN = own review (only additional)"}\NormalTok{), }
+               \AttributeTok{notation =} \StringTok{"alphabet"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{latex\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"repeat\_header"}\NormalTok{),}
+                \AttributeTok{position =} \StringTok{"left"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{save\_kable}\NormalTok{(}\StringTok{"Tables/ScaleTbl.tex"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}
