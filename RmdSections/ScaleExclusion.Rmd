@@ -3,7 +3,8 @@ output: latex_fragment
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='./Figures/',
+                      echo=FALSE, warning=FALSE, message=FALSE)
 ```
 
 ## R Markdown
