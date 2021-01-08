@@ -251,6 +251,7 @@ data.frame(table(Exclusion = dt.Scales$Comment)) %>%
   kable_styling(latex_options = c("repeat_header"),
                 position = "left") %>%
   save_kable("Tables/ScalesExclusion.tex")
+save(dt.Scales, file = "data/LaTeX/scales.RData")
 ```
 
 The remaining `r nrow(dt.Scales[dt.Scales$Duplicate == "Unique" & is.na(dt.Scales$Comment),])` scales are listed in Table \@ref(tab:ScaleTbl).  
@@ -1445,6 +1446,13 @@ disciplines01 %>%
                 lightable_options = "hover",
                 html_font = "Cambria")
 ```
+
+<br>
+<div class="alert alert-danger">
+<strong><i class="fa fa-exclamation-triangle"></i> To Do: Sankey here</strong> <br>
+This one works for Sankey diagram.
+</div>
+
 
 Categorization in this -- highest order -- manner led to the following subgroup frequencies (see Table \@ref(tab:Disciplines01FreqTab)):  
 
