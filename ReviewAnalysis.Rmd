@@ -47,7 +47,8 @@ lib <- c("rmarkdown", "knitr", "citr", "remedy", "bookdown", "papaja", "rmdfiltr
          "rworldmap", "rnaturalearth", "rnaturalearthdata", "rgeos", "sp", "ggspatial",
          "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
          "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes",
-         "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet")
+         "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet",
+         "DiagrammeR", "DiagrammeRsvg", "rsvg")
 invisible(lapply(lib, library, character.only = TRUE))  
 rm(lib)  
 
@@ -652,6 +653,21 @@ prismaGr(found = 516,
          quantitative = nrow(dt.psych.empirical),
          extra_dupes_box = F,
          width = 800, height = 800)
+
+prismaGr(found = 516,
+         found_other = 18,
+         no_dupes = nrow(dt.psych), 
+         screened = nrow(dt.psych), 
+         screen_exclusions = nrow(dt.psych)-nrow(dt.psych.title), 
+         full_text = nrow(dt.psych.title),
+         full_text_exclusions = nrow(dt.psych.title)-nrow(dt.psych.abstract), 
+         qualitative = nrow(dt.psych.abstract), 
+         quantitative = nrow(dt.psych.empirical),
+         extra_dupes_box = F,
+         width = 800, height = 800) %>%
+  export_svg() %>%
+  charToRaw %>% 
+  rsvg_pdf("./Figures/PRISMA.svg")
 ```
 
 ### Publication Type  
