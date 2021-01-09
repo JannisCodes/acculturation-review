@@ -13,7 +13,6 @@
 \usepackage{hyperref}
 \usepackage[style=apa,sortcites=true,sorting=nyt, backend=biber, natbib=true, uniquename=false, uniquelist=false, useprefix=true]{biblatex}
 \usepackage{authblk}
-\usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{setspace,caption}
 \usepackage{subcaption}
@@ -27,6 +26,7 @@
 \usepackage[normalem]{ulem}
 \usepackage{longtable}
 \usepackage{svg}
+\usepackage{amsmath}
 
 % Select what to do with todonotes: 
 % \usepackage[disable]{todonotes} % notes not showed
@@ -323,12 +323,13 @@ After analysis of the scales validations, we assessed the empirical papers we co
 \subsubsection{Methods}
 Search terms (incl. inclusion and exclusion). Incl. the empirical method used (e.g., quantitative, qualitative).
 
-screening (title screening, abstract screening, full text analysis) [use \href{http://prisma-statement.org/PRISMAStatement/FlowDiagram}{PRISMA}]. 
+screening (title screening, abstract screening, full text analysis) [use \href{http://prisma-statement.org/PRISMAStatement/FlowDiagram}{PRISMA}].
+See Figure \ref{fig:PRISMA}.
 % PRISMA chart goes somewhere here
 \begin{figure}[h]
 \centering
 \caption{PRISMA diagram. Position still undecided. Currently generated in R based on n(row) maybe make prettier.}
-\includesvg[width=\textwidth]{Figures/PRISMA.svg}
+\includegraphics[width=\textwidth]{Figures/PRISMA}
 \label{fig:PRISMA}
 \end{figure}
 
