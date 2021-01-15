@@ -18,6 +18,7 @@
 \usepackage{subcaption}
 \usepackage{enumitem}
 \usepackage{lipsum}
+\usepackage{soul}
 \usepackage{xcolor}
 \usepackage{fourier}
 \usepackage{stackengine}
@@ -25,7 +26,6 @@
 \usepackage{fontawesome}
 \usepackage[normalem]{ulem}
 \usepackage{longtable}
-\usepackage{svg}
 \usepackage{amsmath}
 
 % Select what to do with todonotes: 
@@ -84,7 +84,11 @@ Correspondence concerning this article should be addressed to Jannis Kreienkamp,
 
 \leftheader{Kreienkamp}
 
-\abstract{\todo[inline]{Needs to be done.} Abstract goes here.}
+\abstract{
+One of the key challenges to researching acculturation is an immense heterogeneity in definitions and measures. These inconsistencies make it difficult to compare past literature on acculturation, hinder straight-forward measurement selections, and hampers the development of an overarching framework. To structure our understanding of the migration process, we propose to use the four basic elements of human experiences (motivations, emotions, thoughts, and behaviors) as a descriptive framework. We then embed this migration experience structure within the individual socio-historical context. To test our framework, we perform a systematic review and separately analyse validated scales and empirical studies in their measurements of motivational, emotional, cognitive, and behavioral acculturation aspects. We find that most scales and studies focus on behavioral and cognitive operationalisations. We inversely find that emotional and motivational aspects are measured rarely and predominantly in conjunction with other experience elements. We also find structural differences acculturation measures across publication fields. We, thus, showcase the utility of an experience-based framework in structuring our analyses and understandings of acculturation. 
+
+[currently 166 words]
+}
 
 \keywords{Keyword \#1, Keyword \#2, ...}
 
@@ -129,7 +133,7 @@ Once we have introduced our conceptual framework, we will systematically review 
     - Ager and Strange (2008) framework\\
     - \texttt{Ward2001} and \texttt{Ward2019} ABC of acculturation\\
     
-    \textbf{NEW Subsections: Experience \& Context}\\
+    \textbf{New Subsections: Experience \& Context}\\
     - Experience: Structure, and Content\\
     - Context: Culture, Individual, Situation, Time\\
 }
@@ -155,17 +159,20 @@ An experience is the process of (consciously) perceiving a life event. Although 
 ABC and ABCD models have been used to structure theories and models in a wide variety of fields, including research on attitudes \citep{Breckler1984} and ambivalence \citep{VanHarreveld2015}, self-regulation \citep{Ben-Eliyahu2015}, the big five personality traits \citep{Wilt2016}, suicidality \citep{Harris2015}, and even in the review of acculturation literature \citep{Ward2001, Ward2019}. The ABC(D) frameworks have also been found across cultures \citep[e.g.,][]{Bhawuk2011}, used in clinical interventions \citep{Eifert1989}, been proposed as a framework of forebrain functioning \citep{Swanson2020}, and the development of human-like machines \citep{Guo2020}.
 
 % Main argument example: If any experience can be structure in ABCD, we can distinguish different aspects of cultural adaptation.
+\vspace{1em}
 \todo[inline]{too much repetition (combine two sentences?) or okay?}
 Following the premise that any human experience will be perceived as a set of motivations or goals (i.e., desire), emotions (i.e., affect), thoughts (i.e., cognition), and behaviors, we suggest that the migration experience can also be understood within these four elements. If these four elements, indeed, capture the migration experience sufficiently, such a framework could be used to structure the assessment and understanding of conceptual definitions and measurements. Cultural adaptation might, for example, be understood or measured in terms of behavioral adaptation, such as language use, or voting; cognitive adaptation, such as identification with cultural values; affective adaptation, such as feeling at home, or loneliness; motivational adaptation, such as the satisfaction of competence or independence needs; or as a complex combination of any or all of these aspects. 
 
 % Application: Universality of elements allows us to ask: Which aspects have been considered? How many aspects have been considered? And which have been considered together?
 % In this study we ask answer these questions for past literature.
+\vspace{1em}
 \todo[inline]{unclear that this is about presence of elements rather than number of different content aspects. Also, add more suspense. Utility focus. Connect to aim}
 Because motivations, emotions, thoughts, and behaviors are what \citet{Berry2009a} refers to as ``basic psychological processes and capacities'' (p. 362) these elements are relevant to any human being -- across cultural, individual, situational, and temporal contexts; and these perceptions are scaleable evaluations -- of a single situation, a recent period, or a life-long journey. This is ideal for comparing and assessing different definitions and measurements in past and present literature. It allows us to ask questions such as: Which aspect of the migration experience has been considered as part of acculturation in a particular research project? Which aspect is measured most frequently in a certain field? What is the average number of aspects included in definitions or measurements? 
 In the current paper, we will test some of these questions for the past empirical literature. In particular, we will assess which aspects of cultural adaptation have most frequently been included. And which aspects most frequently are included (or excluded) together. We will also assess the complexity of the measurements -- that is how many of the motivational, emotional, cognitive, and behavioral aspects have been included. To assess differences between fields, we will also group past research based on the journals' target audience. And to assess changes over time, will assess the development of the conceptual composition based on the year of publications. [\Warning\ @self: re-check after analysis write-up]
 % interesting: call for unpublished data or check in theses, whether different ABCD composition.
 
 % Novel predictions: Thinking about ABCD aspects allows for new questions about focus, connections, and differences. Why is A, B, C, or D more important? What is the relationship between A, B, C, and D? Are internal aspects (D) more important than external aspects (B)?
+\vspace{1em}
 \todo[inline]{summary too abstract.}
 Moreover, the structural framework also allows for novel questions and predictions. The structure, for example, allows for considerations of the relative importance, the interconnections, or the accessibility of these elements. There might, for example, be theoretical reasons why a certain aspect is more important to a specific issue (e.g., the role of emotions and cognitions to mental health; reference to theory here?). One could also offer process considerations, making theoretical arguments why a certain aspect might precede another or how one aspect might feed back into another (e.g., motivations guiding cognition and affect, which in turn drive behavior; reference to theory here? e.g., theory of reasoned goal pursuit). Another example, for a novel prediction could be a consideration of the accessibility of the individual aspects, where more public aspects, such as behaviors, might be seen as more important to the majority society, whereas more internal aspects such as motivations and goals might be more important to the newcomer (or their group; reference to theory here?). [\Warning\ maybe move to discussion?]
 
@@ -244,161 +251,140 @@ To test the utility of the framework, we specifically target the measurement of 
 
 \section{Systematic Review}
 \todo[inline]{Search Strategy}
-To assess the past psychological literature on cultural adaptation, we performed a systematic review. On March 4th, 2020, we searched for empirical work on the acculturation of migrants within the ``APA PsycInfo'' bibliographic databases via the EBSCO\textit{host} provider (for the full information on the search strategy see Appendix \ref{app:AppendixSearchStrategy}). 
+To assess the past psychological literature on cultural adaptation, we performed a systematic review. On March 4\textsuperscript{th}, 2020, we searched for empirical work on the acculturation of migrants within the ``APA PsycInfo'' bibliographic databases via the EBSCO\textit{host} provider (for the full information on the search strategy see Appendix \ref{app:AppendixSearchStrategy}). We downloaded all references and abstracts which two independent coders screened for relevance -- first based on the titles and then based on the abstracts. We downloaded all relevant and available works for full-text coding. We used this database to identify validated scales in the literature as well as empirical work in general. For both groups of work we extracted a range of variables to test our framework. Before we describe each of the two data sets in more detail we will briefly lay out how we extracted the variables for our main analyses. The full coding process and data extraction is described in the online supplementary materials X (as well as on OSF [citation to public osf and/or github repository goes here]).
 
-\subsection{Coding}
+\subsection{Framework Coding}
+For our main tests of the proposed framework we extracted data on the experience elements as well as the experience context.
 \subsubsection{Experience Elements}
-One major focus of our coding efforts was identifying the phenomenological dimensions that were assessed by each individual scale. Examples of how we distinguished between emotional (affect), behavioural, cognitive, and need-based measurements of acculturation are in Table \ref{tab:DimensionExamples}.
+One major focus of our coding efforts was identifying the experience elements that were assessed within each manuscript. For each article we, thus, retrieved the items used and coded whether the measure included references to emotions (affect), behaviours, cognitions, and needs. Because this concerned the most central aspect of our framework, each manuscript was double-coded and inconsistent codes were resolved after discussion. Examples of how individual aspects were identified and coded are in Table \ref{tab:DimensionExamples}.
 \input{Tables/tabDimEx}
 
-Note that this also means that we do not include scales that measure aspects of acculturation that do can be measured without consideration of the individual’s experiences, such as physical changes, cultural changes, or societal changes.
+At this stage we also noted if measures included concepts that are complex and relate to multiple experience aspects. We also noted if the measures would not consider an individual’s experiences, such as simply reporting of migration status or length of residency. \Question\ What else should be noted?
 
-\subsubsection{Context}
+\subsubsection{Experience Context}
+As part efforts to capture the migration context we were interested in cultural, individual, situational, as well as process related contexts. Assessing these contexts in a manner that is relevant across a wide range of studies is challenging and likely superficial at best. Context is arguably more relevant if one considers a single case, yet gaining a more general understanding of the contexts frequently considered in the literature could prove useful in evaluating and comparing conceptions of cultural adaptation. We, thus, extracted a range of general context variables from the empirical literature.
 
 \paragraph{Country}
-To capture the cultural contexts, we coded the heritage country of the migrants as well as the country of the receiving host society.
+To capture the cultural contexts, we coded both the heritage country of the migrants as well as the country of the receiving host society. Coding the two societal contexts allows us to extract information on the specificity of the studies (e.g., Mexican migrants in the United States, or any migrant in Scandinavia). Migrant and host country codings could also reveal patterns of `interest within the literature' (e.g., common migrant groups, common host societies, or common combinations investigated). And finally, if common clusters emerge, we could compare the types of experience elements assessed within each cluster (e.g., focus on behavioral adaptation in one and cognitive focus in another cluster). 
 
 \paragraph{Sample}
-To capture the individual background on a cross paper level, we collected the focus sample of the authors.
+To capture the individual background on a cross-paper level, we extract the types of samples recruited by the authors. Some studies might focus on young or elderly samples, men or women only, clinical samples, or authors might simply recruit any migrant from a certain country or region. Clusters and differences in the experience foci within these clusters might offer insights into the understanding of cultural adaptation for different individual contexts.
 
 \paragraph{Life Domains}
-To capture the situational focus of the authors, we coded which life domains the scales referred to, either as part of sub-scale labels, factor labels, explicit commentary of the authors, or clear question wordings. 
-
-We process the domains as a list of domains for each validation. We later assess the lists as a whole (e.g., number, diversity of domains) but also the domains individually (e.g., frequency of domain across all articles).
+To capture the situational focus of the authors, we coded which life domains the scales referred to. There were a range of ways in which we could identify the domains the authors wished to cover. Often times authors will explicitly mention which life domains there measure aims to capture. Others will show their domain focus as part of labelled sub-scale labels or factor labels. If there is no explicit mention by the authors, question are likely worded to clearly refer to a specific life domain (e.g., behaviors at school, or values in the family context). If there is no clear reference to a life domain or the questions are about life in general, we code this as meaningful information as well. We can then process the situational foci as a list of domains, which offers information on the diversity of domains (e.g., number, or similarity of domains) but also the focus in the literature in general (e.g., frequency of domain across all articles). If clusters of similar focus domains emerge, we could, additionally, assess differences in the assessment of cultural adaptation for these clusters.
 
 \paragraph{Migration Time}
-To capture the process focus, we also coded whether the authors focused on the 
-
-For the coding, we individually consider methodological and empirical work. In a first step, we analyse validated scales reported in reviews as well as the empirical papers. In a second step, we consider the full body of empirical work.
+To capture the process focus, we also coded which migration step(s) the authors focused on. We coded whether the authors focused on the migration experience after the arrival in the new society, prior to the migration, or focused on both time points. We, additionally, coded whether cross-sectional or longitudinal data was collected and how this data was analyzed. Given the observations of past reviews \citep[e.g.,][]{Brown2011, Ward2019}, we expect that most researchers will collect cross-sectional data at a single time-point after migration.
 
 \subsection{Methodological Literature}
-\todo[inline]{*Database Description*} 
-The first data set we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review we found five major works that reviewed the measurement of acculturation \citep{Celenk2011, Maestas2000, Matsudaira2006, Wallace2010, Zane2004}.
+\todo[inline]{*Database Description*}
+Based on the systematic review and its coding, the first data set we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review we found five major works that reviewed the measurement of acculturation \citep{Celenk2011, Maestas2000, Matsudaira2006, Wallace2010, Zane2004}. After the removal of duplicate scales, we added any scale validation that was present in our own systematic review but not included in the previous reviews. For each measure we extracted the full item list as well as the item scoring prior to coding. A comprehensive and interactive database of the scales, with reference- and publication information, as well as our experience elements and -context coding is available in our online supplementary information as well as on our open science repository [OSF and/or github citation here]. 
 
 \subsubsection{Methods}
-number of articles/scales, incl. exclusions
-
-number of items
-
-number of responses (incl. measurement level)
-
-majority included
-
-over time (year)
-
-We collected XXX scales of which XX were excluded due to main reasons. We coded dimensions and domains, but also information on the sample targeted for validation, the type of measurement, as well as the year of publication.
+\todo[inline]{data description \\
+To Do: fix table labels in R, Add summary stats in R}
+Taken together these five reviews collected a total of 197 scales, of which 75 were duplicates. From our own review we added 25 additional validation studies. After removing duplicates this meant that we considered a total of 122 unique scales for our coding. Of these scales we ultimately had to exclude 41, because they were either not accessible or did not fit the the topic of our review (see Table X).The scales had an average of X.XX items and X.XX sub-scales. Most items were rated on a five-point (XX.XX\%) or four-point likert-type scale (XX.XX\%), with only X scales including categorical ratings. About a quarter of scales (XX.XX\%) included majority group members in their validation studies. The earliest included validation was from 1972 with a majority of scales being validated around the turn of the 21\textsuperscript{st} century and the latest included validation study in 2018.
 
 \subsubsection{Results}
+For the literature on scale validations, we assessed both the role of experience elements in the measures as well as contextual differences. 
 
 \paragraph{Experience}
-Most studies included a measure of cognition (XX\%) and behavior (XX\%), whereas only roughly half the studies included a measure of affect (XX\%) and only a fourth of the scales included a measure of motives (XX\%).
+With our main aim of examining the experience structure within the scales, we examined whether scales included a specific experience elements but also examined the used elements in their complex combinations. In terms of general inclusion of elements, most studies included a measure of cognition (XX\%) and behavior (XX\%), whereas only roughly half the studies included a measure of affect (XX\%) and only a fourth of the scales included a measure of motives (XX\%). However, only a minority of scales included only a single dimension. There were only 5 scales that exclusively relied on cognitions (XX\%) and 4 scales that measured only behaviors (XX\%). Yet, inversely, there were also only 13 scales that measured all four dimensions (XX\%). Most studies measured two (XX\%) or three (XX\%) dimensions. A majority of scales either measured behavioral and cognitive elements (XX\%) or behavioral, cognitive, and affective elements (XX\%). Thus, most scales measure multiple dimensions, yet they focus on easily accessible dimensions (i.e., behavior and cognition), less of what is considered `less accessible' or `subjective' (i.e., affect and desires). This is also visible in the circumstance that there were no scales that exclusively measured motivational or emotional adaptation (whereas that was the case for both cognitions and behaviors).
 
-A minority of scales included only a single dimension (XX\% cognition only, XX\% behavior only) or all four dimensions (XX\%). Most studies measured two (XX\%) or three (XX\%) dimensions.
-
-Co-occurrence numbers: percentage of concept in unique combinations. Which dimension is represented how much in each of the levels of complexity (k-way co-occurrences).
-
-Conclusion: (1) most scales measure multiple dimensions and (2) focus on easily accessible dimensions (behavior and cognition), less of what is considered ``less accessible'' or ``subjective''.
+\vspace{1em}
+\todo[inline]{Experience To Do: Co-occurrence numbers, percentage of concept in unique combinations. Which element is represented how much in each of the levels of complexity (k-way co-occurrences). Add figures or tables for frequencies}
 
 \paragraph{Context}
+To gain a general understanding of contextual factors within the validated studies, we also assessed cross-study patterns of cultural, individual, situational, and process-related focus points.
 
 \subparagraph{Country}
-country targets of migrants and host societies
+To assess the cultural contexts for which scales were validated we assessed the migrants' countries of settlement as well as the countries of origin. We found that an overwhelming number of scales were validated within a U.S. American settlement context (XX\%). But also the remaining receiving societies were mostly `western' countries (e.g., Canada, The Netherlands, The United Kingdom, Israel, Australia) with only individual scales for Taiwanese, Nepalese, or Russian settlement contexts. There was also a small number of scales that were validated within multiple settlement contexts (X\%).
+
+For the migrant origin societies there was slightly more variation. There were a few migrant groups that were investigated specifically (e.g., Mexico: XX\%, China: XX\%, South Korea: XX\%), however most validation studies targeted broader categories of migrants (any migrants: XX\%, Asian: XX\%, Hispanic: XX\%, LatinX: XX\%). This also made it difficult to identify patterns of cultural combinations investigated (apart from Mexican and LatinX migrants in the United States).
 
 \subparagraph{Sample}
-types of sample targeted (e.g., clinical, refugees, …)
+To assess the role different groups of individuals targeted in the scale validations, we coded the types of samples recruited for the validation studies. A majority of studies sampled any consenting adult from the migrant group of interest (\textit{N} = 50). As seems common in academic research, a larger portion of the validated scales relied on young migrants or students (\textit{N} = 29). Interestingly, only small minority of validated scales targeted more vulnerable groups, such as clinical samples (\textit{N} = 2) or refugees (\textit{N} = 2) -- despite a considerable focus on these groups within the broader literature.
 
 \subparagraph{Domains}
-A relatively large number of scales ask about the current state of the migrant in general manner without mentioning any context or life domain (example item here; XX\% [currently coded as 'general‘]).
-
-The remaining scales referred to an average of X.XX dimensions (SD = X.XX). A total of XXX unique domains was measured across the XXX scales. The dimensions of ‘language‘, ‘food’, ‘interactions’, ‘family’ and ‘values’ are focused on most often (see Online Supplementary Materials X, Figure X).
-
-Conclusion: Large variation between the scales in the number, diversity, and consideration of domains. Most of the mentioned domains are in line with the topics proposed in the literature.
+To assess the situational focus within the validated scales, we assessed the number of domains within each scale as well as more common domains across the scales. A relatively large number of scales asked about the current state of the migrant in general manner without mentioning any context or life domain (XX\%; e.g., ``In general, in what language do you read and speak?''). The remaining scales referred to an average of X.XX dimensions (SD = X.XX). A total of XXX unique domains was measured across the XX scales. The dimensions of `language‘ (XX\%), `food' (XX\%), `interactions’ (XX\%), `family' (XX\%) and `values' (XX\%) were focused on most often (see Online Supplementary Materials X, Figure X). Thus, while there was large variation between the scales in the number, and diversity of domains, the most frequently mentioned domains were in line with the life domains proposed in the literature \citep[e.g.,][]{Arends-Toth2007}.
+\vspace{1em}
+\todo[inline]{re-check `general' code}
 
 \subparagraph{Migration time}
-interest over time (when were the validations published)
+All scales were validated using cross-sectional data after the migrant arrived in the settlement society. This is in line with observations by previous reviews of the field \citep[e.g.,][]{Brown2011}.
 
 \subsection{Empirical Literature}
-After analysis of the scales validations, we assessed the empirical papers we collected within the systematic review. We first look at all available empirical publications (incl. books, chapters, and dissertations). We later also assessed differences between fields the work was published in. However, because we considered the fields on an audience level, we used only empirical journal articles - for which journal-level audience data is available.
+After analysis of the scales validations, we assessed the broader empirical works we collected within the systematic review. We first looked at all available empirical publications (incl. books, chapters, and dissertations). We later also assessed differences between fields the work was published in. However, because we considered the fields on an audience level, we used only empirical journal articles -- for which journal-level audience data is available.
 
 \subsubsection{Methods}
-Search terms (incl. inclusion and exclusion). Incl. the empirical method used (e.g., quantitative, qualitative).
+The search produced a total of XXX results to which we added XX articles through contacts with experts in the field. We subsequently screened out results that did not fit into our review. After duplicate removal (\textit{N} = XX), we excluded 92 results in the title screening as well as an additional 126 results during the abstract screening. Of the remaining 266 results, 259 papers presented empirical work on acculturation and were coded. The 7 non-empirical results were reviews, which were not coded because they did not fit into our coding schema. During the full text coding we excluded an additional 26 results because they were either not relevant or were not accessible (for exclusion reasons see Table X and for our PRISMA diagram see Figure \ref{fig:PRISMA}). 
 
-screening (title screening, abstract screening, full text analysis) [use \href{http://prisma-statement.org/PRISMAStatement/FlowDiagram}{PRISMA}].
-See Figure \ref{fig:PRISMA}.
+Of the final works we coded, 192 were journal articles, 37 theses, and four book chapters. Most studies presented quantitative data (\textit{N} = 205), mixed methods (\textit{N} = 14), or qualitative data (\textit{N} = 11), while the remaining three manuscripts were reviews of empirical data. A vast majority of the authors used the term `acculturation' (\textit{N} = 149), `acculturation attitudes' (\textit{N} = 9), or `integration' (\textit{N} = 7) to refer to cultural adaptation. And a considerable number of studies used a version of \citet{Berry1989} acculturation orientation measure (\textit{N} = 10), the Vancouver Index of Acculturation (\textit{N} = 8), the Abbreviated Multidimensional Acculturation Scale, Stephensons Multigroup Acculturation Scale, or the Suinn-Lew Asian Self Identity Acculturation Scale (each \textit{N} = 7). All other scales were used across five studies or less, with a considerable majority of papers using new or ad-hoc measures of cultural adaptation (\textit{N} = XX). Only about every tenth study included the local majority in the study (\textit{N} = 25, 10.82\%). Cultural adaptation most frequently was a predictor variable (\textit{N} = 99, 42.86\%), a dependent variable (\textit{N} = 72, 31.17\%), or a correlation variable (\textit{N} = 27, 11.69\%) in the empirical works. This pattern was mirrored when looking at the focus of the papers, where a majority of the papers had acculturation as their main focus (\textit{N} = XX, XX.XX\%), with other bodies of work focusing on mental health outcomes (\textit{N} = XX, XX.XX\%), inter-group relations (\textit{N} = XX, XX.XX\%), or health behaviors (\textit{N} = XX, XX.XX\%) as their main outcomes. The earliest included study was published in 1971, with a continuous increase of publications after the year 2000, with considerable publication peaks in 2010 and 2018 (each \textit{N} = 28, XX.XX\%). We provide full descriptions of descriptive data extractions and additional information about the data description in Online Supplementary Information X.
+
+\vspace{1em}
+\todo[inline]{Paper domains need to be summarized (focused).}
+
 % PRISMA chart goes somewhere here
 \begin{figure}[h]
 \centering
-\caption{PRISMA diagram. Position still undecided. Currently generated in R based on n(row) maybe make prettier.}
+\caption{PRISMA diagram. Position still undecided. Currently generated in R based on n(row) maybe make prettier. \Warning\ Re-check numbers before duplicates removed and number of papers added from other sources.}
 \includegraphics[width=\textwidth]{Figures/PRISMA}
 \label{fig:PRISMA}
 \end{figure}
 
-publication type
+\paragraph{Field of Publication} For the broader empirical literature, we also collected additional data on the field the studies were published in.  To assess the differences between fields we merged the `Scimago Journal Ranking Database' (Reference needed) with our empirical review. For all available journal articles we added information on key journal metrics (incl. H index, impact factor, and data on the field and audiences). This also meant that dissertations, book chapters, and books were excluded from this analysis because data on their publishers is not readily available or unreliable. Additionally, 8 journals were not included in the Scimago database (likely because they do not have an ISSN identifier or were discontinued before 1996, see Online Appendix X, Table X for the missing journals). We ultimately had journal metrics for 183 empirical articles. The Scimago database classifies each journal according to the field(s) that the journal aims to address. Importantly, (1) each journal can be be classified to address multiple fields and (2) the field include codes of fields (e.g., ‘Social Sciences’) as well as sub-fields (e.g., ‘Social Psychology’). This leads to the case that there can be substantial overlap between fields, and journals cannot easily or readily be assessed in mutually exclusive subgroups.
 
-which term the authors use to refer to cultural adaptation (e.g., acculturation, integration, cultural adjustment)
-
-measure used
-
-measurement level
-
-majority included
-
-what the thematic focus of the paper is (e.g., focus on adaptation itself or other focus such as health, intergroup relations), 
-
-variable type
-
-interest over time (based on year of publication, incl. impact metrics of journal articles)
-
-\paragraph{Type of Analysis}
-information on the analyses used (incl. where in the model the concept of placed in the main analysis).
-
-\paragraph{Field}
-For the broader empirical literature, we also collected additional data on the field the studies were published in using the SciMago database.
+To summarize the articles further we then classified the field combinations into super-ordinate discipline codes. These discipline codes are based in part on U.S. Department of Education’s National Center for Education Statistics Classification of Instructional Programs (CIP, Reference), the U.K. Higher Education Statistics Agency Joint Academic Coding System (JACS 3.0, Reference), the Australian Bureau of Statistics’ Australian and New Zealand Standard Research Classification (ANZSRC 2020, Reference), as well as the Fields of Knowledge Map from the ‘Things Made Thinkable’ initiative (Reference). We ultimately classified each journal into one of four mutually exclusive disciplines (psychology: \textit{N} = 61, multidisciplinary: \textit{N} = 57, Medicine, Nursing, and Health: \textit{N} = 51, and Social Sciences (miscellaneous): \textit{N} = 14). 
 
 \subsubsection{Results}
+To test the utility of our framework, we again assessed the role of experience elements in the measurement as well as contextual differences.
 
 \paragraph{Experience}
-Most studies included a measure of cognition (XX\%) and behavior (XX\%), whereas only roughly half the studies included a measure of affect (XX\%) and only a quarter of the scales included a measure of motives (XX\%).
+In terms of the overall frequencies of experience elements, the broader empirical data mirrored that of the validation studies. Most studies included a measure of cognition (XX\%) and behavior (XX\%), whereas only about half of all studies included a measure of affect (XX\%) and only a quarter of the studies included a measure of motives (XX\%). Yet, only 42 studies focused on a single element ($N_{behavior\ only} = 20$,  $N_{cognition\ only} = 18$, $N_{emotion\ only} = 4$). Similarly, only 17 papers included measures of all four experience elements (XX\%). Most studies measured three (XX\%) or two dimensions (XX\%). Different from the scale validations, within the broader empirical works most works included measures of emotions, behaviors, and cognitions (\textit{N} = 69, XX\%), with a further substantial number of articles measuring behaviors and cognitions (\textit{N} = 51, XX\%). 
 
-A minority of scales included only a single dimension (XX\% cognition only, XX\% behavior only, XX\% affect only) or all four dimensions (XX\%). Most studies measured two (XX\%) or three (XX\%) dimensions.
+Thus, interestingly, not a single study measured only motivation, and measures of desires remained mostly limited to scales that were already multidimensional. The results exacerbate the pattern found in the scale validations, complex measures and conceptions of acculturation are seen infrequently and readily accessible (i.e., less subjective) dimensions of cognition and behavior remain the focus of most studies.
 
-Co-occurrence numbers: percentage of concept in unique combinations. Which dimension is represented how much in each of the levels of complexity (k-way co-occurrences).
-
-\textit{Conclusion}: Interestingly, not a single study measured only motivation, and measures of desires remained mostly limited to scales that were already multidimensional (i.e., complex scales only). The results exacerbate the pattern found in the scale validations, complex measures and conceptions of acculturation are seen infrequently and readily accessible (i.e., less subjective) dimensions of cognition and behavior remain the focus of most studies.
+\vspace{1em}
+\todo[inline]{Experience To Do: Co-occurrence numbers, percentage of concept in unique combinations. Which element is represented how much in each of the levels of complexity(k-way co-occurrences). Add figures or tables for frequencies}
 
 \paragraph{Context}
-Intro to context goes here.
+To gain a general understanding of contextual factors within the broader empirical studies, we again assessed cross-study patterns of cultural, individual, situational, and process-related focus points.
 
 \subparagraph{Country}
-countries
+To assess the cultural contexts on which the authors focused, we again assessed the migrants' countries of settlement as well as the countries of origin. Similar to the validations, an overwhelming number of scales were validated within a North American settlement context (United States: XX\%, Canada: XX\%). But also the remaining receiving societies were `western' -- Western Europe (e.g., The Netherlands, United Kingdom, Germany, Italy, Spain), Australasia (Australia, New Zealand), Russia, and Israel. And only 8 studies focused on data from multiple receiving societies. 
+
+When it came to the migrants' country of origin, a majority of studies were indifferent to migrants background and simply recruited any consenting migrant (XX\%), or recruited a category of migrants (e.g., LatinX or Hispanic: XX\%, African: XX\%). Among the individual countries target there was a particular focus on the east and south-east Asian region (e.g., China: XX\%, South Korea: XX\%, Vietnam: XX\%). Yet, different from the scale validations, there was a large variety of different origin countries that were included in less than five studies (\textit{N} = XX, XX\%). Thus, the receiving countries mainly mirrored those for which scales were validated, yet there was an extensive number origin countries which were investigated individually or migrants were considered irrespective of their cultural origin.
 
 \subparagraph{Sample}
-sample type (incl. majority inclusion, and migration time)
+To assess the role different groups of individuals targeted in the empirical work, we again coded the types of samples recruited for the studies. A majority of studies sampled any consenting adult from the migrant group of interest (\textit{N} = 145, 62.77\%). Of the targeted sampling strategies, most recruited refugees (\textit{N} = 19, 8.23\%), students (\textit{N} = 13, 5.63\%), or elderly people (\textit{N} = 11, 4.76\%). The remaining fifth of the studies recruited other more specific samples (e.g., nurses, athletes, Muslims). Interestingly, despite the circumstance that a large portion of papers focused on mental health outcomes, only seven studies (3.03\%) recruited clinical migrant samples. These results speak to the case that relatively few empirical studies actually take individual differences into account in their sample selection. Studies may still address individual differences within the data description and within the modeling approaches (e.g., controlling for gender), yet it seems that inter-sectional idiosyncrasies did not seem to play a major role in the targeting of samples.
 
 \subparagraph{Domains}
-A relatively large number of studies assess cultural adaption in general manner without mentioning any context or life domain (XX\% [currently coded as 'general‘]).
-
-The remaining studies referred to an average of X.XX dimensions (SD = X.XX). A total of XXX unique domains was measured across the XXX studies. The dimensions of ‘language‘, ‘food’, ‘social interactions’, and ‘friends’ are focused on most often (see Online Supplementary Materials X, Figure X).
-
-\textit{Conclusion}: An even larger proportion of studies remove context and ask about general levels (compared to the validation). When domains are specified the there is large variation between in the number, diversity, and discussion of the domains.
+To capture the situational focus of the authors, we coded which life domains the utilized measures referred to. A relatively large number of studies assess cultural adaption in general manner without mentioning any context or life domain (XX\% [currently coded as 'general‘]). The remaining studies referred to an average of X.XX dimensions (SD = X.XX). We found a total of XXX unique domains across the XXX studies. The dimensions of `language‘ (XX\%), `food’ (XX\%), `social interactions’, and `friends’ (XX\%) were included most frequently. So, while larger proportion of studies ask about cultural adaption in general (outside of a specific domain), the number of domains included and addressed is extensive and diverse. The mentioned domains at times go beyond the life fields mentioned in previous work (also see Online Supplementary Materials X).
+\vspace{1em}
+\todo[inline]{re-check `general' category}
 
 \subparagraph{Process}
-time of migration and analysis.
+To assess the process focus of the broader empirical works, we again assessed when in the migration process was collected and we additionally assessed the type analysis done by the authors. We found that a 224 studies (96.97\%) collected cross-sectional data after the arrival of the migrant in the new society. A single study targeted potential migrants and six studies collected data prior and following the migration event. Moreover, only three studies included longitudinal data analyses concerned with cultural adaptation. This observation, again underscores the arguments made by authors, who have long pointed out that the acculturation literature has thus far failed to provide data that meaningfully captures migration as a process \citep[e.g.,][]{Brown2011, Ward2019}.
 
 \paragraph{Fields}
-merging and exclusions: information on the Scimago database (only data available for journals).
+To further test the utility of our framework in comparing conceptualizations, we assessed differences of experience elements across different fields. We provide more elaborate descriptions of the differences in the methods, and publication types as well as contextual differences in terms of sampling procedures, situational domains, process-focus, analyses, and cultural contexts in Supplementary Online Material X. 
 
-condensed to four mutually exclusive field codes: ‘Psychology’, ‘Medicine, Nursing, \& Health’, ‘Social Sciences (miscellaneous)‘, ‘Multidisciplinary / Cross-disciplinary‘.
+We again first, assessed the references to affect, behavior, cognition, and desires separately, within each of the disciplines. For example, we find that for all fields motives (7-10\%) and emotions (21-23\%) are the least frequently measured elements and each of the fields measures similarly often (in proportional terms). However, for the cognitive and behavioral elements the proportions diverge between the fields. While the multidisciplinary field measured behaviors (34\%) and cognition (35\%) almost equally often, in the medical and general social science journals behaviors were measured considerably more often than cognitions ($Behavior_{SoSci} = 48\%$ > $Cognition_{SoSci} = 24\%$; $Behavior_{Med} = 39\%$ > $Cognition_{Med} = 33\%$). While the psychological journals cognitions (38\%) were measured more often than behaviors (29\%). 
 
-short: sample descriptives by fields
+When looking at differences in complexity of elements -- that is the number of different elements measured -- and patterns within these element-combinations, differences between the fields become even more apparent (also see Figure \ref{fig:FieldCombs}). While `affect, behavior, and cognition' and `behavior, and cognition' measures are the most common combinations across all fields (also at similar proportional importance), there is less dimension complexity and variation for medical and social science fields. In the psychological 86\% of all studies measures at least two experience elements. And while for all other fields behavioral measures are the third most common measures, there was not a single study published in a psychological journal that conceptualized cultural adaptation by behavior alone. Similarly, the in the broader social scientific journal desires are always measured together with behaviors, which is very uncommon in the other fields\footnote{Although it should be noted that the social science field was smaller and more heterogeneous than the other fields.}. There are like other and more nuanced differences in the conceptualizations highlighted within this analysis (e.g., patterns relevant to a single field). Yet, the immediately visible pattern differences clearly speak the utility of the framework. 
 
-short: study descriptives by field
+\begin{figure}[h]
+\centering
+\caption{Combinations of measured experience element and their frequencies per field.}
+\includegraphics[width=\textwidth]{Figures/PsychDisciplineABCDCombFreq-1.png}
+\label{fig:FieldCombs}
+\end{figure}
 
-domains (mean, sd, diversity)
+\vspace{1em}
+\todo[inline]{Potential error in Figure 25. Elements are not mutually exclusive. I.e., cum. sum can be larger 100\%\\
+We should probably add an ANOVA (and a $\chi$-Squared respectively.)\\
+Still need to calculate complexities and means / SDs per field.}
 
-dimensions (mean, sd, overall percentages, complexity, field foci)
-
-\paragraph{Conclusion}: More domain diversity for psychology and multidisciplinary (less for medical and social sciences). Cultural adaptation more often predictor (rather than outcome) for medical and psychological journals. Interestingly in psychological journals adaptation more often predictor than outcome even though focus of the paper still predominantly adaptation. Less dimension complexity and variation for medical and social science fields. Psychological highest average complexity and only XX% single dimensional measurements.
 
 \section{Discussion}
 \todo[inline]{*Summary*}
@@ -406,6 +392,10 @@ dimensions (mean, sd, overall percentages, complexity, field foci)
 %Behavior and cognition have more expectations from host population and are more visible, affect and desire are more personal (i.e., less visible) but more powerful motor of change.
 
 Literature review: complexity of dimensions and domains widely different between scales, studies, and fields. Cognition and behavior main focus across the board. Desire mostly in more complex measures and conceptualisations.
+
+mention that we only compared between fields -- else too messy.
+
+\vspace{1em}
 \todo[inline]{*Use of the framework*}
 \textbf{Practitioners}: Focus group discussion: good grass-root level validation of the framework.
 
@@ -444,6 +434,8 @@ A person-centered framework based on core facets of the migrants’ experience a
 \label{app:AppendixSearchStrategy}
 
 In our search we used an adapted version of the `SPIDER' research tool \citep[e.g.,][]{Cooke2012}. We utilized the \textit{Evaluation} element mainly to exclude articles that were not relevant to the search. The exact search terms used are listed in Table \ref{tab:SearchStrategiesTab}.
+
+\todo[inline]{Re-check search terms.}
 
 \input{Tables/SearchStrategy}
 
