@@ -62,7 +62,7 @@ data.frame(table(Exclusion = dt.Scales$Comment)) %>%
         align = c("l", "c"))  %>%
   kable_styling(latex_options = c("repeat_header"),
                 position = "left") %>%
-  gsub("\\caption{\\label{tab:}", paste0("\\label{", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
   save_kable("Tables/ScalesExclusion.tex")
 ```
 \input{Tables/ScalesExclusion}  
