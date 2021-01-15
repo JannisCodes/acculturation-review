@@ -1,0 +1,75 @@
+---
+output: latex_fragment
+editor_options:
+  chunk_output_type: console
+bibliography: references.bib
+csl: apa.csl
+---
+
+```{r setup, include=FALSE}
+# R Studio Clean-Up
+  cat("\014") # clear console
+  #rm(list=ls()) # clear workspace - use restart R instead
+  gc() # garbage collector
+  
+# Install and Load Packages
+lib <- c("rmarkdown", "knitr", "citr", "remedy", "bookdown", "papaja", "rmdfiltr", "psych",
+         "ggplot2", "ggthemes", "haven", "RColorBrewer", "plotly", "forcats", "wordcloud", "visNetwork", "ggwordcloud",
+         "rworldmap", "rnaturalearth", "rnaturalearthdata", "rgeos", "sp", "ggspatial",
+         "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
+         "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes",
+         "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet",
+         "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg")
+invisible(lapply(lib, library, character.only = TRUE))  
+rm(lib)  
+
+# Load Custom Packages  
+  source("./scripts/functions/fun.panel.R")
+  source("./scripts/functions/themes.R")
+  source("./scripts/functions/prismaGraph.R")
+
+# Markdown Options
+  knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file()) # set working directory
+  knitr::opts_knit$get("root.dir") # check working directory
+  options(scipen = 999, digits = 4, width = 400) #removes scientific quotation
+
+# Global Chunk Options
+  knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figures/',
+                      echo=FALSE, warning=FALSE, message=FALSE)
+```
+
+```{r import}
+load("data/wrangled.RData")
+```
+
+\subsection{Methodological Literature}  
+Based on the systematic review and its coding, the first data set we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review we found five major works that reviewed the measurement of acculturation \citep{Celenk2011, Maestas2000, Matsudaira2006, Wallace2010, Zane2004}. After the removal of duplicate scales, we added any scale validation that was present in our own systematic review but not included in the previous reviews. For each measure we extracted the full item list as well as the item scoring prior to coding. A comprehensive and interactive database of the scales, with reference- and publication information, as well as our experience elements and -context coding is available in our online supplementary information as well as on our open science repository (OSF and/or github citation here).  
+
+\subsubsection{Methods}  
+Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Review != "own",])` scales, of which `r nrow(dt.Scales[dt.Scales$Duplicate == "Duplicate" & dt.Scales$Review != "own",])` were duplicates. From our own review we added `r nrow(dt.Scales[dt.Scales$Review == "own review",])` additional validation studies. After removing duplicates this meant that we considered a total of `r nrow(dt.Scales[dt.Scales$Duplicate == "Unique",])` unique scales for our coding. Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$Comment),])`, because they were either not accessible or did not fit the the topic of our review (see Table \ref(tab:ScalesExclusion)). The scales had an average of \hl{X.XX} items and X.XX sub-scales. Most items were rated on a five-point (\hl{XX.XX}\%) or four-point likert-type scale (\hl{XX.XX}\%), with only \hl{X} scales including categorical ratings. About a fifth of scales (`r dt.Scales %>% filter(IncludesMajority == 1, Duplicate == "Unique") %>% nrow(.)/nrow(dt.Scales[dt.Scales$Duplicate=="Unique",])*100 %>% round(.,2)`\%) included majority group members in their validation studies. The earliest included validation was from `r min(dt.Scales$year, na.rm = T)` with a majority of scales being validated around the turn of the 21\textsuperscript{st} century and the latest included validation study in `r max(dt.Scales$year, na.rm = T)`.  
+
+```{r ScalesExclusion}
+data.frame(table(Exclusion = dt.Scales$Comment)) %>%
+  arrange(desc(Freq)) %>%
+  kbl(., 
+      label = "ScalesExclusion",
+      caption = "Scales Exclusion Reasons",
+      format = "latex",
+      col.names = c("Exclusion Reason",
+                    "Frequency"), 
+      linesep = "",
+      booktabs = T,
+      align = c("l", "c"))  %>%
+  kable_styling(latex_options = c("repeat_header"),
+                position = "left") %>%
+  save_kable("Tables/ScalesExclusion.tex")
+```
+\input{Tables/ScalesExclusion}  
+
+\subsubsection{Results}
+For the literature on scale validations, we assessed both the role of experience elements in the measures as well as contextual differences. 
+
+\paragraph{Experience}
+With our main aim of examining the experience structure within the scales, we examined whether scales included a specific experience elements but also examined the used elements in their complex combinations. In terms of general inclusion of elements, most studies included a measure of cognition (XX\%) and behavior (XX\%), whereas only roughly half the studies included a measure of affect (XX\%) and only a fourth of the scales included a measure of motives (XX\%). However, only a minority of scales included only a single dimension. There were only 5 scales that exclusively relied on cognitions (XX\%) and 4 scales that measured only behaviors (XX\%). Yet, inversely, there were also only 13 scales that measured all four dimensions (XX\%). Most studies measured two (XX\%) or three (XX\%) dimensions. A majority of scales either measured behavioral and cognitive elements (XX\%) or behavioral, cognitive, and affective elements (XX\%). Thus, most scales measure multiple dimensions, yet they focus on easily accessible dimensions (i.e., behavior and cognition), less of what is considered 'less accessible' or 'subjective' (i.e., affect and desires). This is also visible in the circumstance that there were no scales that exclusively measured motivational or emotional adaptation (whereas that was the case for both cognitions and behaviors).  
+
+END SECTION
