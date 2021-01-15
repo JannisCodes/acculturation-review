@@ -52,7 +52,7 @@ Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scal
 data.frame(table(Exclusion = dt.Scales$Comment)) %>%
   arrange(desc(Freq)) %>%
   kable(., 
-        label = "",
+        #label = "",
         caption = "Scales Exclusion Reasons",
         format = "latex",
         col.names = c("Exclusion Reason",
@@ -62,7 +62,7 @@ data.frame(table(Exclusion = dt.Scales$Comment)) %>%
         align = c("l", "c"))  %>%
   kable_styling(latex_options = c("repeat_header"),
                 position = "left") %>%
-  gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
   save_kable("Tables/ScalesExclusion.tex")
 ```
 \input{Tables/ScalesExclusion}  
