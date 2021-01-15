@@ -48,7 +48,7 @@ lib <- c("rmarkdown", "knitr", "citr", "remedy", "bookdown", "papaja", "rmdfiltr
          "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
          "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes",
          "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet",
-         "DiagrammeR", "DiagrammeRsvg", "rsvg")
+         "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg")
 invisible(lapply(lib, library, character.only = TRUE))  
 rm(lib)  
 
@@ -217,6 +217,8 @@ psychData <- sqldf("SELECT l.*, r.*
               FROM psychData as l
               LEFT JOIN PublisherInfo as r
               on l.PublicationTitle = r.PublicationTitleDb OR l.ISSN = r.Issn01 OR l.ISSN = r.Issn02")
+
+save(dt.Scales, dt.Scales.Included, dt.psych, dt.psych.included, psychData, dt.Domains, file = "data/wrangled.RData")
 ```
 
 # **Analysis** 
@@ -263,8 +265,8 @@ dt.Scales.Included %>%
                                          vectorize_all = FALSE)) %>%
   dplyr::select(Scale, Reference, `Source ^a^` = SourceShort, 
                 Affect, 	Behavior,	Cognition,	Desire,
-                `domain scale`,Sample,	`Includes Majority`, 
-                `Host Country Comb`,	`Origin Country Comb`) %>%
+                domainScale,Sample,	IncludesMajority, 
+                HostCountry,	OriginCountry) %>%
   mutate_at(vars(Affect, 	Behavior,	Cognition, Desire), ~replace_na(., 0)) %>%
   kbl(., caption = "Integration Scales",
       format = "html") %>%
@@ -281,8 +283,8 @@ dt.Scales.Included %>%
                                          vectorize_all = FALSE)) %>%
   dplyr::select(Scale, Reference, `Source [note]"` = SourceShort, 
                 Affect, 	Behavior,	Cognition,	Desire,
-                `domain scale`,Sample,	`Includes Majority`, 
-                `Host Country Comb`,	`Origin Country Comb`) %>%
+                domainScale,Sample,	IncludesMajority, 
+                HostCountry,	OriginCountry) %>%
   mutate_at(vars(Affect, 	Behavior,	Cognition, Desire), ~replace_na(., 0)) %>%
   kbl(., 
       label = "ScaleTbl",
@@ -489,7 +491,7 @@ ScaleDomainFreq <- data.frame(UniqueDomains, Frequency = NA)
 
 # count domain frequency in dt.Scales.Included
 for (i in 1:nrow(UniqueDomains)) {
-  ScaleDomainFreq$Frequency[i] <- length(grep(UniqueDomains$Domain[i], dt.Scales.Included$`domain scale`, value = T))
+  ScaleDomainFreq$Frequency[i] <- length(grep(UniqueDomains$Domain[i], dt.Scales.Included$domainScale, value = T))
 }
 
 # prepare for ggplot
@@ -512,12 +514,12 @@ We also coded the cultural context the scales were validated in. We coded both t
 ```{r CountryPrep, message=F}
 # subset relevant variables
 ScaleMap <- dt.Scales.Included %>%
-  dplyr::select(Scale, ends_with("Comb"))
+  dplyr::select(Scale, OriginCountry, HostCountry)
 
 # Host Countries: Find all individual country names and count frequency of occurrence
-HostCountryFreq <- data.frame(Country = unique(unlist(strsplit(ScaleMap$`Host Country Comb`, ", "))), Frequency = NA, source = "Host")
+HostCountryFreq <- data.frame(Country = unique(unlist(strsplit(ScaleMap$HostCountry, ", "))), Frequency = NA, source = "Host")
 for (i in 1:nrow(HostCountryFreq)) {
-  HostCountryFreq$Frequency[i] <- length(grep(HostCountryFreq$Country[i], ScaleMap$`Host Country Comb`, value = T))
+  HostCountryFreq$Frequency[i] <- length(grep(HostCountryFreq$Country[i], ScaleMap$HostCountry, value = T))
 }
 HostCountryFreq <- HostCountryFreq %>%
   #filter(Frequency > 0) %>%
@@ -525,9 +527,9 @@ HostCountryFreq <- HostCountryFreq %>%
   mutate(Country=factor(Country, levels=Country)) # update factor levels
 
 # Origin Countries: Find all individual country names and count frequency of occurrence
-OriginCountryFreq <- data.frame(Country = unique(unlist(strsplit(ScaleMap$`Origin Country Comb`, ", "))), Frequency = NA, source = "Origin")
+OriginCountryFreq <- data.frame(Country = unique(unlist(strsplit(ScaleMap$OriginCountry, ", "))), Frequency = NA, source = "Origin")
 for (i in 1:nrow(OriginCountryFreq)) {
-  OriginCountryFreq$Frequency[i] <- length(grep(OriginCountryFreq$Country[i], ScaleMap$`Origin Country Comb`, value = T))
+  OriginCountryFreq$Frequency[i] <- length(grep(OriginCountryFreq$Country[i], ScaleMap$OriginCountry, value = T))
 }
 OriginCountryFreq <- OriginCountryFreq %>%
   #filter(Frequency > 0) %>%
@@ -601,7 +603,6 @@ After analysis of the scales validations, we assessed the empirical papers we co
 
 ### Exclusions  
 The search produced a total of `r nrow(dt.psych)` results. We subsequently screened out results that did not fit into our review. We excluded `r nrow(dt.psych)-nrow(dt.psych.title)` results in the title screening (for exclusion reasons see Table \@ref(tab:PsychExclusionTitle)) as well as an additional `r nrow(dt.psych.title)-nrow(dt.psych.abstract)` results during the abstract screening (for exclusion reasons see Table \@ref(tab:PsychExclusionAbstract)).  
-
 ```{r PsychExclusionTitle, results='asis'}
 data.frame(table(Exclusion = dt.psych$NoteTitle)) %>%
   arrange(desc(Freq)) %>%
@@ -667,7 +668,7 @@ prismaGr(found = 516,
          width = 800, height = 800) %>%
   export_svg() %>%
   charToRaw %>% 
-  rsvg_pdf("./Figures/PRISMA.svg")
+  rsvg_pdf("./Figures/PRISMA.pdf")
 ```
 
 ### Publication Type  
@@ -791,6 +792,24 @@ ggplot(dt.psych.included, aes(x=year, color = Method)) +
         strip.text = element_text(colour = 'white', face="bold"),
         legend.position="bottom")
 )
+```
+
+### Other descriptors  
+
+```{r descriptivs}
+summarytools::freq(dt.psych.included$MeasurementLevels, order = "freq")
+
+summarytools::freq(dt.psych.included$IncludesMajority, order = "freq")
+
+summarytools::freq(dt.psych.included$VariableType, order = "freq")
+
+summarytools::freq(dt.psych.included$Sample, order = "freq")
+
+summarytools::freq(dt.psych.included$domainScale, order = "freq")
+
+summarytools::freq(dt.psych.included$domainPaper, order = "freq")
+
+summarytools::freq(dt.psych.included$MigrationTime, order = "freq")
 ```
 
 ### Sample  
