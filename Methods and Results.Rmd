@@ -65,6 +65,7 @@ data.frame(table(Exclusion = dt.Scales$Comment)) %>%
   #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
   save_kable("Tables/ScalesExclusion.tex")
 ```
+
 \input{Tables/ScalesExclusion}  
 
 \subsubsection{Results}
@@ -72,5 +73,107 @@ For the literature on scale validations, we assessed both the role of experience
 
 \paragraph{Experience}
 With our main aim of examining the experience structure within the scales, we examined whether scales included a specific experience elements but also examined the used elements in their complex combinations. In terms of general inclusion of elements, most studies included a measure of cognition (XX\%) and behavior (XX\%), whereas only roughly half the studies included a measure of affect (XX\%) and only a fourth of the scales included a measure of motives (XX\%). However, only a minority of scales included only a single dimension. There were only 5 scales that exclusively relied on cognitions (XX\%) and 4 scales that measured only behaviors (XX\%). Yet, inversely, there were also only 13 scales that measured all four dimensions (XX\%). Most studies measured two (XX\%) or three (XX\%) dimensions. A majority of scales either measured behavioral and cognitive elements (XX\%) or behavioral, cognitive, and affective elements (XX\%). Thus, most scales measure multiple dimensions, yet they focus on easily accessible dimensions (i.e., behavior and cognition), less of what is considered 'less accessible' or 'subjective' (i.e., affect and desires). This is also visible in the circumstance that there were no scales that exclusively measured motivational or emotional adaptation (whereas that was the case for both cognitions and behaviors).  
+
+```{r ABCDFreq, fig.cap="Bar graph of the element combinations."}
+# Count the times each dimension is measured
+DimensionFreq <- dt.Scales.Included %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
+  mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+  colSums(., na.rm = FALSE, dims = 1) 
+
+# transform to data frame and make row names name variable
+DimensionFreq <- data.frame(Dimension = names(DimensionFreq), 
+                            Frequency = DimensionFreq, 
+                            Percentage = DimensionFreq/nrow(dt.Scales.Included)) %>%
+  mutate(Dimension = fct_reorder(Dimension, Frequency))
+
+# barplot of dimension frequency
+ScaleABCD <- ggplot(data=DimensionFreq, aes(x=Dimension, y=Frequency)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(label = paste0("N = ",Frequency)),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 2.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Frequency across all Scales",
+       y = "Frequency across all Scales",
+       x = "Experience Element")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold"),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+# frequency of unique combinations
+ABCD_comb <- dt.Scales.Included %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
+  #mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+  group_by(Affect, Behavior, Cognition, Desire) %>%
+  summarise(Frequency = n()) %>%
+  ungroup() %>%
+  mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T))
+
+# fill replace ones with colnames to be combined
+for (i in 1:4) {
+    ABCD_comb[[i]] <- str_replace(as.character(ABCD_comb[[i]]), "1", colnames(ABCD_comb)[i])
+}
+
+# collect dimensions names for each combination
+ABCD_comb <- ABCD_comb %>%
+  unite("ExperienceCombination",c("Affect", "Behavior", "Cognition", "Desire"), na.rm = TRUE, sep = ", ") %>%
+  mutate(ExperienceCombination = fct_reorder(ExperienceCombination, Frequency),
+         Percentage = Frequency/nrow(dt.Scales.Included)*100,
+         Affect = ifelse(grepl("Affect", ExperienceCombination, fixed = TRUE), 1,0),
+         Behavior = ifelse(grepl("Behavior", ExperienceCombination, fixed = TRUE), 1,0),
+         Cognition = ifelse(grepl("Cognition", ExperienceCombination, fixed = TRUE), 1,0),
+         Desire = ifelse(grepl("Desire", ExperienceCombination, fixed = TRUE), 1,0))
+
+sum(ABCD_comb %>% filter(Affect == 1) %>% select(Frequency))
+
+# bar plot frequencies
+ScaleABCDComb <- ggplot(ABCD_comb, aes(x=ExperienceCombination, y=Percentage)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(y=Percentage, label = paste0(round(Percentage,2),"% [N = ", Frequency, "]")),
+    color = "grey14",
+    size = 4,
+    hjust = -.1,
+    inherit.aes = TRUE
+    ) +
+  scale_y_continuous(limits = c(0, ceiling(max(ABCD_comb$Percentage)*1.1)),
+                     breaks = seq(0, ceiling(max(ABCD_comb$Percentage)*1.1), 5))+
+  labs(y = "Proportion of all scales [in %]",
+       x = "Combination of Experience Elements")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background =element_rect(fill="grey14", color="grey14"),
+        strip.text = element_text(colour = 'white', face="bold"),
+        legend.position="none")
+
+ScaleABCDComb + 
+  annotation_custom(
+    ggplotGrob(ScaleABCD), 
+    xmin = 0.5, xmax = 5, ymin = 17, ymax = 30
+  )
+```
+
+% Scale  chart goes somewhere here
+\begin{figure}[h]
+\centering
+\caption{Bar graph of the experience element combinations.}
+\includegraphics[width=\textwidth]{Figures/ABCDFreq-1}
+\label{fig:ElementsScales}
+\end{figure}
 
 END SECTION
