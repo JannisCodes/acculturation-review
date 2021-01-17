@@ -72,7 +72,7 @@ data.frame(table(Exclusion = dt.Scales$Comment)) %>%
 For the literature on scale validations, we assessed both the role of experience elements in the measures as well as contextual differences. 
 
 \paragraph{Experience}
-```{r ABCDCalc}
+```{r ABCDCalc, include=F}
 # Count the times each dimension is measured
 ScaleElementFreq <- dt.Scales.Included %>%
   dplyr::select(Affect, Behavior, Cognition, Desire) %>%
@@ -108,17 +108,28 @@ ScaleElementCombFreq <- ScaleElementCombFreq %>%
          Behavior = ifelse(grepl("Behavior", ExperienceCombination, fixed = TRUE), 1,0),
          Cognition = ifelse(grepl("Cognition", ExperienceCombination, fixed = TRUE), 1,0),
          Desire = ifelse(grepl("Desire", ExperienceCombination, fixed = TRUE), 1,0))
+
+scaleComplexity <- ScaleElementCombFreq %>%
+  select(complexity, Frequency) %>%
+  group_by(complexity) %>%
+  summarise(Frequency = sum(Frequency),
+            Percentage = sum(Frequency)/nrow(dt.Scales.Included)*100) %>%
+  ungroup() %>%
+  mutate(complexity = as.factor(complexity),
+         complexity = fct_reorder(complexity, Frequency))
+
+elementComplexity <- data.frame(Element = c("Affect", "Behavior", "Cognition", "Desire"), 
+                                avgComplexity = c(ScaleElementCombFreq %>% filter(Affect == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency), 
+                                                  ScaleElementCombFreq %>% filter(Behavior == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency), 
+                                                  ScaleElementCombFreq %>% filter(Cognition == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency), 
+                                                  ScaleElementCombFreq %>% filter(Desire == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency)))
 ```
 
-With our main aim of examining the experience structure within the scales, we examined whether scales included a specific experience elements but also examined the used elements in their complex combinations. In terms of general inclusion of elements, most studies included a measure of cognition (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Cognition"]*100,2)`\%) and behavior (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Behavior"]*100,2)`\%), whereas only roughly half the studies included a measure of affect (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Affect"]*100,2)`\%) and only a fourth of the scales included a measure of motives (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Desire"]*100,2)`\%). However, only a minority of scales included only a single dimension. There were only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Cognition"]` scales that exclusively relied on cognitions (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Cognition"],2)`\%) and `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Behavior"]` scales that measured only behaviors (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior"],2)`\%). Yet, inversely, there were also only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"]` scales that measured all four dimensions (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"],2)`\%). Most studies measured two (`r ScaleElementCombFreq %>% filter(complexity == 2) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`\%) or three (`r ScaleElementCombFreq %>% filter(complexity == 3) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`\%) dimensions. A majority of scales either measured behavioral and cognitive elements (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"],2)`\%) or behavioral, cognitive, and affective elements (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`\%; also see Figure \ref{fig:ElementsScales}). Thus, most scales measure multiple dimensions, yet they focus on easily accessible dimensions (i.e., behavior and cognition), less of what is considered 'less accessible' or 'subjective' (i.e., affect and desires). This is also visible in the circumstance that there were no scales that exclusively measured motivational or emotional adaptation (whereas that was the case for both cognitions and behaviors).  
+With our main aim of examining the experience structure within the scales, we examined whether scales included a specific experience elements but also examined the used elements in their complex combinations. In terms of general inclusion of elements, most studies included a measure of cognition (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Cognition"]*100,2)`\%) and behavior (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Behavior"]*100,2)`\%), whereas only roughly half the studies included a measure of affect (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Affect"]*100,2)`\%) and only a fourth of the scales included a measure of motives (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Desire"]*100,2)`\%). However, only a minority of scales included only a single dimension. There were only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Cognition"]` scales that exclusively relied on cognitions (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Cognition"],2)`\%) and `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Behavior"]` scales that measured only behaviors (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior"],2)`\%). Yet, inversely, there were also only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"]` scales that measured all four dimensions (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"],2)`\%). Most studies measured two (`r ScaleElementCombFreq %>% filter(complexity == 2) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`\%) or three (`r ScaleElementCombFreq %>% filter(complexity == 3) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`\%) dimensions. A majority of scales either measured behavioral and cognitive elements (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"],2)`\%) or behavioral, cognitive, and affective elements (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`\%; also see Figure \ref{fig:ElementsScales}). Looking at the number of elements measured together we also see substantial differences in what kind of scales include a certain element. Scales that included cognitions measured an average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Cognition"],2)` elements, scales measuring behavior, on average, measured a `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Behavior"],2)`, while scales that included affect measures had a complexity average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Affect"],2)` and scales measuring motivation even measured an average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Desire"],2)` scales. Thus, most scales measure multiple dimensions, yet they focus on easily accessible dimensions (i.e., behavior and cognition), less of what is considered 'less accessible' or 'subjective' (i.e., affect and desires). This is also visible in the circumstance that there were no scales that exclusively measured motivational or emotional adaptation (whereas that was the case for both cognitions and behaviors).  
 
 ```{r  ABCDFreq, include=F}
-
-ScaleElementCombFreq %>% filter(complexity == 3) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))
-
-
 # barplot of dimension frequency
-ScaleABCD <- ggplot(data=ScaleElementFreq, aes(x=Element, y=Frequency)) +
+ScaleABCDBar <- ggplot(data=ScaleElementFreq, aes(x=Element, y=Frequency)) +
   geom_bar(stat="identity", fill="grey14") +
   geom_text(
     aes(label = paste0("N = ",Frequency)),
@@ -127,7 +138,7 @@ ScaleABCD <- ggplot(data=ScaleElementFreq, aes(x=Element, y=Frequency)) +
     size = 2.5,
     vjust = 0.5
     ) +
-  labs(title = "Frequency across all Scales",
+  labs(title = "Element Frequency",
        y = "Frequency across all Scales",
        x = "Experience Element")+
   coord_flip()+
@@ -135,7 +146,35 @@ ScaleABCD <- ggplot(data=ScaleElementFreq, aes(x=Element, y=Frequency)) +
   theme(strip.background = element_rect(fill="grey14", color="grey14", ),
         axis.title.x = element_blank(),
         axis.title.y = element_blank(),
-        plot.title = element_text(size=10, face="bold"),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+# barplot of complexity frequency
+ScaleComplexityBar <- ggplot(data=scaleComplexity, aes(x=complexity, y=Frequency)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(label = paste0("N = ",Frequency)),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 2.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Scale Complexity",
+       y = "Frequency across all Scales",
+       x = "Complexity")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
         axis.text.x = element_text(size=10),
         axis.text.y = element_text(size=10),
         panel.grid.major.x = element_blank(),
@@ -168,8 +207,12 @@ ScaleABCDComb <- ggplot(ScaleElementCombFreq, aes(x=ExperienceCombination, y=Per
 
 ScaleABCDComb + 
   annotation_custom(
-    ggplotGrob(ScaleABCD), 
-    xmin = 0.5, xmax = 5, ymin = 17, ymax = 30
+    ggplotGrob(ScaleABCDBar), 
+    xmin = 0.5, xmax = 5, ymin = 18, ymax = 30
+  ) +
+  annotation_custom(
+    ggplotGrob(ScaleComplexityBar), 
+    xmin = 0.5, xmax = 5, ymin = 8, ymax = 18
   )
 ```
 
