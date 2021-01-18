@@ -317,4 +317,19 @@ To assess the situational focus within the validated scales, we assessed the num
 \vspace{1em}
 \todo[inline]{Should be re-coded to test our proposed domains. Also, re-check `general' code}
 
+\subparagraph{Migration time}
+
+```{r ScaleMigrationTime, include=F}
+summarytools::freq(dt.Scales.Included$MigrationTime, order = "freq")
+```
+
+All scales were validated using cross-sectional data after the migrant arrived in the settlement society. This is in line with observations by previous reviews of the field \citep[e.g.,][]{Brown2011}.
+
+
+\subsection{Empirical Literature}
+After analysis of the scales validations, we assessed the broader empirical works we collected within the systematic review. We first looked at all available empirical publications (incl. books, chapters, and dissertations). We later also assessed differences between fields the work was published in. However, because we considered the fields on an audience level, we used only empirical journal articles -- for which journal-level audience data is available.
+
+\subsubsection{Methods}
+The search produced a total of \hl{XXX} results to which we added \hl{XX} articles through contacts with experts in the field. We subsequently screened out results that did not fit into our review. After duplicate removal ($$N_{excluded}$$ = \hl{XX}, $N_{screened}$ = `r nrow(dt.psych)`), we excluded 92 results in the title screening as well as an additional 126 results during the abstract screening. Of the remaining 266 results, 259 papers presented empirical work on acculturation and were coded. The 7 non-empirical results were reviews, which were not coded because they did not fit into our coding schema. During the full text coding we excluded an additional 26 results because they were either not relevant or were not accessible (for exclusion reasons see Table X and for our PRISMA diagram see Figure \ref{fig:PRISMA}). 
+
 END SECTION
