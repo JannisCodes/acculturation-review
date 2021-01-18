@@ -699,5 +699,31 @@ EmpSampleElderlyPerc <- round(sum(EmpSampleFreq[grepl("old|elderly", EmpSampleFr
 
 To assess the role different groups of individuals targeted in the empirical work, we again coded the types of samples recruited for the studies. A majority of studies sampled any consenting adult from the migrant group of interest (\textit{N} = `r EmpSampleFreq$Freq[EmpSampleFreq$Sample=="general"]`, `r round(EmpSampleFreq$Perc[EmpSampleFreq$Sample=="general"],2)`\%). Of the targeted sampling strategies, most recruited refugees (\textit{N} = `r EmpSampleRefugee`, `r EmpSampleRefugeePerc`\%), young migrants (\textit{N} = `r EmpSampleYouth`, `r EmpSampleYouthPerc`\%), or elderly people (\textit{N} = `r EmpSampleElderly`, `r EmpSampleElderlyPerc`\%). The remaining fifth of the studies recruited other more specific samples (e.g., nurses, athletes, Muslims). Interestingly, despite the circumstance that a large portion of papers focused on mental health outcomes, only `r EmpSampleFreq$Freq[EmpSampleFreq$Sample=="clinical"]` studies (`r round(EmpSampleFreq$Perc[EmpSampleFreq$Sample=="clinical"],2)`\%) recruited clinical migrant samples. These results speak to the case that relatively few empirical studies actually take individual differences into account in their sample selection. Studies may still address individual differences within the data description and within the modeling approaches (e.g., controlling for gender), yet it seems that inter-sectional idiosyncrasies did not seem to play a major role in the targeting of samples.
 
+\subparagraph{Domains}
+
+```{r EmpDomainFrequencies, include=F, warning=F}
+# Number of domains in scale
+EmpDomainN <- str_count(dt.psych.included$domainScale, ',')+1
+
+# Domain frequencies: Find all individual domains and count frequency of occurrence
+EmpDomainFreq <- as.data.frame(table(unlist(strsplit(dt.psych.included$domainScale, ", ")), dnn = list("domain")), 
+                                 responseName = "frequency") %>% 
+  arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(domain = factor(domain, levels=domain)) # update factor levels
+
+# # Word cloud frequencies
+# set.seed(7) # for reproducibility 
+# wordcloud(words = ScaleDomainFreq$domain, freq = ScaleDomainFreq$frequency, 
+#           min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
+```
+
+To capture the situational focus of the authors, we coded which life domains the utilized measures referred to. A relatively large number of studies assess cultural adaption in general manner without mentioning any context or life domain (\textit{N} = `r EmpDomainFreq$frequency[EmpDomainFreq$domain=="general"]`). The remaining studies referred to an average of `r round(mean(EmpDomainN, na.rm=T),2)` dimensions (\textit{SD} = `r round(sd(EmpDomainN, na.rm=T),2)`, range: `r min(EmpDomainN, na.rm=T)` -- `r max(EmpDomainN, na.rm=T)`)). We found a total of `r nrow(EmpDomainFreq)` unique domains across the `r nrow(dt.psych.included)` studies. The dimensions of 'language‘ (\hl{XX}\%), 'food’ (\hl{XX}\%), 'social interactions’, and 'friends’ (\hl{XX}\%) were included most frequently. So, while larger proportion of studies ask about cultural adaption in general (outside of a specific domain), the number of domains included and addressed is extensive and diverse. The mentioned domains at times go beyond the life fields mentioned in previous work (also see Online Supplementary Materials \hl{X}).
+
+\vspace{1em}
+\todo[inline]{Should be re-coded to test our proposed domains. Also, re-check `general' code}
+
 END SECTION
+
+
+
 
