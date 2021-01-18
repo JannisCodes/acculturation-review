@@ -297,37 +297,24 @@ To assess the role different groups of individuals targeted in the scale validat
 \subparagraph{Domains}
 
 ```{r ScaleDomainFrequencies, include=F, warning=F, fig.cap="Wordcloud of the validation scale domains."}
-# remove duplicate domains
-UniqueDomains <- dt.Domains %>% 
-  filter(Duplicate == "Unique")
+# Number of domains in scale
+ScaleDomainN <- str_count(dt.Scales.Included$domainScale, ',')+1
 
-# Host Countries: Find all individual country names and count frequency of occurrence
-HostCountryFreq <- as.data.frame(table(unlist(strsplit(dt.Scales.Included$domainScale, ", ")), dnn = list("domain")), 
+# Domain frequencies: Find all individual domains and count frequency of occurrence
+ScaleDomainFreq <- as.data.frame(table(unlist(strsplit(dt.Scales.Included$domainScale, ", ")), dnn = list("domain")), 
                                  responseName = "frequency") %>% 
   arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
   mutate(domain = factor(domain, levels=domain)) # update factor levels
 
-# dataframe to compile domain frequency for Review Scales
-ScaleDomainFreq <- data.frame(UniqueDomains, Frequency = NA)
-
-# count domain frequency in dt.Scales.Included
-for (i in 1:nrow(UniqueDomains)) {
-  ScaleDomainFreq$Frequency[i] <- length(grep(UniqueDomains$Domain[i], dt.Scales.Included$domainScale, value = T))
-}
-
-# prepare for ggplot
-ScaleDomainFreq <- ScaleDomainFreq %>%
-  dplyr::select(Domain, Frequency) %>%
-  filter(Frequency > 0) %>%
-  arrange(Frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
-  mutate(Domain=factor(Domain, levels=Domain)) # update factor levels
-
 # Word cloud frequencies
 set.seed(7) # for reproducibility 
-wordcloud(words = ScaleDomainFreq$Domain, freq = ScaleDomainFreq$Frequency, 
+wordcloud(words = ScaleDomainFreq$domain, freq = ScaleDomainFreq$frequency, 
           min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
 ```
 
-To assess the situational focus within the validated scales, we assessed the number of domains within each scale as well as more common domains across the scales. A relatively large number of scales asked about the current state of the migrant in general manner without mentioning any context or life domain (XX\%; e.g., ''In general, in what language do you read and speak?''). The remaining scales referred to an average of X.XX dimensions (SD = X.XX). A total of XXX unique domains was measured across the XX scales. The dimensions of 'language‘ (XX\%), 'food' (XX\%), 'interactions’ (XX\%), 'family' (XX\%) and 'values' (XX\%) were focused on most often (see Online Supplementary Materials X, Figure X). Thus, while there was large variation between the scales in the number, and diversity of domains, the most frequently mentioned domains were in line with the life domains proposed in the literature \citep[e.g.,][]{Arends-Toth2007}.
+To assess the situational focus within the validated scales, we assessed the number of domains within each scale as well as more common domains across the scales. A relatively large number of scales asked about the current state of the migrant in general manner without mentioning any context or life domain (\textit{N} = `r ScaleDomainFreq$frequency[ScaleDomainFreq$domain=="general"]`; e.g., ''In general, in what language do you read and speak?''). The remaining scales referred to an average of `r round(mean(ScaleDomainN),2)` dimensions (\textit{SD} = `r round(sd(ScaleDomainN),2)`, range: `r min(ScaleDomainN)` -- `r max(ScaleDomainN)`). A total of `r nrow(ScaleDomainFreq)` unique domains was measured across the `r nrow(dt.Scales.Included)` scales. The domains of 'language‘ (\hl{XX}\%), 'food' (\hl{XX}\%), 'interactions’ (\hl{XX}\%), 'family' (\hl{XX}\%) and 'values' (\hl{XX}\%) were focused on most often (see Online Supplementary Materials \hl{X}, Figure \hl{X}). Thus, while there was large variation between the scales in the number, and diversity of domains, the most frequently mentioned domains were in line with the life domains proposed in the literature \citep[e.g.,][]{Arends-Toth2007}.
+
+\vspace{1em}
+\todo[inline]{Should be re-coded to test our proposed domains. Also, re-check `general' code}
 
 END SECTION
