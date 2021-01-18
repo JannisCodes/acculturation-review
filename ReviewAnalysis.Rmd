@@ -217,8 +217,6 @@ psychData <- sqldf("SELECT l.*, r.*
               FROM psychData as l
               LEFT JOIN PublisherInfo as r
               on l.PublicationTitle = r.PublicationTitleDb OR l.ISSN = r.Issn01 OR l.ISSN = r.Issn02")
-
-save(dt.Scales, dt.Scales.Included, dt.psych, dt.psych.included, psychData, dt.Domains, file = "data/wrangled.RData")
 ```
 
 # **Analysis** 
@@ -1607,6 +1605,8 @@ data.frame(table(psychDataDisciplines$discipline02)) %>%
   kable_classic(full_width = F,
                 lightable_options = "hover",
                 html_font = "Cambria")
+
+save(dt.Scales, dt.Scales.Included, dt.psych, dt.psych.included, psychData, dt.Domains, psychDataDisciplines, file = "data/wrangled.RData")
 ```
 
 This coding resulted in `r length(unique(psychDataDisciplines$discipline02))` relatively well-balanced categories with non of the fields having too few observations. In the following sections we use these discipline codes to assess some general differences in assessing and addressing acculturation.    

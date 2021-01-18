@@ -306,10 +306,10 @@ ScaleDomainFreq <- as.data.frame(table(unlist(strsplit(dt.Scales.Included$domain
   arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
   mutate(domain = factor(domain, levels=domain)) # update factor levels
 
-# Word cloud frequencies
-set.seed(7) # for reproducibility 
-wordcloud(words = ScaleDomainFreq$domain, freq = ScaleDomainFreq$frequency, 
-          min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
+# # Word cloud frequencies
+# set.seed(7) # for reproducibility 
+# wordcloud(words = ScaleDomainFreq$domain, freq = ScaleDomainFreq$frequency, 
+#           min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
 ```
 
 To assess the situational focus within the validated scales, we assessed the number of domains within each scale as well as more common domains across the scales. A relatively large number of scales asked about the current state of the migrant in general manner without mentioning any context or life domain (\textit{N} = `r ScaleDomainFreq$frequency[ScaleDomainFreq$domain=="general"]`; e.g., ''In general, in what language do you read and speak?''). The remaining scales referred to an average of `r round(mean(ScaleDomainN),2)` dimensions (\textit{SD} = `r round(sd(ScaleDomainN),2)`, range: `r min(ScaleDomainN)` -- `r max(ScaleDomainN)`). A total of `r nrow(ScaleDomainFreq)` unique domains was measured across the `r nrow(dt.Scales.Included)` scales. The domains of 'language‘ (\hl{XX}\%), 'food' (\hl{XX}\%), 'interactions’ (\hl{XX}\%), 'family' (\hl{XX}\%) and 'values' (\hl{XX}\%) were focused on most often (see Online Supplementary Materials \hl{X}, Figure \hl{X}). Thus, while there was large variation between the scales in the number, and diversity of domains, the most frequently mentioned domains were in line with the life domains proposed in the literature \citep[e.g.,][]{Arends-Toth2007}.
@@ -370,6 +370,7 @@ rbind(exclTitle, exclAbstract, exclFull) %>%
   mutate_if(is.numeric, ~replace(., is.na(.), "")) %>%
   rename_at(vars(starts_with("Freq.")),
             funs(sub("Freq[.]", "", .))) %>%
+  rename(., "Exclusion Reason" = Exclusion) %>%
   kable(., 
         #label = "",
         caption = "Exclusion Reasons Empirical Literature",
@@ -411,5 +412,47 @@ prismaGr(found = 516,
 \end{figure}
 
 \input{Tables/EmpiricalExclusion}
+
+```{r EmpiricalPublicationType, include=F}
+empPubType <- as.data.frame(summarytools::freq(dt.psych.included$PublicationType, order = "freq"))
+
+empDataType <- as.data.frame(summarytools::freq(dt.psych.included$Method, order = "freq"))
+
+empTerm <- as.data.frame(summarytools::freq(tolower(dt.psych.included$term), order = "freq"))
+empTermAcc <- sum(empTerm[grepl("acculturat", rownames(empTerm), fixed = T),]$Freq)
+empTermInt <- sum(empTerm[grepl("integrat", rownames(empTerm), fixed = T),]$Freq)
+
+empMeasure <- as.data.frame(summarytools::freq(tolower(dt.psych.included$MeasureDefinition), order = "freq"))
+
+empMajority <- as.data.frame(summarytools::freq(tolower(dt.psych.included$IncludesMajority), order = "freq"))
+names(empMajority) <- gsub("% ", "Perc", names(empMajority))
+
+empVarType <- as.data.frame(summarytools::freq(tolower(dt.psych.included$VariableType), order = "freq"))
+names(empVarType) <- gsub("% ", "Perc", names(empVarType))
+
+empFocus <- as.data.frame(summarytools::freq(tolower(dt.psych.included$domainPaper), order = "freq"))
+names(empFocus) <- gsub("% ", "Perc", names(empFocus))
+empFocusAcc <- sum(empFocus[grepl("acculturation|assimilation|integration|adjustment|adaptation", rownames(empFocus)),]$Freq)
+empFocusAccPerc <- sum(empFocus[grepl("acculturation|assimilation|integration|adjustment|adaptation", rownames(empFocus)),]$PercValid)
+empFocusHealth <- sum(empFocus[grepl("helth|stress|depression|disorder", rownames(empFocus)),]$Freq)
+empFocusHealthPerc <- sum(empFocus[grepl("helth|stress|depression|disorder", rownames(empFocus)),]$PercValid)
+empFocusRelation <- sum(empFocus[grepl("relations|intergroup|multiculturalism", rownames(empFocus)),]$Freq)
+empFocusRelationPerc <- sum(empFocus[grepl("relations|intergroup|multiculturalism", rownames(empFocus)),]$PercValid)
+
+empYear <- as.data.frame(summarytools::freq(dt.psych.included$year, order = "freq"))
+names(empYear) <- gsub("% ", "Perc", names(empYear))
+```
+
+Of the final works we coded, `r empPubType["journalArticle",]$Freq` were journal articles, `r empPubType["thesis",]$Freq` theses, and `r empPubType["bookSection",]$Freq` book chapters. Most studies presented quantitative data (\textit{N} = `r empDataType["quantitative",]$Freq`), mixed methods (\textit{N} = `r empDataType["mixed method",]$Freq`), or qualitative data (\textit{N} = `r empDataType["qualitative",]$Freq`), while the remaining `r empDataType["Review",]$Freq` manuscripts were reviews of empirical data. A vast majority of the authors used the term 'acculturation' (or derivative versions, such as 'acculturation attitudes' or 'acculturation orientation'; \textit{total N} = `r empTermAcc`), or 'integration' (\textit{N} = 7) to refer to cultural adaptation. Notably, a majority of the empirical investigations did not share common measures of cultural adaptation -- `r sum(empMeasure$Freq[empMeasure$Freq<=5])` studies used measures that were reported a maximum of five times, with a considerable majority of papers using new or ad-hoc measures of cultural adaptation. Only about every tenth study included the local majority in the study (\textit{N} = `r empMajority["1",]$Freq`, `r empMajority["1",]$PercValid`\%). Cultural adaptation most frequently was a predictor variable (\textit{N} = `r empVarType["predictor",]$Freq`, `r empVarType["predictor",]$PercValid`\%), a dependent variable (\textit{N} = `r empVarType["dependent",]$Freq`, `r empVarType["dependent",]$PercValid`\%), or a correlation variable (\textit{N} = `r empVarType["correlation",]$Freq`, `r empVarType["correlation",]$PercValid`\%) in the empirical works. This pattern was mirrored when looking at the focus of the papers, where a majority of the papers had acculturation as their main focus (\textit{N} = `r empFocusAcc`, `r empFocusAccPerc`\%), with other bodies of work focusing on health outcomes (\textit{N} = `r empFocusHealth`, `r empFocusHealthPerc`\%), or inter-group relations (\textit{N} = `r empFocusRelation`, `empFocusRelationPerc`\%) as their main outcomes. The earliest included study was published in `r min(dt.psych.included$year)`, with a continuous increase of publications after the year 2000, with considerable publication peaks in 2011 and 2019. We provide full descriptions of descriptive data extractions and additional information about the data description in Online Supplementary Information X.
+
+\paragraph{Field of Publication} For the broader empirical literature, we also collected additional data on the field the studies were published in. To assess the differences between fields we merged the 'Scimago Journal Ranking Database' \citep{SCImago2020} with our empirical review. For all available journal articles we added information on key journal metrics (incl. H index, impact factor, and data on the field and audiences). This also meant that dissertations, book chapters, and books were excluded from this analysis because data on their publishers is not readily available or unreliable. Additionally, `r nrow(psychData %>% filter(PublicationType == "journalArticle", is.na(PublicationTitleDb)) %>% dplyr::select(PublicationTitle) %>% unique())` journals were not included in the Scimago database (likely because they do not have an ISSN identifier or were discontinued before 1996, see Online Appendix \hl{X}, Table \hl{X} for the missing journals). We ultimately had journal metrics for `r nrow(psychData %>% filter(!is.na(PublicationTitleDb)))` empirical articles. The Scimago database classifies each journal according to the field(s) that the journal aims to address. Importantly, (1) each journal can be be classified to address multiple fields and (2) the field include codes of fields (e.g., ‘Social Sciences’) as well as sub-fields (e.g., ‘Social Psychology’). This leads to the case that there can be substantial overlap between fields, and journals cannot easily or readily be assessed in mutually exclusive subgroups.
+
+```{r disciplines, include=F}
+empDisciplines <- as.data.frame(summarytools::freq(psychDataDisciplines$discipline02, order = "freq"))
+names(empDisciplines) <- gsub("% ", "Perc", names(empDisciplines))
+```
+
+To summarize the articles further we then classified the field combinations into super-ordinate discipline codes. These discipline codes are based in part on U.S. Department of Education’s subject classifications \citep[i.e., CIP;][]{InstituteofEducationSciences2020}, the U.K. academic coding system \citep[JACS 3.0;][]{HigherEducationStatisticsAgency2013}, the Australian and New Zealand Standard Research Classification \citep[ANZSRC 2020;][]{AustralianBureauofStatistics2020}, as well as the Fields of Knowledge project \citep{ThingsmadeThinkable2014}. We ultimately classified each journal into one of four mutually exclusive disciplines (psychology: \textit{N} = `r empDisciplines["Psychology",]$Freq`, multidisciplinary: \textit{N} = `r empDisciplines["Multidisciplinary / Crossdisciplinary",]$Freq`, Medicine, Nursing, and Health: \textit{N} = `r empDisciplines["Medicine, Nursing, & Health",]$Freq`, and Social Sciences (miscellaneous): \textit{N} = `r empDisciplines["Social Sciences (miscellaneous)",]$Freq`. For a full discussion of the classifications see Online Supplementary Materials \hl{X}).  
+
 
 END SECTION
