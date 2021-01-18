@@ -282,6 +282,52 @@ CountryFreq <- rbind(OriginCountryFreq, HostCountryFreq)
 
 To assess the cultural contexts for which scales were validated we assessed the migrants' countries of settlement as well as the countries of origin. We found that most scales investigated a single host country (\textit{N} = `r HostCountryN$Freq[HostCountryN$count==1]-HostCountryFreq$frequency[HostCountryFreq$country=="multiple"]`) and most investigated one country of origin (\textit{N} = `r OriginCountryN$Freq[OriginCountryN$count==1]-sum(OriginCountryFreq$frequency[OriginCountryFreq$country=="any"|OriginCountryFreq$country=="multiple"])`). There was `r HostCountryN$Freq[HostCountryN$count==2]` scale that was validated in two countries and `r HostCountryN$Freq[HostCountryN$count==3]` that was validated in three countries. Additionally, there was a single scale that was validated in a larger multi-national survey context (i.e., with multiple host and origin countries). There was also one study with two scales that were validated with the origin culture as the starting point (i.e., single origin country, multiple host countries). Looking at the country patterns, we found that an overwhelming number of scales were validated within a U.S. American settlement context (\textit{N} = `r HostCountryFreq$frequency[HostCountryFreq$country=="United States of America"]`). But also the remaining receiving societies were mostly 'western' countries (e.g., Canada, The Netherlands, The United Kingdom, Israel, Australia) with only individual scales for Taiwanese, Nepalese, or Russian settlement contexts. For the migrant origin societies there was slightly more variation. There were a few migrant groups that were investigated specifically (e.g., Mexico: `r OriginCountryFreq$frequency[OriginCountryFreq$country=="Mexico"]`, China:`r OriginCountryFreq$frequency[OriginCountryFreq$country=="China"]`, South Korea: `r OriginCountryFreq$frequency[OriginCountryFreq$country=="South Korea"]`), however most validation studies targeted broader categories of migrants (any migrants: `r OriginCountryFreq$frequency[OriginCountryFreq$country=="any"]`, Asian: `r OriginCountryFreq$frequency[OriginCountryFreq$country=="Asia"]`, Hispanic: `r OriginCountryFreq$frequency[OriginCountryFreq$country=="Hispanic"]`, LatinX: `r OriginCountryFreq$frequency[OriginCountryFreq$country=="Latinx"]`). This also made it difficult to identify patterns of cultural combinations investigated (apart from Mexican and LatinX migrants in the United States).
 
+\subparagraph{Sample}
 
+```{r SampleFreq, include=F}
+# tally different samples
+SampleFreq <- as.data.frame(table(Sample = dt.Scales.Included$Sample)) %>%
+  arrange(Freq) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(Sample = factor(Sample, levels=Sample),
+         Perc = Freq/nrow(dt.Scales.Included)*100) # update factor levels
+```
+
+To assess the role different groups of individuals targeted in the scale validations, we coded the types of samples recruited for the validation studies. A majority of studies sampled any consenting adult from the migrant group of interest (\textit{N} = `r SampleFreq$Freq[SampleFreq$Sample=="general"]`). As seems common in academic research, a larger portion of the validated scales relied on young migrants or students (\textit{N} = `r sum(SampleFreq$Freq[SampleFreq$Sample=="youth"|SampleFreq$Sample=="students"])`). Interestingly, only small minority of validated scales targeted more vulnerable groups, such as clinical samples (\textit{N} = `r SampleFreq$Freq[SampleFreq$Sample=="clinical"]`) or refugees (\textit{N} = `r sum(SampleFreq$Freq[grepl("refugee", SampleFreq$Sample, fixed = TRUE)])`) -- despite a considerable focus on these groups within the broader literature.
+
+\subparagraph{Domains}
+
+```{r ScaleDomainFrequencies, include=F, warning=F, fig.cap="Wordcloud of the validation scale domains."}
+# remove duplicate domains
+UniqueDomains <- dt.Domains %>% 
+  filter(Duplicate == "Unique")
+
+# Host Countries: Find all individual country names and count frequency of occurrence
+HostCountryFreq <- as.data.frame(table(unlist(strsplit(dt.Scales.Included$domainScale, ", ")), dnn = list("domain")), 
+                                 responseName = "frequency") %>% 
+  arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(domain = factor(domain, levels=domain)) # update factor levels
+
+# dataframe to compile domain frequency for Review Scales
+ScaleDomainFreq <- data.frame(UniqueDomains, Frequency = NA)
+
+# count domain frequency in dt.Scales.Included
+for (i in 1:nrow(UniqueDomains)) {
+  ScaleDomainFreq$Frequency[i] <- length(grep(UniqueDomains$Domain[i], dt.Scales.Included$domainScale, value = T))
+}
+
+# prepare for ggplot
+ScaleDomainFreq <- ScaleDomainFreq %>%
+  dplyr::select(Domain, Frequency) %>%
+  filter(Frequency > 0) %>%
+  arrange(Frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(Domain=factor(Domain, levels=Domain)) # update factor levels
+
+# Word cloud frequencies
+set.seed(7) # for reproducibility 
+wordcloud(words = ScaleDomainFreq$Domain, freq = ScaleDomainFreq$Frequency, 
+          min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
+```
+
+To assess the situational focus within the validated scales, we assessed the number of domains within each scale as well as more common domains across the scales. A relatively large number of scales asked about the current state of the migrant in general manner without mentioning any context or life domain (XX\%; e.g., ''In general, in what language do you read and speak?''). The remaining scales referred to an average of X.XX dimensions (SD = X.XX). A total of XXX unique domains was measured across the XX scales. The dimensions of 'language‘ (XX\%), 'food' (XX\%), 'interactions’ (XX\%), 'family' (XX\%) and 'values' (XX\%) were focused on most often (see Online Supplementary Materials X, Figure X). Thus, while there was large variation between the scales in the number, and diversity of domains, the most frequently mentioned domains were in line with the life domains proposed in the literature \citep[e.g.,][]{Arends-Toth2007}.
 
 END SECTION
