@@ -722,6 +722,22 @@ To capture the situational focus of the authors, we coded which life domains the
 \vspace{1em}
 \todo[inline]{Should be re-coded to test our proposed domains. Also, re-check `general' code}
 
+\subparagraph{Process}
+
+```{r EmpProcess, include=F}
+empMigrationTime <- as.data.frame(summarytools::freq(dt.psych.included$MigrationTime, order = "freq"))
+names(empMigrationTime) <- gsub("% ", "Perc", names(empMigrationTime))
+
+
+empAnalysis <- as.data.frame(summarytools::freq(dt.psych.included$MainAnalysis, order = "freq"))
+names(empAnalysis) <- gsub("% ", "Perc", names(empAnalysis))
+
+EmpLong <- sum(empAnalysis[grepl("lagged|longitudinal|process", rownames(empAnalysis)),]$Freq)
+EmpLongPerc <- round(sum(empAnalysis[grepl("lagged|longitudinal|process", rownames(empAnalysis)),]$Perc),2)
+```
+
+To assess the process focus of the broader empirical works, we again assessed when in the migration process was collected and we additionally assessed the type analysis done by the authors. We found that a `r empMigrationTime["post",]$Freq` studies (`r round(empMigrationTime["post",]$PercValid,2)`\%) collected cross-sectional data after the arrival of the migrant in the new society. A single study targeted potential migrants and `r empMigrationTime["pre & post",]$Freq` studies collected data prior and following the migration event. Moreover, only `r EmpLong` studies included longitudinal data analyses concerned with cultural adaptation. This observation, again underscores the arguments made by authors, who have long pointed out that the acculturation literature has thus far failed to provide data that meaningfully captures migration as a process \citep[e.g.,][]{Brown2011, Ward2019}.
+
 END SECTION
 
 
