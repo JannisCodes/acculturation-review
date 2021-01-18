@@ -678,5 +678,26 @@ To assess the cultural contexts on which the authors focused, we again assessed 
 
 When it came to the migrants' country of origin, a majority of studies were indifferent to migrants background and simply recruited any consenting migrant (\textit{N} = `r EmpOriginCountryFreq$frequency[EmpOriginCountryFreq$country=="any"]`), or recruited a category of migrants (e.g., LatinX or Hispanic: \textit{N} = `r EmpLatinOr`, African: \textit{N} = `r EmpAfricaOr`). Among the individual countries target there was a particular focus on the east and south-east Asian region (e.g., China: \textit{N} = `r EmpOriginCountryFreq$frequency[EmpOriginCountryFreq$country=="China"]`, South Korea: \textit{N} = `r EmpOriginCountryFreq$frequency[EmpOriginCountryFreq$country=="Korea"]`, Vietnam: \textit{N} = `r EmpOriginCountryFreq$frequency[EmpOriginCountryFreq$country=="Vietnam"]`). Yet, different from the scale validations, there was a large variety of different origin countries that were included in less than five studies (\textit{N} = `r nrow(EmpOriginCountryFreq[EmpOriginCountryFreq$frequency<5,])` regions were targeted less than five times). Thus, the receiving countries mainly mirrored those for which scales were validated, yet there was an extensive number origin countries which were investigated individually or migrants were considered irrespective of their cultural origin. Moreover, it was again not possible to identify distinct cultural adaptation clusters within the literature (that would be large enough to compare).
 
+\subparagraph{Sample}
+
+```{r EmpSampleFreq, include=F}
+# tally different samples
+EmpSampleFreq <- as.data.frame(table(Sample = dt.psych.included$Sample)) %>%
+  arrange(Freq) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(Sample = factor(Sample, levels=Sample),
+         Perc = Freq/nrow(dt.psych.included)*100) # update factor levels
+
+EmpSampleRefugee <- sum(EmpSampleFreq[grepl("refugee", EmpSampleFreq$Sample),]$Freq)
+EmpSampleRefugeePerc <- round(sum(EmpSampleFreq[grepl("refugee", EmpSampleFreq$Sample),]$Perc),2)
+
+EmpSampleYouth <- sum(EmpSampleFreq[grepl("student|youth", EmpSampleFreq$Sample),]$Freq)
+EmpSampleYouthPerc <- round(sum(EmpSampleFreq[grepl("student|youth|children", EmpSampleFreq$Sample),]$Perc),2)
+
+EmpSampleElderly <- sum(EmpSampleFreq[grepl("old|elderly", EmpSampleFreq$Sample),]$Freq)
+EmpSampleElderlyPerc <- round(sum(EmpSampleFreq[grepl("old|elderly", EmpSampleFreq$Sample),]$Perc),2)
+```
+
+To assess the role different groups of individuals targeted in the empirical work, we again coded the types of samples recruited for the studies. A majority of studies sampled any consenting adult from the migrant group of interest (\textit{N} = `r EmpSampleFreq$Freq[EmpSampleFreq$Sample=="general"]`, `r round(EmpSampleFreq$Perc[EmpSampleFreq$Sample=="general"],2)`\%). Of the targeted sampling strategies, most recruited refugees (\textit{N} = `r EmpSampleRefugee`, `r EmpSampleRefugeePerc`\%), young migrants (\textit{N} = `r EmpSampleYouth`, `r EmpSampleYouthPerc`\%), or elderly people (\textit{N} = `r EmpSampleElderly`, `r EmpSampleElderlyPerc`\%). The remaining fifth of the studies recruited other more specific samples (e.g., nurses, athletes, Muslims). Interestingly, despite the circumstance that a large portion of papers focused on mental health outcomes, only `r EmpSampleFreq$Freq[EmpSampleFreq$Sample=="clinical"]` studies (`r round(EmpSampleFreq$Perc[EmpSampleFreq$Sample=="clinical"],2)`\%) recruited clinical migrant samples. These results speak to the case that relatively few empirical studies actually take individual differences into account in their sample selection. Studies may still address individual differences within the data description and within the modeling approaches (e.g., controlling for gender), yet it seems that inter-sectional idiosyncrasies did not seem to play a major role in the targeting of samples.
+
 END SECTION
 
