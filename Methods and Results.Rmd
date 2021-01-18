@@ -43,7 +43,7 @@ load("data/wrangled.RData")
 ```
 
 \subsection{Methodological Literature}  
-Based on the systematic review and its coding, the first data set we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review we found five major works that reviewed the measurement of acculturation \citep{Celenk2011, Maestas2000, Matsudaira2006, Wallace2010, Zane2004}. After the removal of duplicate scales, we added any scale validation that was present in our own systematic review but not included in the previous reviews. For each measure we extracted the full item list as well as the item scoring prior to coding. A comprehensive and interactive database of the scales, with reference- and publication information, as well as our experience elements and -context coding is available in our online supplementary information as well as on our open science repository (OSF and/or github citation here).  
+Based on the systematic review and its coding, the first data set we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review we found five major works that reviewed the measurement of acculturation \citep{Celenk2011, Maestas2000, Matsudaira2006, Wallace2010, Zane2004}. After the removal of duplicate scales, we added any scale validation that was present in our own systematic review but not included in the previous reviews. For each measure we extracted the full item list as well as the item scoring prior to coding. A comprehensive and interactive database of the scales, with reference- and publication information, as well as our experience elements and -context coding is available in our online supplementary information as well as on our open science repository (\hl{OSF and/or github citation here}).  
 
 \subsubsection{Methods}  
 Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Review != "own",])` scales, of which `r nrow(dt.Scales[dt.Scales$Duplicate == "Duplicate" & dt.Scales$Review != "own",])` were duplicates. From our own review we added `r nrow(dt.Scales[dt.Scales$Review == "own review",])` additional validation studies. After removing duplicates this meant that we considered a total of `r nrow(dt.Scales[dt.Scales$Duplicate == "Unique",])` unique scales for our coding. Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$Comment),])`, because they were either not accessible or did not fit the the topic of our review (see Table \ref{tab:ScalesExclusion}). The scales had an average of \hl{X.XX} items and \hl{X.XX} sub-scales. Most items were rated on a five-point (\hl{XX.XX}\%) or four-point likert-type scale (\hl{XX.XX}\%), with only \hl{X} scales including categorical ratings. About a fifth of scales (`r dt.Scales %>% filter(IncludesMajority == 1, Duplicate == "Unique") %>% nrow(.)/nrow(dt.Scales[dt.Scales$Duplicate=="Unique",])*100 %>% round(.,2)`\%) included majority group members in their validation studies. The earliest included validation was from `r min(dt.Scales$year, na.rm = T)` with a majority of scales being validated around the turn of the 21\textsuperscript{st} century and the latest included validation study in `r max(dt.Scales$year, na.rm = T)`.  
@@ -125,28 +125,28 @@ elementComplexity <- data.frame(Element = c("Affect", "Behavior", "Cognition", "
                                                   ScaleElementCombFreq %>% filter(Desire == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency)))
 ```
 
-```{r ElementCooccurrences, include=F}
+```{r ScaleElementCooccurrences, include=F}
 # make crossproduct matrix to condense co-occurrences (off-diagonals) and get frequencies (diagonals)
-ElementCooccure <- as.matrix(dt.Scales.Included %>% dplyr::select(Affect, Behavior, Cognition, Desire) %>% mutate_all(~replace(., is.na(.), 0)))
-ElementCooccure <- crossprod(ElementCooccure)  # Same as: t(X) %*% X
-#diag(ElementCooccure) <- 0       # remove frequencies on diagonals
-#ElementCooccure[upper.tri(ElementCooccure)] <- ""
+scaleElementCooccure <- as.matrix(dt.Scales.Included %>% dplyr::select(Affect, Behavior, Cognition, Desire) %>% mutate_all(~replace(., is.na(.), 0)))
+scaleElementCooccure <- crossprod(scaleElementCooccure)  # Same as: t(X) %*% X
+#diag(scaleElementCooccure) <- 0       # remove frequencies on diagonals
+#scaleElementCooccure[upper.tri(scaleElementCooccure)] <- ""
 
-ElementCooccure %>%
+scaleElementCooccure %>%
   kable(., 
         #label = "",
-        caption = "Element Co-occurrence Matrix",
+        caption = "Scales: Element Co-occurrence Matrix",
         format = "latex", 
         linesep = "",
         booktabs = T,
-        align = rep('c', ncol(ElementCooccure)))  %>%
+        align = rep('c', ncol(scaleElementCooccure)))  %>%
   kable_styling(latex_options = c("repeat_header"),
                 position = "left") %>%
   #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
-  save_kable("Tables/ElementCooccurrences.tex")
+  save_kable("Tables/ScaleElementCooccurrences.tex")
 ```
 
-With our main aim of examining the experience structure within the scales, we examined whether scales included a specific experience elements but also examined the used elements in their complex combinations. In terms of general inclusion of elements, most studies included a measure of cognition (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Cognition"]*100,2)`\%) and behavior (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Behavior"]*100,2)`\%), whereas only roughly half the studies included a measure of affect (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Affect"]*100,2)`\%) and only a fourth of the scales included a measure of motives (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Desire"]*100,2)`\%). However, only a minority of scales included only a single dimension. There were only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Cognition"]` scales that exclusively relied on cognitions (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Cognition"],2)`\%) and `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Behavior"]` scales that measured only behaviors (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior"],2)`\%). Yet, inversely, there were also only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"]` scales that measured all four dimensions (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"],2)`\%). Most studies measured two (`r ScaleElementCombFreq %>% filter(complexity == 2) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`\%) or three (`r ScaleElementCombFreq %>% filter(complexity == 3) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`\%) dimensions. A majority of scales either measured behavioral and cognitive elements (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"],2)`\%) or behavioral, cognitive, and affective elements (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`\%; also see Figure \ref{fig:ElementsScales} and Table \ref{tab:ElementCooccurrences}). Looking at the number of elements measured together we also see substantial differences in what kind of scales include a certain element. Scales that included cognitions measured an average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Cognition"],2)` elements, scales measuring behavior, on average, measured a `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Behavior"],2)`, while scales that included affect measures had a complexity average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Affect"],2)` and scales measuring motivation even measured an average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Desire"],2)` scales. Thus, most scales measure multiple dimensions, yet they focus on easily accessible dimensions (i.e., behavior and cognition), less of what is considered 'less accessible' or 'subjective' (i.e., affect and desires). This is also visible in the circumstance that there were no scales that exclusively measured motivational or emotional adaptation (while this was the case for both cognitions and behaviors). And if emotional or motivational aspects were measured they were on average measured in scales that were already more complex (i.e., included more experience elements). 
+With our main aim of examining the experience structure within the scales, we examined whether scales included a specific experience elements but also examined the used elements in their complex combinations. In terms of general inclusion of elements, most studies included a measure of cognition (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Cognition"]*100,2)`\%) and behavior (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Behavior"]*100,2)`\%), whereas only roughly half the studies included a measure of affect (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Affect"]*100,2)`\%) and only a fourth of the scales included a measure of motives (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Desire"]*100,2)`\%). However, only a minority of scales included only a single dimension. There were only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Cognition"]` scales that exclusively relied on cognitions (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Cognition"],2)`\%) and `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Behavior"]` scales that measured only behaviors (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior"],2)`\%). Yet, inversely, there were also only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"]` scales that measured all four dimensions (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"],2)`\%). Most studies measured two (`r ScaleElementCombFreq %>% filter(complexity == 2) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`\%) or three (`r ScaleElementCombFreq %>% filter(complexity == 3) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`\%) dimensions. A majority of scales either measured behavioral and cognitive elements (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"],2)`\%) or behavioral, cognitive, and affective elements (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`\%; also see Figure \ref{fig:ElementsScales} and Table \ref{tab:ScaleElementCooccurrences}). Looking at the number of elements measured together we also see substantial differences in what kind of scales include a certain element. Scales that included cognitions measured an average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Cognition"],2)` elements, scales measuring behavior, on average, measured a `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Behavior"],2)`, while scales that included affect measures had a complexity average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Affect"],2)` and scales measuring motivation even measured an average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Desire"],2)` scales. Thus, most scales measure multiple dimensions, yet they focus on easily accessible dimensions (i.e., behavior and cognition), less of what is considered 'less accessible' or 'subjective' (i.e., affect and desires). This is also visible in the circumstance that there were no scales that exclusively measured motivational or emotional adaptation (while this was the case for both cognitions and behaviors). And if emotional or motivational aspects were measured they were on average measured in scales that were already more complex (i.e., included more experience elements). 
 
 ```{r  ABCDFreq, include=F}
 # barplot of dimension frequency
@@ -242,12 +242,12 @@ ScaleABCDComb +
 <!-- Scale  chart goes somewhere here} -->
 \begin{figure}[h]
 \centering
-\caption{Bar graph of the experience element combinations.}
+\caption{Scales: Bar graph of the experience element combinations.}
 \includegraphics[width=\textwidth]{Figures/ABCDFreq-1}
 \label{fig:ElementsScales}
 \end{figure}
 
-\input{Tables/ElementCooccurrences}  
+\input{Tables/ScaleElementCooccurrences}  
 
 
 \paragraph{Context}
@@ -454,5 +454,190 @@ names(empDisciplines) <- gsub("% ", "Perc", names(empDisciplines))
 
 To summarize the articles further we then classified the field combinations into super-ordinate discipline codes. These discipline codes are based in part on U.S. Department of Education’s subject classifications \citep[i.e., CIP;][]{InstituteofEducationSciences2020}, the U.K. academic coding system \citep[JACS 3.0;][]{HigherEducationStatisticsAgency2013}, the Australian and New Zealand Standard Research Classification \citep[ANZSRC 2020;][]{AustralianBureauofStatistics2020}, as well as the Fields of Knowledge project \citep{ThingsmadeThinkable2014}. We ultimately classified each journal into one of four mutually exclusive disciplines (psychology: \textit{N} = `r empDisciplines["Psychology",]$Freq`, multidisciplinary: \textit{N} = `r empDisciplines["Multidisciplinary / Crossdisciplinary",]$Freq`, Medicine, Nursing, and Health: \textit{N} = `r empDisciplines["Medicine, Nursing, & Health",]$Freq`, and Social Sciences (miscellaneous): \textit{N} = `r empDisciplines["Social Sciences (miscellaneous)",]$Freq`. For a full discussion of the classifications see Online Supplementary Materials \hl{X}).  
 
+\subsubsection{Results}
+To test the utility of our framework, we again assessed the role of experience elements in the measurement as well as contextual differences.
+
+\paragraph{Experience}
+
+```{r EmpElementCalc, include=F}
+# Count the times each dimension is measured
+EmpElementFreq <- dt.psych.included %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
+  mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+  colSums(., na.rm = FALSE, dims = 1) 
+
+# transform to data frame and make row names name variable
+EmpElementFreq <- data.frame(Element = names(EmpElementFreq), 
+                            Frequency = EmpElementFreq, 
+                            Percentage = EmpElementFreq/nrow(dt.psych.included)*100) %>%
+  mutate(Element = fct_reorder(Element, Frequency))
+
+# frequency of unique combinations
+EmpElementCombFreq <- dt.psych.included %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
+  #mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+  group_by(Affect, Behavior, Cognition, Desire) %>%
+  summarise(Frequency = n()) %>%
+  ungroup() %>%
+  mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T))
+
+# fill replace ones with colnames to be combined
+for (i in 1:4) {
+    EmpElementCombFreq[[i]] <- str_replace(as.character(EmpElementCombFreq[[i]]), "1", colnames(EmpElementCombFreq)[i])
+}
+
+# collect Elements names for each combination
+EmpElementCombFreq <- EmpElementCombFreq %>%
+  unite("ExperienceCombination",c("Affect", "Behavior", "Cognition", "Desire"), na.rm = TRUE, sep = ", ") %>%
+  mutate(ExperienceCombination = fct_reorder(ExperienceCombination, Frequency),
+         Percentage = Frequency/nrow(dt.psych.included)*100,
+         Affect = ifelse(grepl("Affect", ExperienceCombination, fixed = TRUE), 1,0),
+         Behavior = ifelse(grepl("Behavior", ExperienceCombination, fixed = TRUE), 1,0),
+         Cognition = ifelse(grepl("Cognition", ExperienceCombination, fixed = TRUE), 1,0),
+         Desire = ifelse(grepl("Desire", ExperienceCombination, fixed = TRUE), 1,0)) %>%
+  arrange(Frequency)
+
+empComplexity <- EmpElementCombFreq %>%
+  select(complexity, Frequency) %>%
+  group_by(complexity) %>%
+  summarise(Frequency = sum(Frequency),
+            Percentage = sum(Frequency)/nrow(dt.psych.included)*100) %>%
+  ungroup() %>%
+  mutate(complexity = as.factor(complexity),
+         complexity = fct_reorder(complexity, Frequency))
+
+empElementComplexity <- data.frame(Element = c("Affect", "Behavior", "Cognition", "Desire"), 
+                                avgComplexity = c(EmpElementCombFreq %>% filter(Affect == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency), 
+                                                  EmpElementCombFreq %>% filter(Behavior == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency), 
+                                                  EmpElementCombFreq %>% filter(Cognition == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency), 
+                                                  EmpElementCombFreq %>% filter(Desire == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency)))
+```
+
+```{r EmpElementCooccurrences, include=F}
+# make crossproduct matrix to condense co-occurrences (off-diagonals) and get frequencies (diagonals)
+empElementCooccure <- as.matrix(dt.psych.included %>% dplyr::select(Affect, Behavior, Cognition, Desire) %>% mutate_all(~replace(., is.na(.), 0)))
+empElementCooccure <- crossprod(empElementCooccure)  # Same as: t(X) %*% X
+#diag(empElementCooccure) <- 0       # remove frequencies on diagonals
+#empElementCooccure[upper.tri(empElementCooccure)] <- ""
+
+empElementCooccure %>%
+  kable(., 
+        #label = "",
+        caption = "Empirical Literature: Element Co-occurrence Matrix",
+        format = "latex", 
+        linesep = "",
+        booktabs = T,
+        align = rep('c', ncol(empElementCooccure)))  %>%
+  kable_styling(latex_options = c("repeat_header"),
+                position = "left") %>%
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  save_kable("Tables/EmpiricalElementCooccurrences.tex")
+```
+
+In terms of the overall frequencies of experience elements, the broader empirical data mirrored that of the validation studies. Most studies included a measure of cognition (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Cognition"],2)`\%) and behavior (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Behavior"],2)`\%), whereas only about half of all studies included a measure of affect (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Affect"],2)`\%) and only a fifth of the studies included a measure of motives (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Desire"],2)`\%). Yet, only `r empComplexity$Frequency[empComplexity$complexity=="1"]` studies focused on a single element ($N_{behavior\ only}$ = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Behavior"]`,  $N_{cognition\ only}$ = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Cognition"]`, $N_{emotion\ only}$ = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Affect"]`). Similarly, only `r empComplexity$Frequency[empComplexity$complexity=="4"]` papers included measures of all four experience elements (`r round(empComplexity$Percentage[empComplexity$complexity=="4"],2)`\%). Most studies measured three (`r round(empComplexity$Percentage[empComplexity$complexity=="3"],2)`\%) or two dimensions (`r round(empComplexity$Percentage[empComplexity$complexity=="2"],2)`\%). Different from the scale validations, within the broader empirical works most works included measures of emotions, behaviors, and cognitions (\textit{N} = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"]`, `r round(EmpElementCombFreq$Percentage[EmpElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"],2)`\%), with a further substantial number of articles measuring behaviors and cognitions (\textit{N} = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Behavior, Cognition"]`, `r round(EmpElementCombFreq$Percentage[EmpElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`\%. Also see Figure \ref{fig:EmpPlotFreq-1} and Table \ref{tab:EmpiricalElementCooccurrences}). Looking at the number of elements measured together we again see substantial differences in what kind of scales include the individual elements. Scales that included cognitions measured an average of `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Cognition"],2)` elements, scales measuring behavior, on average, measured a `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Behavior"],2)`, while scales that included affect measures had a complexity average of `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Affect"],2)` and scales measuring motivation even measured an average of `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Desire"],2)` scales. Thus, interestingly, not a single study measured only motivation, and measures of motives remained mostly limited to scales that were already multidimensional. The results exacerbate the pattern found in the scale validations, complex measures and conceptions of acculturation are seen infrequently and readily accessible (i.e., less subjective) dimensions of cognition and behavior remain the focus of most studies.
+
+```{r  EmpPlotFreq, include=F}
+# barplot of dimension frequency
+EmpABCDBar <- ggplot(data=EmpElementFreq, aes(x=Element, y=Frequency)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(label = paste0("N = ",Frequency)),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 2.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Element Frequency",
+       y = "Frequency across all Scales",
+       x = "Experience Element")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+# barplot of complexity frequency
+EmpComplexityBar <- ggplot(data=empComplexity, aes(x=complexity, y=Frequency)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(label = paste0("N = ",Frequency)),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 2.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Scale Complexity",
+       y = "Frequency across all Scales",
+       x = "Complexity")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+
+# bar plot frequencies
+EmpABCDComb <- ggplot(EmpElementCombFreq, aes(x=ExperienceCombination, y=Percentage)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(y=Percentage, label = paste0(round(Percentage,2),"% [N = ", Frequency, "]")),
+    color = "grey14",
+    size = 4,
+    hjust = -.1,
+    inherit.aes = TRUE
+    ) +
+  scale_y_continuous(limits = c(0, ceiling(max(EmpElementCombFreq$Percentage)*1.15)),
+                     breaks = seq(0, ceiling(max(EmpElementCombFreq$Percentage)*1.15), 5))+
+  labs(y = "Proportion of all scales [in %]",
+       x = "Combination of Experience Elements")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background =element_rect(fill="grey14", color="grey14"),
+        strip.text = element_text(colour = 'white', face="bold"),
+        legend.position="none")
+
+EmpABCDComb + 
+  annotation_custom(
+    ggplotGrob(EmpABCDBar), 
+    xmin = 0.5, xmax = 5, ymin = 23, ymax = 35
+  ) +
+  annotation_custom(
+    ggplotGrob(EmpComplexityBar), 
+    xmin = 0.5, xmax = 5, ymin = 13, ymax = 23
+  ) +
+  geom_rect(aes(xmin=0.5,xmax=4.8,ymin=13,ymax=35), 
+            color = alpha("grey14", .5), size = .05, fill = "transparent", alpha=0)
+```
+
+<!-- Scale  chart goes somewhere here} -->
+\begin{figure}[h]
+\centering
+\caption{Empirical Literature: Bar graph of the experience element combinations.}
+\includegraphics[width=\textwidth]{Figures/EmpPlotFreq}
+\label{fig:EmpPlotFreq-1}
+\end{figure}
+
+\input{Tables/EmpiricalElementCooccurrences}  
+
+\vspace{1em}
+\todo[inline]{Experience To Do: Co-occurrence numbers, percentage of concept in unique combinations. Which element is represented how much in each of the levels of complexity(k-way co-occurrences). Add figures or tables for frequencies}
 
 END SECTION
