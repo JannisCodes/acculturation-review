@@ -631,7 +631,7 @@ EmpABCDComb +
 \begin{figure}[h]
 \centering
 \caption{Empirical Literature: Bar graph of the experience element combinations.}
-\includegraphics[width=\textwidth]{Figures/EmpPlotFreq}
+\includegraphics[width=\textwidth]{Figures/EmpPlotFreq-1}
 \label{fig:EmpPlotFreq-1}
 \end{figure}
 
