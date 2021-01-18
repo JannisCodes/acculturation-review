@@ -513,7 +513,7 @@ empElementComplexity <- data.frame(Element = c("Affect", "Behavior", "Cognition"
                                                   EmpElementCombFreq %>% filter(Desire == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency)))
 ```
 
-```{r EmpElementCooccurrences, include=F}
+```{r EmpiricalElementCooccurrences, include=F}
 # make crossproduct matrix to condense co-occurrences (off-diagonals) and get frequencies (diagonals)
 empElementCooccure <- as.matrix(dt.psych.included %>% dplyr::select(Affect, Behavior, Cognition, Desire) %>% mutate_all(~replace(., is.na(.), 0)))
 empElementCooccure <- crossprod(empElementCooccure)  # Same as: t(X) %*% X
