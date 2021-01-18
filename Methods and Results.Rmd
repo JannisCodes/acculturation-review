@@ -330,6 +330,86 @@ All scales were validated using cross-sectional data after the migrant arrived i
 After analysis of the scales validations, we assessed the broader empirical works we collected within the systematic review. We first looked at all available empirical publications (incl. books, chapters, and dissertations). We later also assessed differences between fields the work was published in. However, because we considered the fields on an audience level, we used only empirical journal articles -- for which journal-level audience data is available.
 
 \subsubsection{Methods}
-The search produced a total of \hl{XXX} results to which we added \hl{XX} articles through contacts with experts in the field. We subsequently screened out results that did not fit into our review. After duplicate removal ($$N_{excluded}$$ = \hl{XX}, $N_{screened}$ = `r nrow(dt.psych)`), we excluded 92 results in the title screening as well as an additional 126 results during the abstract screening. Of the remaining 266 results, 259 papers presented empirical work on acculturation and were coded. The 7 non-empirical results were reviews, which were not coded because they did not fit into our coding schema. During the full text coding we excluded an additional 26 results because they were either not relevant or were not accessible (for exclusion reasons see Table X and for our PRISMA diagram see Figure \ref{fig:PRISMA}). 
+```{r EmpiricalExclusion, include=F}
+dt.psych.title <- dt.psych %>%
+  filter(FinalTitle == 1)
+
+# abstract screening
+dt.psych.abstract <- dt.psych %>%
+  filter(FinalTitle == 1,
+         FinalAbstract == 1)
+
+# empirical
+dt.psych.empirical <- dt.psych %>%
+  filter(FinalTitle == 1,
+         FinalAbstract == 1,
+         empirical != 0)
+
+# included
+dt.psych.included <- dt.psych %>%
+  filter(FinalTitle == 1,
+         FinalAbstract == 1,
+         empirical != 0,
+         MissingABCD == 0)
+
+# reasons for exclusion
+exclTitle <- data.frame(table(Exclusion = dt.psych$NoteTitle)) %>%
+  mutate(screening = "Title") %>%
+  arrange(desc(Freq))
+
+exclAbstract <- data.frame(table(Exclusion = dt.psych$NoteAbstract)) %>%
+  mutate(screening = "Abstract") %>%
+  arrange(desc(Freq))
+
+exclFull <- data.frame(table(Exclusion = dt.psych.empirical$NoteMissing)) %>%
+  mutate(screening = "Full Text") %>%
+  arrange(desc(Freq))
+
+rbind(exclTitle, exclAbstract, exclFull) %>%
+  reshape(., idvar = "Exclusion", timevar = "screening", direction = "wide") %>%
+  mutate_if(is.numeric, ~replace(., is.na(.), "")) %>%
+  rename_at(vars(starts_with("Freq.")),
+            funs(sub("Freq[.]", "", .))) %>%
+  kable(., 
+        #label = "",
+        caption = "Exclusion Reasons Empirical Literature",
+        format = "latex",
+        linesep = "",
+        booktabs = T,
+        align = c("l", "c", "c", "c"))  %>%
+  add_header_above(., c(" ", "Screening" = 3)) %>%
+  kable_styling(latex_options = c("repeat_header"),
+                position = "left") %>%
+  save_kable("Tables/EmpiricalExclusion.tex")
+```
+
+The search produced a total of \hl{XXX} results to which we added \hl{XX} articles through contacts with experts in the field. We subsequently screened out results that did not fit into our review. After duplicate removal ($N_{excluded}$ = \hl{XX}, $N_{screened}$ = `r nrow(dt.psych)`), we excluded `r nrow(dt.psych)-nrow(dt.psych.title)` results in the title screening as well as an additional `r nrow(dt.psych.title)-nrow(dt.psych.abstract)` results during the abstract screening. Of the remaining `r nrow(dt.psych.abstract)` results, `r nrow(dt.psych.empirical)` papers presented empirical work on acculturation and were coded. The `r nrow(dt.psych.abstract %>% filter(empirical==0))` non-empirical results were reviews, which were not coded because they did not fit into our coding schema. During the full text coding we excluded an additional `r length(dt.psych.empirical$MissingABCD[dt.psych.empirical$MissingABCD==1])` results because they were either not relevant or were not accessible (for exclusion reasons see Table \ref{tab:EmpiricalExclusion} and for our PRISMA diagram see Figure \ref{fig:PRISMA}). 
+
+```{r PRISMA, include=F}
+prismaGr(found = 516,
+         found_other = 18,
+         no_dupes = nrow(dt.psych), 
+         screened = nrow(dt.psych), 
+         screen_exclusions = nrow(dt.psych)-nrow(dt.psych.title), 
+         full_text = nrow(dt.psych.title),
+         full_text_exclusions = nrow(dt.psych.title)-nrow(dt.psych.abstract), 
+         qualitative = nrow(dt.psych.abstract), 
+         quantitative = nrow(dt.psych.empirical),
+         extra_dupes_box = F,
+         width = 800, height = 800) %>%
+  export_svg() %>%
+  charToRaw %>% 
+  rsvg_pdf("./Figures/PRISMA.pdf")
+```
+
+<!-- Scale  chart goes somewhere here} -->
+\begin{figure}[h]
+\centering
+\caption{PRISMA diagram. Position still undecided. Currently generated in R based on n(row) maybe make prettier. \Warning\ Re-check numbers before duplicates removed and number of papers added from other sources.}
+\includegraphics[width=\textwidth]{Figures/PRISMA}
+\label{fig:PRISMA}
+\end{figure}
+
+\input{Tables/EmpiricalExclusion}
 
 END SECTION
