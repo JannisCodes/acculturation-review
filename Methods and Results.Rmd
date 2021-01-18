@@ -637,7 +637,46 @@ EmpABCDComb +
 
 \input{Tables/EmpiricalElementCooccurrences}  
 
-\vspace{1em}
-\todo[inline]{Experience To Do: Co-occurrence numbers, percentage of concept in unique combinations. Which element is represented how much in each of the levels of complexity(k-way co-occurrences). Add figures or tables for frequencies}
+\paragraph{Context}
+To gain a general understanding of contextual factors within the broader empirical studies, we again assessed cross-study patterns of cultural, individual, situational, and process-related focus points.
+
+\subparagraph{Country}
+
+```{r EmpCountryFreq, include=F}
+# Host Countries: Count number of host countries
+EmpHostCountryN <- as.data.frame(table(str_count(dt.psych.included$HostCountry, ',')+1, dnn = list("count")))
+
+# Host Countries: Find all individual country names and count frequency of occurrence
+EmpHostCountryFreq <- as.data.frame(table(unlist(strsplit(dt.psych.included$HostCountry, ", ")), dnn = list("country")), 
+                                 responseName = "frequency") %>% 
+  arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(country = factor(country, levels=country), # update factor levels
+         source = "host")
+
+# Origin Countries: Count number of host countries
+EmpOriginCountryN <- as.data.frame(table(str_count(dt.psych.included$OriginCountry, ',')+1, dnn = list("count")))
+
+# Origin Countries: Find all individual country names and count frequency of occurrence
+EmpOriginCountryFreq <- as.data.frame(table(unlist(strsplit(dt.psych.included$OriginCountry, ", ")), dnn = list("country")), 
+                                   responseName = "frequency") %>% 
+  arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(country = factor(country, levels=country), # update factor levels
+         source = "origin")
+
+# combine Host and Origin list
+EmpCountryFreq <- rbind(EmpOriginCountryFreq, EmpHostCountryFreq)
+
+# pattern compound Ns
+EmpLatinOr <- sum(EmpOriginCountryFreq[grepl("Latin|Hispanic", EmpOriginCountryFreq$country),]$frequency)
+EmpAfricaOr <- sum(EmpOriginCountryFreq[grepl("Afri", EmpOriginCountryFreq$country),]$frequency)
+EmpAsiaOr <- sum(EmpOriginCountryFreq[grepl("Asia", EmpOriginCountryFreq$country),]$frequency)
+
+EmpOrSm5 <- nrow(EmpOriginCountryFreq[EmpOriginCountryFreq$frequency<5,])
+```
+
+To assess the cultural contexts on which the authors focused, we again assessed the migrants' countries of settlement as well as the countries of origin. Similar to the validations, an overwhelming number of scales were validated within a North American settlement context (United States: \textit{N} = `r EmpHostCountryFreq$frequency[EmpHostCountryFreq$country=="United States"]`, Canada: \textit{N} = `r EmpHostCountryFreq$frequency[EmpHostCountryFreq$country=="Canada"]`). But also the remaining receiving societies were mostly 'western' -- Western Europe (e.g., The Netherlands, United Kingdom, Germany, Italy, Spain), Australasia (Australia, New Zealand), Russia, and Israel. And only `r sum(EmpHostCountryN$Freq[as.numeric(EmpHostCountryN$count)>1])+EmpHostCountryFreq$frequency[EmpHostCountryFreq$country=="any"]` studies focused on data from multiple receiving societies. 
+
+When it came to the migrants' country of origin, a majority of studies were indifferent to migrants background and simply recruited any consenting migrant (\textit{N} = `r EmpOriginCountryFreq$frequency[EmpOriginCountryFreq$country=="any"]`), or recruited a category of migrants (e.g., LatinX or Hispanic: \textit{N} = `r EmpLatinOr`, African: \textit{N} = `r EmpAfricaOr`). Among the individual countries target there was a particular focus on the east and south-east Asian region (e.g., China: \textit{N} = `r EmpOriginCountryFreq$frequency[EmpOriginCountryFreq$country=="China"]`, South Korea: \textit{N} = `r EmpOriginCountryFreq$frequency[EmpOriginCountryFreq$country=="Korea"]`, Vietnam: \textit{N} = `r EmpOriginCountryFreq$frequency[EmpOriginCountryFreq$country=="Vietnam"]`). Yet, different from the scale validations, there was a large variety of different origin countries that were included in less than five studies (\textit{N} = `r nrow(EmpOriginCountryFreq[EmpOriginCountryFreq$frequency<5,])` regions were targeted less than five times). Thus, the receiving countries mainly mirrored those for which scales were validated, yet there was an extensive number origin countries which were investigated individually or migrants were considered irrespective of their cultural origin. Moreover, it was again not possible to identify distinct cultural adaptation clusters within the literature (that would be large enough to compare).
 
 END SECTION
+
