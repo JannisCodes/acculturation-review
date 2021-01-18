@@ -125,7 +125,7 @@ elementComplexity <- data.frame(Element = c("Affect", "Behavior", "Cognition", "
                                                   ScaleElementCombFreq %>% filter(Desire == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency)))
 ```
 
-```{r ElementCooccurrencess, include=F}
+```{r ElementCooccurrences, include=F}
 # make crossproduct matrix to condense co-occurrences (off-diagonals) and get frequencies (diagonals)
 ElementCooccure <- as.matrix(dt.Scales.Included %>% dplyr::select(Affect, Behavior, Cognition, Desire) %>% mutate_all(~replace(., is.na(.), 0)))
 ElementCooccure <- crossprod(ElementCooccure)  # Same as: t(X) %*% X
