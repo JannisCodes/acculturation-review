@@ -819,7 +819,7 @@ We again first, assessed the references to affect, behavior, cognition, and desi
 
 When looking at differences in complexity of elements -- that is the number of different elements measured -- and patterns within these element-combinations, differences between the fields become even more apparent (also see Figure \ref{fig:FieldPlotFreq}). While `affect, behavior, and cognition' and `behavior, and cognition' measures are the most common combinations across all fields (also at similar proportional importance), there is less dimension complexity and variation for medical and social science fields. In the psychological 86\% of all studies measures at least two experience elements. And while for all other fields behavioral measures are the third most common measures, there was not a single study published in a psychological journal that conceptualized cultural adaptation by behavior alone. Similarly, the in the broader social scientific journal desires are always measured together with behaviors, which is very uncommon in the other fields\footnote{Although it should be noted that the social science field was smaller and more heterogeneous than the other fields.}. There are like other and more nuanced differences in the conceptualizations highlighted within this analysis (e.g., patterns relevant to a single field). Yet, the immediately visible pattern differences clearly speak the utility of the framework. 
 
-```{r FieldPlotFreq, include=F}
+```{r FieldPlotFreq, include=F, fig.width=12, fig.height=12}
 # barplot of dimension frequency
 FieldElementBar <- ggplot(data=FieldElementFreq, aes(x=reorder(Element, Percentage), y=Percentage)) +
   geom_bar(stat="identity", fill="grey14") +
@@ -936,7 +936,7 @@ ggdraw() +
 \begin{figure}[h]
 \centering
 \caption{Combinations of measured experience element and their frequencies per field.}
-\includegraphics[width=\textwidth]{Figures/FieldPlotFreq-1.png}
+\includegraphics[width=\textwidth]{Figures/FieldPlotFreq-1}
 \label{fig:FieldPlotFreq}
 \end{figure}
 
