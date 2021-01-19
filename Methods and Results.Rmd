@@ -17,7 +17,7 @@ lib <- c("rmarkdown", "knitr", "citr", "remedy", "bookdown", "papaja", "rmdfiltr
          "ggplot2", "ggthemes", "haven", "RColorBrewer", "plotly", "forcats", "wordcloud", "visNetwork", "ggwordcloud",
          "rworldmap", "rnaturalearth", "rnaturalearthdata", "rgeos", "sp", "ggspatial",
          "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
-         "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes",
+         "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes", "cowplot",
          "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet",
          "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg")
 invisible(lapply(lib, library, character.only = TRUE))  
@@ -536,7 +536,7 @@ empElementCooccure %>%
 
 In terms of the overall frequencies of experience elements, the broader empirical data mirrored that of the validation studies. Most studies included a measure of cognition (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Cognition"],2)`\%) and behavior (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Behavior"],2)`\%), whereas only about half of all studies included a measure of affect (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Affect"],2)`\%) and only a fifth of the studies included a measure of motives (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Desire"],2)`\%). Yet, only `r empComplexity$Frequency[empComplexity$complexity=="1"]` studies focused on a single element ($N_{behavior\ only}$ = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Behavior"]`,  $N_{cognition\ only}$ = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Cognition"]`, $N_{emotion\ only}$ = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Affect"]`). Similarly, only `r empComplexity$Frequency[empComplexity$complexity=="4"]` papers included measures of all four experience elements (`r round(empComplexity$Percentage[empComplexity$complexity=="4"],2)`\%). Most studies measured three (`r round(empComplexity$Percentage[empComplexity$complexity=="3"],2)`\%) or two dimensions (`r round(empComplexity$Percentage[empComplexity$complexity=="2"],2)`\%). Different from the scale validations, within the broader empirical works most works included measures of emotions, behaviors, and cognitions (\textit{N} = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"]`, `r round(EmpElementCombFreq$Percentage[EmpElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"],2)`\%), with a further substantial number of articles measuring behaviors and cognitions (\textit{N} = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Behavior, Cognition"]`, `r round(EmpElementCombFreq$Percentage[EmpElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`\%. Also see Figure \ref{fig:EmpPlotFreq-1} and Table \ref{tab:EmpiricalElementCooccurrences}). Looking at the number of elements measured together we again see substantial differences in what kind of scales include the individual elements. Scales that included cognitions measured an average of `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Cognition"],2)` elements, scales measuring behavior, on average, measured a `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Behavior"],2)`, while scales that included affect measures had a complexity average of `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Affect"],2)` and scales measuring motivation even measured an average of `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Desire"],2)` scales. Thus, interestingly, not a single study measured only motivation, and measures of motives remained mostly limited to scales that were already multidimensional. The results exacerbate the pattern found in the scale validations, complex measures and conceptions of acculturation are seen infrequently and readily accessible (i.e., less subjective) dimensions of cognition and behavior remain the focus of most studies.
 
-```{r  EmpPlotFreq, include=F}
+```{r EmpPlotFreq, include=F}
 # barplot of dimension frequency
 EmpABCDBar <- ggplot(data=EmpElementFreq, aes(x=Element, y=Frequency)) +
   geom_bar(stat="identity", fill="grey14") +
@@ -737,6 +737,213 @@ EmpLongPerc <- round(sum(empAnalysis[grepl("lagged|longitudinal|process", rownam
 ```
 
 To assess the process focus of the broader empirical works, we again assessed when in the migration process was collected and we additionally assessed the type analysis done by the authors. We found that a `r empMigrationTime["post",]$Freq` studies (`r round(empMigrationTime["post",]$PercValid,2)`\%) collected cross-sectional data after the arrival of the migrant in the new society. A single study targeted potential migrants and `r empMigrationTime["pre & post",]$Freq` studies collected data prior and following the migration event. Moreover, only `r EmpLong` studies included longitudinal data analyses concerned with cultural adaptation. This observation, again underscores the arguments made by authors, who have long pointed out that the acculturation literature has thus far failed to provide data that meaningfully captures migration as a process \citep[e.g.,][]{Brown2011, Ward2019}.
+
+\paragraph{Fields}
+To further test the utility of our framework in comparing conceptualizations, we assessed differences of experience elements across different fields. We provide more elaborate descriptions of the differences in the methods, and publication types as well as contextual differences in terms of sampling procedures, situational domains, process-focus, analyses, and cultural contexts in Supplementary Online Material \hl{X}. 
+
+```{r FieldCalc, include=F}
+field_labs_shrt <- c(
+  'Psychology'="Psych.",
+  'Medicine, Nursing, & Health'="Med.",
+  'Social Sciences (miscellaneous)'="SocSci.",
+  'Multidisciplinary / Crossdisciplinary'="Multi."
+)
+
+field_labs_lng <- c(
+  'Psychology'="Psychology",
+  'Medicine, Nursing, & Health'="Medicine",
+  'Social Sciences (miscellaneous)'="Social Sci.",
+  'Multidisciplinary / Crossdisciplinary'="Multidiscipl."
+)
+
+# Frequency of elements (within each field)
+FieldElementFreq <- psychDataDisciplines %>%
+  dplyr::select(discipline02, Affect, Behavior, Cognition, Desire) %>%
+  gather(Element, Frequency, -discipline02) %>%
+  group_by(discipline02, Element) %>%
+  summarise_each(funs(sum(., na.rm = TRUE))) %>%
+  ungroup() 
+FieldN <- as.data.frame(table(discipline02 = psychDataDisciplines$discipline02), responseName = "n")
+
+FieldElementFreq <- merge(FieldElementFreq, FieldN) %>%
+  mutate(Percentage = Frequency/n*100)
+  
+# frequency of unique element combinations (within each field)
+FieldElementCombFreq <- psychDataDisciplines %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire, discipline02) %>%
+  #mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+  group_by(Affect, Behavior, Cognition, Desire, discipline02) %>%
+  summarise(Frequency = n()) %>%
+  ungroup() %>%
+  mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T))
+
+# fill replace ones with colnames to be combined
+for (i in 1:4) {
+    FieldElementCombFreq[[i]] <- str_replace(as.character(FieldElementCombFreq[[i]]), "1", colnames(FieldElementCombFreq)[i])
+}
+
+# collect Elements names for each combination
+FieldElementCombFreq <- FieldElementCombFreq %>%
+  unite("ExperienceCombination",c("Affect", "Behavior", "Cognition", "Desire"), na.rm = TRUE, sep = ", ") %>%
+  group_by(discipline02) %>%
+  mutate(ExperienceCombination = fct_reorder(ExperienceCombination, Frequency),
+         Percentage = Frequency/sum(Frequency)*100,
+         Affect = ifelse(grepl("Affect", ExperienceCombination, fixed = TRUE), 1,0),
+         Behavior = ifelse(grepl("Behavior", ExperienceCombination, fixed = TRUE), 1,0),
+         Cognition = ifelse(grepl("Cognition", ExperienceCombination, fixed = TRUE), 1,0),
+         Desire = ifelse(grepl("Desire", ExperienceCombination, fixed = TRUE), 1,0)) %>%
+  arrange(Frequency)
+
+# overall scale complexity (within each field)
+FieldComplexity <- FieldElementCombFreq %>%
+  select(discipline02, complexity, Frequency, Percentage) %>%
+  group_by(discipline02, complexity) %>%
+  summarise(Frequency = sum(Frequency),
+            Percentage = sum(Percentage)) %>%
+  ungroup() %>%
+  mutate(complexity = as.factor(complexity),
+         complexity = fct_reorder(complexity, Frequency)) %>%
+  right_join(rownames_to_column(as.data.frame(field_labs_lng), "discipline02"))
+
+# Scale complexity for each element (within each field)
+FieldElementComplexity <- FieldElementCombFreq %>%
+  gather(key = "Element", value = "ElementDum", Affect, Behavior, Cognition, Desire) %>%
+  filter(ElementDum == 1) %>%
+  group_by(discipline02, Element) %>%
+  summarise(avgComplexity = weighted.mean(x = complexity, w = Frequency),
+            sdComplexity = wtd.var(x = complexity, weights = Frequency),
+            n = sum(Frequency))
+```
+
+We again first, assessed the references to affect, behavior, cognition, and desires separately, within each of the disciplines. For example, we find that for all fields motivations (7-10\%) and emotions (21-23\%) are the least frequently measured elements and each of the fields measures similarly often (in proportional terms). However, for the cognitive and behavioral elements the proportions diverge between the fields. While the multidisciplinary field measured behaviors (34\%) and cognition (35\%) almost equally often, in the medical and general social science journals behaviors were measured considerably more often than cognitions ($Behavior_{SoSci} = 48\%$ > $Cognition_{SoSci} = 24\%$; $Behavior_{Med} = 39\%$ > $Cognition_{Med} = 33\%$). While the psychological journals cognitions (38\%) were measured more often than behaviors (29\%). 
+
+When looking at differences in complexity of elements -- that is the number of different elements measured -- and patterns within these element-combinations, differences between the fields become even more apparent (also see Figure \ref{fig:FieldPlotFreq}). While `affect, behavior, and cognition' and `behavior, and cognition' measures are the most common combinations across all fields (also at similar proportional importance), there is less dimension complexity and variation for medical and social science fields. In the psychological 86\% of all studies measures at least two experience elements. And while for all other fields behavioral measures are the third most common measures, there was not a single study published in a psychological journal that conceptualized cultural adaptation by behavior alone. Similarly, the in the broader social scientific journal desires are always measured together with behaviors, which is very uncommon in the other fields\footnote{Although it should be noted that the social science field was smaller and more heterogeneous than the other fields.}. There are like other and more nuanced differences in the conceptualizations highlighted within this analysis (e.g., patterns relevant to a single field). Yet, the immediately visible pattern differences clearly speak the utility of the framework. 
+
+```{r FieldPlotFreq, include=F}
+# barplot of dimension frequency
+FieldElementBar <- ggplot(data=FieldElementFreq, aes(x=reorder(Element, Percentage), y=Percentage)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    #aes(label = paste0("N = ",Frequency)),
+    aes(label = paste0(round(Percentage,1),"%")),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 2.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Element Frequency",
+       y = "Frequency across all Scales",
+       x = "Experience Element")+
+  coord_flip()+
+  facet_wrap(~discipline02, labeller = as_labeller(field_labs_lng))+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+# barplot of complexity frequency
+FieldComplexityBar <- ggplot(data=FieldComplexity, aes(x=complexity, y=Frequency)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(label = paste0("N = ",Frequency)),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 2.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Scale Complexity",
+       y = "Frequency across all Scales",
+       x = "Complexity")+
+  coord_flip()+
+  facet_wrap(~discipline02, labeller = as_labeller(field_labs_lng))+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+FieldComplexityBar <- ggstatsplot::ggbarstats(
+  data = FieldComplexity,
+  x = complexity,
+  y = field_labs_lng,
+  counts = Frequency,
+  #sampling.plan = "jointMulti",
+  title = "Scale Complexity",
+  sample.size.label = F,
+  #label = "both",
+  xlab = "Discipline",
+  results.subtitle = FALSE,
+  package = "ggsci",
+  palette = "blue_grey_material",
+  ggtheme = ggthemes::theme_tufte(base_size = 12),
+  ggplot.component = list(scale_x_discrete(guide = guide_axis(n.dodge = 2))),
+  ggstatsplot.layer = F,
+  label.args = list(check_overlap = TRUE, alpha = 1, fill = "white"),
+  messages = FALSE
+)+
+  theme_Publication()+
+  theme(legend.position = "right", 
+        legend.direction = "vertical", 
+        legend.title = element_blank(),
+        axis.title.x = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5))
+
+# bar plot frequencies
+FieldElementComb <- ggplot(FieldElementCombFreq, aes(x=reorder(ExperienceCombination, Percentage), y=Percentage)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(y=Percentage, label = paste0(round(Percentage,2),"% [N = ", Frequency, "]")),
+    color = "grey14",
+    size = 4,
+    hjust = -.1,
+    inherit.aes = TRUE
+    ) +
+  scale_y_continuous(limits = c(0, ceiling(max(EmpElementCombFreq$Percentage)*1.5)),
+                     breaks = seq(0, ceiling(max(EmpElementCombFreq$Percentage)*1.5), 5))+
+  labs(y = "Proportion of all scales [in %]",
+       x = "Combination of Experience Elements")+
+  coord_flip()+
+  facet_wrap(~discipline02, labeller = as_labeller(field_labs_lng))+
+  theme_Publication()+
+  theme(strip.background =element_rect(fill="grey14", color="grey14"),
+        strip.text = element_text(colour = 'white', face="bold"),
+        legend.position="none")
+
+ggdraw() +
+  draw_plot(FieldElementComb, x = 0, y = 0.3, width = 1, height = .7)+
+  draw_plot(FieldElementBar, x = 0, y = 0, width = .5, height = .3) +
+  draw_plot(FieldComplexityBar, x = .5, y = 0, width = .5, height = .3) +
+  draw_plot_label(c("(A)", "(B)", "(C)"), c(0, 0, 0.5), c(1, 0.3, 0.3), size = 15)
+```
+
+\begin{figure}[h]
+\centering
+\caption{Combinations of measured experience element and their frequencies per field.}
+\includegraphics[width=\textwidth]{Figures/FieldPlotFreq-1.png}
+\label{fig:FieldPlotFreq}
+\end{figure}
+
+\vspace{1em}
+\todo[inline]{Potential error in Figure 25. Elements are not mutually exclusive. I.e., cum. sum can be larger 100\%\\
+We should probably add an ANOVA (and a $\chi$-Squared respectively.)\\
+Still need to calculate complexities and means / SDs per field.}
 
 <!-- END SECTION -->
 
