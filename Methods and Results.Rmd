@@ -226,17 +226,23 @@ ScaleABCDComb <- ggplot(ScaleElementCombFreq, aes(x=ExperienceCombination, y=Per
         strip.text = element_text(colour = 'white', face="bold"),
         legend.position="none")
 
-ScaleABCDComb + 
-  annotation_custom(
-    ggplotGrob(ScaleABCDBar), 
-    xmin = 0.5, xmax = 5, ymin = 18, ymax = 30
-  ) +
-  annotation_custom(
-    ggplotGrob(ScaleComplexityBar), 
-    xmin = 0.5, xmax = 5, ymin = 8, ymax = 18
-  ) +
-  geom_rect(aes(xmin=0.5,xmax=4.8,ymin=8,ymax=30), 
-            color = alpha("grey14", .5), size = .05, fill = "transparent", alpha=0)
+ggdraw() +
+  draw_plot(ScaleABCDComb, x = 0, y = 0.3, width = 1, height = .7)+
+  draw_plot(ScaleABCDBar, x = 0, y = 0, width = .55, height = .3) +
+  draw_plot(ScaleComplexityBar, x = .55, y = 0, width = .45, height = .3) +
+  draw_plot_label(c("(A)", "(B)", "(C)"), c(0, 0, 0.55), c(1, 0.3, 0.3), size = 15)
+
+# ScaleABCDComb + 
+#   annotation_custom(
+#     ggplotGrob(ScaleABCDBar), 
+#     xmin = 0.5, xmax = 5, ymin = 18, ymax = 30
+#   ) +
+#   annotation_custom(
+#     ggplotGrob(ScaleComplexityBar), 
+#     xmin = 0.5, xmax = 5, ymin = 8, ymax = 18
+#   ) +
+#   geom_rect(aes(xmin=0.5,xmax=4.8,ymin=8,ymax=30), 
+#             color = alpha("grey14", .5), size = .05, fill = "transparent", alpha=0)
 ```
 
 <!-- Scale  chart goes somewhere here} -->
@@ -614,17 +620,23 @@ EmpABCDComb <- ggplot(EmpElementCombFreq, aes(x=ExperienceCombination, y=Percent
         strip.text = element_text(colour = 'white', face="bold"),
         legend.position="none")
 
-EmpABCDComb + 
-  annotation_custom(
-    ggplotGrob(EmpABCDBar), 
-    xmin = 0.5, xmax = 5, ymin = 23, ymax = 35
-  ) +
-  annotation_custom(
-    ggplotGrob(EmpComplexityBar), 
-    xmin = 0.5, xmax = 5, ymin = 13, ymax = 23
-  ) +
-  geom_rect(aes(xmin=0.5,xmax=4.8,ymin=13,ymax=35), 
-            color = alpha("grey14", .5), size = .05, fill = "transparent", alpha=0)
+ggdraw() +
+  draw_plot(EmpABCDComb, x = 0, y = 0.3, width = 1, height = .7)+
+  draw_plot(EmpABCDBar, x = 0, y = 0, width = .55, height = .3) +
+  draw_plot(EmpComplexityBar, x = .55, y = 0, width = .45, height = .3) +
+  draw_plot_label(c("(A)", "(B)", "(C)"), c(0, 0, 0.55), c(1, 0.3, 0.3), size = 15)
+
+# EmpABCDComb + 
+#   annotation_custom(
+#     ggplotGrob(EmpABCDBar), 
+#     xmin = 0.5, xmax = 5, ymin = 23, ymax = 35
+#   ) +
+#   annotation_custom(
+#     ggplotGrob(EmpComplexityBar), 
+#     xmin = 0.5, xmax = 5, ymin = 13, ymax = 23
+#   ) +
+#   geom_rect(aes(xmin=0.5,xmax=4.8,ymin=13,ymax=35), 
+#             color = alpha("grey14", .5), size = .05, fill = "transparent", alpha=0)
 ```
 
 <!-- Scale  chart goes somewhere here} -->
