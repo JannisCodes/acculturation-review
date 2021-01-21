@@ -17,7 +17,7 @@ lib <- c("rmarkdown", "knitr", "citr", "remedy", "bookdown", "papaja", "rmdfiltr
          "ggplot2", "ggthemes", "haven", "RColorBrewer", "plotly", "forcats", "wordcloud", "visNetwork", "ggwordcloud",
          "rworldmap", "rnaturalearth", "rnaturalearthdata", "rgeos", "sp", "ggspatial",
          "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
-         "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes", "cowplot",
+         "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes", "cowplot", "paletteer", "ggpubr",
          "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet",
          "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg")
 invisible(lapply(lib, library, character.only = TRUE))  
@@ -512,11 +512,18 @@ empComplexity <- EmpElementCombFreq %>%
   mutate(complexity = as.factor(complexity),
          complexity = fct_reorder(complexity, Frequency))
 
-empElementComplexity <- data.frame(Element = c("Affect", "Behavior", "Cognition", "Desire"), 
-                                avgComplexity = c(EmpElementCombFreq %>% filter(Affect == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency), 
-                                                  EmpElementCombFreq %>% filter(Behavior == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency), 
-                                                  EmpElementCombFreq %>% filter(Cognition == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency), 
-                                                  EmpElementCombFreq %>% filter(Desire == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency)))
+# Scale complexity for each element
+empElementComplexity <- EmpElementCombFreq %>%
+  gather(key = "Element", value = "ElementDum", Affect, Behavior, Cognition, Desire) %>%
+  filter(ElementDum == 1) %>%
+  group_by(Element) %>%
+  summarise(avgComplexity = weighted.mean(x = complexity, w = Frequency),
+            sdComplexity = wtd.var(x = complexity, weights = Frequency),
+            n = sum(Frequency)) %>%
+  ungroup() %>%
+  mutate(seComplexity = sdComplexity/sqrt(n))
+
+
 ```
 
 ```{r EmpiricalElementCooccurrences, include=F}
@@ -620,23 +627,44 @@ EmpABCDComb <- ggplot(EmpElementCombFreq, aes(x=ExperienceCombination, y=Percent
         strip.text = element_text(colour = 'white', face="bold"),
         legend.position="none")
 
+# draw combined graph
 ggdraw() +
   draw_plot(EmpABCDComb, x = 0, y = 0.3, width = 1, height = .7)+
   draw_plot(EmpABCDBar, x = 0, y = 0, width = .55, height = .3) +
   draw_plot(EmpComplexityBar, x = .55, y = 0, width = .45, height = .3) +
   draw_plot_label(c("(A)", "(B)", "(C)"), c(0, 0, 0.55), c(1, 0.3, 0.3), size = 15)
+```
 
-# EmpABCDComb + 
-#   annotation_custom(
-#     ggplotGrob(EmpABCDBar), 
-#     xmin = 0.5, xmax = 5, ymin = 23, ymax = 35
-#   ) +
-#   annotation_custom(
-#     ggplotGrob(EmpComplexityBar), 
-#     xmin = 0.5, xmax = 5, ymin = 13, ymax = 23
-#   ) +
-#   geom_rect(aes(xmin=0.5,xmax=4.8,ymin=13,ymax=35), 
-#             color = alpha("grey14", .5), size = .05, fill = "transparent", alpha=0)
+```{r EmpElementComplexityBar, include=F}
+# bar plot complexity for each element
+ggplot(data=empElementComplexity, aes(x=reorder(Element, avgComplexity), y=avgComplexity)) +
+  geom_bar(stat="identity", fill="grey") +
+  geom_errorbar(aes(ymin=avgComplexity-1.96*seComplexity, ymax=avgComplexity+1.96*seComplexity), width=.2,position=position_dodge(.9)) +
+  geom_text(
+    aes(label = paste0("M = ",round(avgComplexity,2))),
+    position=position_stack(vjust=0.5),
+    color = "black",
+    #size = 2.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Scale Complexity by Element [Mean ± 95%CI]",
+       y = "Number of Aspects in Scales that include Element",
+       x = "Element")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_text(face="bold"),
+        axis.title.y = element_text(face="bold"),
+        plot.title = element_text(face="bold", hjust = 0.5),
+        #legend.text = element_text(size=10),
+        #axis.text.x = element_text(size=10),
+        #axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        #panel.grid.major.y = element_blank(),
+        #strip.text = element_text(colour = 'white', face="bold"),
+        #panel.background = element_rect(fill = "transparent"),
+        #plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.title = element_blank())
 ```
 
 <!-- Scale  chart goes somewhere here} -->
@@ -813,9 +841,28 @@ FieldComplexity <- FieldElementCombFreq %>%
   summarise(Frequency = sum(Frequency),
             Percentage = sum(Percentage)) %>%
   ungroup() %>%
-  mutate(complexity = as.factor(complexity),
-         complexity = fct_reorder(complexity, Frequency)) %>%
   right_join(rownames_to_column(as.data.frame(field_labs_lng), "discipline02"))
+
+FieldAvgComplexity <- FieldElementCombFreq %>%
+  group_by(discipline02) %>%
+  summarise(n = sum(Frequency),
+            avgComplexity = weighted.mean(x = complexity, w = Frequency),
+            sdComplexity = wtd.var(x = complexity, weights = Frequency),) %>%
+  ungroup() %>%
+  mutate(seComplexity = sdComplexity/sqrt(n)) %>%
+  right_join(rownames_to_column(as.data.frame(field_labs_lng), "discipline02")) %>%
+  select(Field = field_labs_lng, n, avgComplexity, sdComplexity, seComplexity)
+
+FieldComplexityAOV <- psychDataDisciplines %>%
+  select(Affect, Behavior, Cognition, Desire, discipline02) %>%
+  right_join(rownames_to_column(as.data.frame(field_labs_lng), "discipline02")) %>%
+  mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T),
+         field = field_labs_lng) %>%
+  mutate_at(vars(Affect, Behavior, Cognition, Desire), funs(ifelse(. == 1, deparse(substitute(.)), "")))  %>%
+  unite("ExperienceCombination",c("Affect", "Behavior", "Cognition", "Desire"), na.rm = TRUE, sep = ", ") %>%
+  select(field, ExperienceCombination, complexity) %>%
+  aov(data = ., complexity ~ field) %>%
+  anova
 
 # Scale complexity for each element (within each field)
 FieldElementComplexity <- FieldElementCombFreq %>%
@@ -824,12 +871,16 @@ FieldElementComplexity <- FieldElementCombFreq %>%
   group_by(discipline02, Element) %>%
   summarise(avgComplexity = weighted.mean(x = complexity, w = Frequency),
             sdComplexity = wtd.var(x = complexity, weights = Frequency),
-            n = sum(Frequency))
+            n = sum(Frequency)) %>%
+  ungroup() %>%
+  mutate(seComplexity = sdComplexity/sqrt(n)) %>%
+  right_join(rownames_to_column(as.data.frame(field_labs_lng), "discipline02"))
+
 ```
 
-We again first, assessed the references to affect, behavior, cognition, and desires separately, within each of the disciplines. For example, we find that for all fields motivations (7-10\%) and emotions (21-23\%) are the least frequently measured elements and each of the fields measures similarly often (in proportional terms). However, for the cognitive and behavioral elements the proportions diverge between the fields. While the multidisciplinary field measured behaviors (34\%) and cognition (35\%) almost equally often, in the medical and general social science journals behaviors were measured considerably more often than cognitions ($Behavior_{SoSci} = 48\%$ > $Cognition_{SoSci} = 24\%$; $Behavior_{Med} = 39\%$ > $Cognition_{Med} = 33\%$). While the psychological journals cognitions (38\%) were measured more often than behaviors (29\%). 
+We again first, assessed the references to affect, behavior, cognition, and desires separately, within each of the disciplines. We find that for all fields motivations (`r FieldElementFreq %>% filter(Element == "Desire") %>% select(Percentage) %>% min %>% round(.,2)`-`r FieldElementFreq %>% filter(Element == "Desire") %>% select(Percentage) %>% max %>% round(.,2)`\% of all measures in the field) and emotions (`r FieldElementFreq %>% filter(Element == "Affect") %>% select(Percentage) %>% min %>% round(.,2)`-`r FieldElementFreq %>% filter(Element == "Affect") %>% select(Percentage) %>% max %>% round(.,2)`\%) are the least frequently measured elements and each of the fields measures similarly often (in proportional terms). However, for the cognitive and behavioral elements the proportions diverge between the fields. While the multidisciplinary field measured behaviors (`r FieldElementFreq %>% filter(Element=="Behavior", discipline02=="Multidisciplinary / Crossdisciplinary") %>% select(Percentage) %>% round(.,2)`\%) and cognition (`r FieldElementFreq %>% filter(Element=="Cognition", discipline02=="Multidisciplinary / Crossdisciplinary") %>% select(Percentage) %>% round(.,2)`\%) almost equally often, in the medical and general social science journals behaviors were measured considerably more often than cognitions ($Behavior_{SoSci}$ = `r  FieldElementFreq %>% filter(Element=="Behavior", discipline02=="Social Sciences (miscellaneous)") %>% select(Percentage) %>% round(.,2)`\% > $Cognition_{SoSci}$ = `r  FieldElementFreq %>% filter(Element=="Cognition", discipline02=="Social Sciences (miscellaneous)") %>% select(Percentage) %>% round(.,2)`\%; $Behavior_{Med}$ = `r  FieldElementFreq %>% filter(Element=="Behavior", discipline02=="Medicine, Nursing, & Health") %>% select(Percentage) %>% round(.,2)`\% > $Cognition_{Med}$ = `r  FieldElementFreq %>% filter(Element=="Cognition", discipline02=="Medicine, Nursing, & Health") %>% select(Percentage) %>% round(.,2)`\%). While the psychological journals cognitions (`r  FieldElementFreq %>% filter(Element=="Cognition", discipline02=="Psychology") %>% select(Percentage) %>% round(.,2)`\%) were measured more often than behaviors (`r  FieldElementFreq %>% filter(Element=="Behavior", discipline02=="Psychology") %>% select(Percentage) %>% round(.,2)`\%; also see Figure \ref{fig:FieldPlotFreq} B and A)). 
 
-When looking at differences in complexity of elements -- that is the number of different elements measured -- and patterns within these element-combinations, differences between the fields become even more apparent (also see Figure \ref{fig:FieldPlotFreq}). While `affect, behavior, and cognition' and `behavior, and cognition' measures are the most common combinations across all fields (also at similar proportional importance), there is less dimension complexity and variation for medical and social science fields. In the psychological 86\% of all studies measures at least two experience elements. And while for all other fields behavioral measures are the third most common measures, there was not a single study published in a psychological journal that conceptualized cultural adaptation by behavior alone. Similarly, the in the broader social scientific journal desires are always measured together with behaviors, which is very uncommon in the other fields\footnote{Although it should be noted that the social science field was smaller and more heterogeneous than the other fields.}. There are like other and more nuanced differences in the conceptualizations highlighted within this analysis (e.g., patterns relevant to a single field). Yet, the immediately visible pattern differences clearly speak the utility of the framework. 
+When looking at differences in how many different elements were measured (i.e., element complexity) and patterns within these element-combinations, differences between the fields become increasingly evident (also see Figure \ref{fig:FieldPlotFreq} A and C). While 'affect, behavior, and cognition' and 'behavior, and cognition' measures are the most common combinations across all fields (also at similar proportional importance), there is less dimension complexity and variation for medical and social science fields. In the psychological `r FieldComplexity %>% filter(discipline02=="Psychology", complexity>=2) %>% select(Percentage) %>% sum %>% round(.,2)`\% of all studies measures at least two experience elements (\textit{M} = `r FieldAvgComplexity %>% filter(Field=="Psychology") %>% select(avgComplexity) %>% round(.,2)`, \textit{SD} = `r FieldAvgComplexity %>% filter(Field=="Psychology") %>% select(sdComplexity) %>% round(.,2)`). Although mean complexity differences were not significantly different between the fields (\textit{F}(`r FieldComplexityAOV$Df[1]`, `r FieldComplexityAOV$Df[2]`) = `r round(FieldComplexityAOV[,names(FieldComplexityAOV)=="F value"][1],2)`, \textit{p} = `r round(FieldComplexityAOV[,names(FieldComplexityAOV)=="Pr(>F)"][1],3)`), looking at the qualitative differences of element combinations can be informative. For example, there was not a single study published in a psychological journal that conceptualized cultural adaptation by behavior alone (eventhough this is the third most common measures in the other three fields, also see Figure \ref{fig:FieldPlotFreq} A). Similarly, in the broader social scientific journal desires are always measured together with behaviors, which is very uncommon in the other fields\footnote{Although it should be noted that the social science field was smaller and more heterogeneous than the other fields. \Warning\ Maybe drop this argument -- based on only two studies.}. There are also interesting pattern when one considers how many other elements an aspect is measured with within each of the fields. For example, while for all fields motivations are found in the most complex scales \footnote{except for the broader social science journals that do not have many motivational measures to begin with.}, medical journal have a substantially higher average scale complexity when measuring motivations. Inversely, psychological journal on average report behavioral measures of cultural adaptation in more complex scales. This hints to a pattern, where complexity might indicate relative importance of an aspect within the field -- where only scales that already have a broad and diverse measure also include the elements that are usually measured less within a field (also see Figure \ref{fig:FieldElementComp}). There are like other and more nuanced differences in the conceptualizations highlighted within this analysis (e.g., patterns relevant to a single field). Yet, the immediately visible pattern differences clearly speak the utility of the framework. 
 
 ```{r FieldPlotFreq, include=F, fig.width=12, fig.height=12}
 # barplot of dimension frequency
@@ -863,7 +914,7 @@ FieldElementBar <- ggplot(data=FieldElementFreq, aes(x=reorder(Element, Percenta
         legend.position="none")
 
 # barplot of complexity frequency
-FieldComplexityBar <- ggplot(data=FieldComplexity, aes(x=complexity, y=Frequency)) +
+FieldComplexityBar <- ggplot(data=FieldComplexity, aes(x=reorder(complexity, -complexity), y=Frequency)) +
   geom_bar(stat="identity", fill="grey14") +
   geom_text(
     aes(label = paste0("N = ",Frequency)),
@@ -891,31 +942,31 @@ FieldComplexityBar <- ggplot(data=FieldComplexity, aes(x=complexity, y=Frequency
         plot.background = element_rect(fill = alpha('white', 0.5)), 
         legend.position="none")
 
-FieldComplexityBar <- ggstatsplot::ggbarstats(
-  data = FieldComplexity,
-  x = complexity,
-  y = field_labs_lng,
-  counts = Frequency,
-  #sampling.plan = "jointMulti",
-  title = "Scale Complexity",
-  sample.size.label = F,
-  #label = "both",
-  xlab = "Discipline",
-  results.subtitle = FALSE,
-  package = "ggsci",
-  palette = "blue_grey_material",
-  ggtheme = ggthemes::theme_tufte(base_size = 12),
-  ggplot.component = list(scale_x_discrete(guide = guide_axis(n.dodge = 2))),
-  ggstatsplot.layer = F,
-  label.args = list(check_overlap = TRUE, alpha = 1, fill = "white"),
-  messages = FALSE
-)+
-  theme_Publication()+
-  theme(legend.position = "right", 
-        legend.direction = "vertical", 
-        legend.title = element_blank(),
-        axis.title.x = element_blank(),
-        plot.title = element_text(size=10, face="bold", hjust = 0.5))
+# FieldComplexityBar <- ggstatsplot::ggbarstats(
+#   data = FieldComplexity,
+#   x = complexity,
+#   y = field_labs_lng,
+#   counts = Frequency,
+#   #sampling.plan = "jointMulti",
+#   title = "Scale Complexity",
+#   sample.size.label = F,
+#   #label = "both",
+#   xlab = "Discipline",
+#   results.subtitle = FALSE,
+#   package = "ggsci",
+#   palette = "blue_grey_material",
+#   ggtheme = ggthemes::theme_tufte(base_size = 12),
+#   ggplot.component = list(scale_x_discrete(guide = guide_axis(n.dodge = 2))),
+#   ggstatsplot.layer = F,
+#   label.args = list(check_overlap = TRUE, alpha = 1, fill = "white"),
+#   messages = FALSE
+# )+
+#   theme_Publication()+
+#   theme(legend.position = "right", 
+#         legend.direction = "vertical", 
+#         legend.title = element_blank(),
+#         axis.title.x = element_blank(),
+#         plot.title = element_text(size=10, face="bold", hjust = 0.5))
 
 # bar plot frequencies
 FieldElementComb <- ggplot(FieldElementCombFreq, aes(x=reorder(ExperienceCombination, Percentage), y=Percentage)) +
@@ -945,11 +996,44 @@ ggdraw() +
   draw_plot_label(c("(A)", "(B)", "(C)"), c(0, 0, 0.5), c(1, 0.3, 0.3), size = 15)
 ```
 
+```{r FieldElementComp, include=F, fig.width=12, fig.height=12}
+ggplot(FieldElementComplexity, aes(fill=field_labs_lng, y=avgComplexity, x=reorder(Element, avgComplexity))) + 
+  geom_bar(position="dodge", stat="identity") +
+  geom_errorbar(aes(ymin=avgComplexity-1.96*seComplexity, ymax=avgComplexity+1.96*seComplexity), width=.2,position=position_dodge(.9)) +
+  scale_fill_grey(start = 0.8, end = 0.2) +
+  #paletteer::scale_fill_paletteer_d("ggsci::blue_grey_material") +
+  labs(x = "Element",
+       y = "Number of Aspects",
+       title = "Average Number of Elements \nMeasured Together with Element  [Mean ± 95%CI]") +
+  #coord_flip()+
+  theme_Publication() +
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_text(face="bold"),
+        axis.title.y = element_text(face="bold"),
+        plot.title = element_text(face="bold", hjust = 0.5),
+        #legend.text = element_text(size=10),
+        #axis.text.x = element_text(size=10),
+        #axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        #panel.grid.major.y = element_blank(),
+        #strip.text = element_text(colour = 'white', face="bold"),
+        #panel.background = element_rect(fill = "transparent"),
+        #plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.title = element_blank())
+```
+
 \begin{figure}[h]
 \centering
 \caption{Combinations of measured experience element and their frequencies per field.}
 \includegraphics[width=\textwidth]{Figures/FieldPlotFreq-1}
 \label{fig:FieldPlotFreq}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\caption{Average complexity (number of experience elements measured) for all scales that include a given experience aspect. Note that these categories are not mutually exclusive (and thus not independent) because scales can include multiple experience aspects (i.e., higher complexity).}
+\includegraphics[width=\textwidth]{Figures/FieldElementComp-1}
+\label{fig:FieldElementComp}
 \end{figure}
 
 \vspace{1em}
