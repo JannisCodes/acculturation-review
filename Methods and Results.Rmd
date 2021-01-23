@@ -60,7 +60,7 @@ data.frame(table(Exclusion = dt.Scales$Comment)) %>%
         linesep = "",
         booktabs = T,
         align = c("l", "c"))  %>%
-  kable_styling(position = "float_left") %>%
+  kable_styling(position = "left", latex_options = "hold_position") %>%
   #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
   save_kable("Tables/ScalesExclusion.tex")
 ```
@@ -139,7 +139,7 @@ scaleElementCooccure %>%
         linesep = "",
         booktabs = T,
         align = rep('c', ncol(scaleElementCooccure)))  %>%
-  kable_styling(position = "float_left") %>%
+  kable_styling(position = "left") %>%
   #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
   save_kable("Tables/ScaleElementCooccurrences.tex")
 ```
@@ -383,7 +383,7 @@ rbind(exclTitle, exclAbstract, exclFull) %>%
         booktabs = T,
         align = c("l", "c", "c", "c"))  %>%
   add_header_above(., c(" ", "Screening" = 3)) %>%
-  kable_styling(position = "float_left") %>%
+  kable_styling(position = "left") %>%
   save_kable("Tables/EmpiricalExclusion.tex")
 ```
 
@@ -538,7 +538,7 @@ empElementCooccure %>%
         linesep = "",
         booktabs = T,
         align = rep('c', ncol(empElementCooccure)))  %>%
-  kable_styling(position = "float_left") %>%
+  kable_styling(position = "left") %>%
   #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
   save_kable("Tables/EmpiricalElementCooccurrences.tex")
 ```
