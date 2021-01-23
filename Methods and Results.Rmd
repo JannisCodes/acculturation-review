@@ -60,8 +60,6 @@ data.frame(table(Exclusion = dt.Scales$Comment)) %>%
         linesep = "",
         booktabs = T,
         align = c("l", "c"))  %>%
-  kable_styling(latex_options = c("repeat_header"),
-                position = "left") %>%
   #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
   save_kable("Tables/ScalesExclusion.tex")
 ```
@@ -140,8 +138,6 @@ scaleElementCooccure %>%
         linesep = "",
         booktabs = T,
         align = rep('c', ncol(scaleElementCooccure)))  %>%
-  kable_styling(latex_options = c("repeat_header"),
-                position = "left") %>%
   #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
   save_kable("Tables/ScaleElementCooccurrences.tex")
 ```
@@ -385,8 +381,6 @@ rbind(exclTitle, exclAbstract, exclFull) %>%
         booktabs = T,
         align = c("l", "c", "c", "c"))  %>%
   add_header_above(., c(" ", "Screening" = 3)) %>%
-  kable_styling(latex_options = c("repeat_header"),
-                position = "left") %>%
   save_kable("Tables/EmpiricalExclusion.tex")
 ```
 
@@ -541,8 +535,6 @@ empElementCooccure %>%
         linesep = "",
         booktabs = T,
         align = rep('c', ncol(empElementCooccure)))  %>%
-  kable_styling(latex_options = c("repeat_header"),
-                position = "left") %>%
   #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
   save_kable("Tables/EmpiricalElementCooccurrences.tex")
 ```
@@ -1031,8 +1023,9 @@ ggplot(FieldElementComplexity, aes(fill=field_labs_lng, y=avgComplexity, x=reord
 
 \begin{figure}[h]
 \centering
-\caption{Average complexity (number of experience elements measured) for all scales that include a given experience aspect. Note that these categories are not mutually exclusive (and thus not independent) because scales can include multiple experience aspects (i.e., higher complexity).}
+\caption{Average complexity (number of experience elements measured) for all scales that include a given experience aspect.}
 \includegraphics[width=\textwidth]{Figures/FieldElementComp-1}
+\floatfoot{Note that these categories are not mutually exclusive (and thus not independent) because scales can include multiple experience aspects (i.e., higher complexity).}
 \label{fig:FieldElementComp}
 \end{figure}
 
