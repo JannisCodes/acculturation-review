@@ -51,7 +51,7 @@ Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scal
 ```{r ScalesExclusion}
 data.frame(table(Exclusion = dt.Scales$Comment)) %>%
   arrange(desc(Freq)) %>%
-  kable(., 
+  kbl(., 
         #label = "",
         caption = "Scales Exclusion Reasons",
         format = "latex",
@@ -131,7 +131,7 @@ scaleElementCooccure <- crossprod(scaleElementCooccure)  # Same as: t(X) %*% X
 #scaleElementCooccure[upper.tri(scaleElementCooccure)] <- ""
 
 scaleElementCooccure %>%
-  kable(., 
+  kbl(., 
         #label = "",
         caption = "Scales: Element Co-occurrence Matrix",
         format = "latex", 
@@ -373,7 +373,7 @@ rbind(exclTitle, exclAbstract, exclFull) %>%
   rename_at(vars(starts_with("Freq.")),
             funs(sub("Freq[.]", "", .))) %>%
   rename(., "Exclusion Reason" = Exclusion) %>%
-  kable(., 
+  kbl(., 
         #label = "",
         caption = "Exclusion Reasons Empirical Literature",
         format = "latex",
@@ -528,7 +528,7 @@ empElementCooccure <- crossprod(empElementCooccure)  # Same as: t(X) %*% X
 #empElementCooccure[upper.tri(empElementCooccure)] <- ""
 
 empElementCooccure %>%
-  kable(., 
+  kbl(., 
         #label = "",
         caption = "Empirical Literature: Element Co-occurrence Matrix",
         format = "latex", 
