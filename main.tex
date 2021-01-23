@@ -1,17 +1,20 @@
-
+% define document type (i.e., template. Here: A4 APA manuscript with 12pt font)
 \documentclass[man, 12pt, a4paper]{apa7}
+
+% change margins (e.g., for margin comments):
 %\usepackage{geometry}
 % \geometry{
 % a4paper,
 % marginparwidth=30mm,
-% right=40mm,
-% }
+% right=50mm,
+%}
 
+% add packages
 \usepackage[american]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{csquotes}
 \usepackage{hyperref}
-\usepackage[style=apa,sortcites=true,sorting=nyt, backend=biber, natbib=true, uniquename=false, uniquelist=false, useprefix=true]{biblatex}
+\usepackage[style=apa, sortcites=true, sorting=nyt, backend=biber, natbib=true, uniquename=false, uniquelist=false, useprefix=true]{biblatex}
 \usepackage{authblk}
 \usepackage{graphicx}
 \usepackage{setspace,caption}
@@ -27,8 +30,9 @@
 \usepackage[normalem]{ulem}
 \usepackage{longtable}
 \usepackage{amsmath}
+\usepackage{afterpage}
 
-% Select what to do with todonotes: 
+% Select what to do with to-do notes: 
 % \usepackage[disable]{todonotes} % notes not showed
 \usepackage[draft]{todonotes}   % notes showed
 
@@ -47,6 +51,7 @@
   \renewcommand\stacktype{L}%
   \scaleto{\stackon[1.3pt]{\color{red}$\triangle$}{\tiny\bfseries ?}}{#1}}%
 
+% formatting links in the PDF file
 \hypersetup{
 pdfpagemode={UseOutlines},
 bookmarksopen=true,
@@ -61,12 +66,17 @@ unicode,
 breaklinks=true,
 }
 
+% language formatting
 \DeclareLanguageMapping{american}{american-apa}
+
+% add reference library file
 \addbibresource{references.bib}
 
-\title{Integration of Migrants: A Systematic Review, Descriptive Conceptual Framework, (and Meta-Analysis?)}
+% Title
+\title{Integration of Migrants: A Descriptive Conceptual Framework and Systematic Review}
 \shorttitle{Integration of Migrants}
 
+% Authors
 \author[*,1,2]{Jannis Kreienkamp}
 \author[1,2]{Kai Epstude}
 \author[1,2]{Laura F. Bringmann}
@@ -84,6 +94,7 @@ Correspondence concerning this article should be addressed to Jannis Kreienkamp,
 
 \leftheader{Kreienkamp}
 
+% Abstract
 \abstract{
 One of the key challenges to researching acculturation is an immense heterogeneity in definitions and measures. These inconsistencies make it difficult to compare past literature on acculturation, hinder straight-forward measurement selections, and hampers the development of an overarching framework. To structure our understanding of the migration process, we propose to use the four basic elements of human experiences (motivations, emotions, thoughts, and behaviors) as a descriptive framework. We then embed this migration experience structure within the individual socio-historical context. To test our framework, we perform a systematic review and separately analyse validated scales and empirical studies in their measurements of motivational, emotional, cognitive, and behavioral acculturation aspects. We find that most scales and studies focus on behavioral and cognitive operationalisations. We inversely find that emotional and motivational aspects are measured rarely and predominantly in conjunction with other experience elements. We also find structural differences acculturation measures across publication fields. We, thus, showcase the utility of an experience-based framework in structuring our analyses and understandings of acculturation. 
 
@@ -92,12 +103,80 @@ One of the key challenges to researching acculturation is an immense heterogenei
 
 \keywords{Keyword \#1, Keyword \#2, ...}
 
+% set indentation size
 \setlength\parindent{1.27cm}
 
+% Main document:
 \begin{document}
+
+% add title information (incl. title page and abstract)
 \maketitle
 
+% **CHEAT SHEET / LEGEND**
+%
+% Comments:
+% '%' starts a comment in LaTeX (not printed)
+% '\todo[inline]{} makes orange boxes in PDF
+% '\marginpar{}' notes in margins
+% '\footnote{}' footnote
+%
+% Citation (w/ Natbib citation style):
+% '\citep[e.g.][p. 15]{CitationKey}' citation in parentheses "(e.g., Berry, 2003, p. 15)"
+% '\citet{CitationKey}' citation in text "Berry (2003)"
+% '\citealt' and '\citealp' alternate citation without parentheses
+% '\citeauthor' and '\citeyear' only year or author
 % 
+% Headings:
+% '\part{}' and '\chapter{}' only relevant for multi-part or multi-chapter documents
+% '\section{}' heading level 1
+% '\subsection{}' heading level 2
+% '\subsubsection{}' heading level 3
+% '\paragraph{}' heading level 4
+% '\subparagraph{}' heading level 5
+%
+% formatting:
+% '\textbf{}' text bold font
+% '\textit{}' text italic font
+% '\underline{}' text underline
+% '\sout{}' text strike out
+% '\textsc{}' text small caps
+% '\vspace{1em}' add vertical space
+% '\hspace{1em}' add horizontal space
+% '\\' new line (i.e., line break)
+% '\pagebreak' start new page (i.e., page break)
+% '\noindent' do not indent current line (e.g., current paragraph)
+% 'begin{center}...end{center}' center text or object
+%
+% Math mode:
+% '$\alpha = .8$' mathematical equation inline
+% '$$\hat{y} = b_0 + b_1x$$' mathematical equation in its own line
+% '\begin{equation}...\end{equation}' multi-line equation
+% '\approx' approximate symbol
+% '\neq' not equal
+% '\bar' mean bar over letter
+% '\pm' plus minus sign 
+% '^{}' superscript
+% '_{}' subscript
+% '\fraq{numerator}{denominator}' fraction
+% '\sqrt[n]{}' square root
+% '\sum_{k=1}^n' sum for 1 through n
+%
+% Insert things:
+% '\input{filename}' inputs the raw (tex) file as a command (e.g., tables and R-Markdown imports)
+% '\include{filename}' includes section on new page (incl. possible auxiliary info)
+% '\includegraphics[settings]{filename}' add a figure or graph
+% '\caption{}' adds a caption to a table or figure
+% '\label{}' labels sections, tables, figures, etc. so that they can be referred to.
+% '\ref{}' refer to a labelled sections, tables, figures, etc.
+% '\begin{enumerate}...\end{enumerate}' numbered list
+% '\begin{itemize}...\end{itemize}' bullet-ed list
+% '\item' item in list section 
+%
+% Symbols:
+% '\&' and sign
+% '\%' percent sign
+% '\_' three dotes
+% '\#' hash symbol
 
 \todo[inline]{*Relevance*} 
 The adaptation of migrants in new cultural contexts is an important issue in many societies around the world. With many of the migration push and pull factors in the economic, safety, social, and environmental domains worsening, the topic is likely to become even more important in the future (Reference).
@@ -141,7 +220,7 @@ Once we have introduced our conceptual framework, we will systematically review 
 }
 % Proposal: Use human experience to structure our understanding but consider it within its socio-historical context.
 The utility of a conceptual framework arguably depends on its ability to comprehensively structure a concept and to do so across a wide range of contexts. But at the same time, the contexts should not remain a black box. 
-For our framework we propose to use the basic elements of human experiences and motivation to structure our understanding of the migration process. We then embed this migration experience in the individual socio-historical context. 
+For our framework, we propose to use the basic elements of human experiences and motivation to structure our understanding of the migration process. We then embed this migration experience in the individual socio-historical context. 
 In the following paragraphs we will discuss both the experience framework and the context in more detail (also see Figure \ref{fig:ModelContext}).
 
 \begin{figure}[h]
@@ -163,7 +242,7 @@ ABC and ABCD models have been used to structure theories and models in a wide va
 % Main argument example: If any experience can be structure in ABCD, we can distinguish different aspects of cultural adaptation.
 \vspace{1em}
 \todo[inline]{too much repetition (combine two sentences?) or okay?}
-Following the premise that any human experience will be perceived as a set of motivations or goals (i.e., desire), emotions (i.e., affect), thoughts (i.e., cognition), and behaviors, we suggest that the migration experience can also be understood within these four elements. If these four elements, indeed, capture the migration experience sufficiently, such a framework could be used to structure the assessment and understanding of conceptual definitions and measurements. Cultural adaptation might, for example, be understood or measured in terms of behavioral adaptation, such as language use, or voting; cognitive adaptation, such as identification with cultural values; affective adaptation, such as feeling at home, or loneliness; motivational adaptation, such as the satisfaction of competence or independence needs; or as a complex combination of any or all of these aspects. 
+Following the premise that any human experience will be perceived as a set of motivations (i.e., desire. Sometimes also goals or needs), emotions (i.e., affect), thoughts (i.e., cognition), and behaviors, we suggest that the migration experience can also be understood within these four elements. If these four elements, indeed, capture the migration experience sufficiently, such a framework could be used to structure the assessment and understanding of conceptual definitions and measurements. Cultural adaptation might, for example, be understood or measured in terms of behavioral adaptation, such as language use, or voting; cognitive adaptation, such as identification with cultural values; affective adaptation, such as feeling at home, or loneliness; motivational adaptation, such as the satisfaction of competence or independence needs; or as a complex combination of any or all of these aspects. 
 
 % Application: Universality of elements allows us to ask: Which aspects have been considered? How many aspects have been considered? And which have been considered together?
 % In this study we ask answer these questions for past literature.
@@ -208,24 +287,24 @@ But theories of acculturation and broader social- and cultural theories have lon
 In our attempt to structure the influences of \textit{culture} we will mainly use extensions on Émile Durkheim's concept of \textit{social facts} \citep[e.g.,][]{Durkheim1982, Gilbert1989} and Berry's \textit{general framework of acculturation} \citep{Berry1997b, Berry2003, Berry2006a}. Interestingly, Durkheim's original definition of the concept of social facts directly referred to affect, behavior, and cognition (and potentially desires), when he wrote that social facts ``consist of manners of acting, thinking and feeling external to the individual, which are invested with a coercive power by virtue of which they exercise control over him'' (p. 52). Following this definition, we will mainly consider external (cultural or societal) influences that guide a person's motivational, cognitive, emotional, and behavioral experience. Within the sociological literature, these social influences can be divided into the formal social facts (e.g., laws, regulations, policies, history, language), informal social facts \citep[e.g., norms, values, beliefs, rituals, customs; also see][]{Herzog2018}, as well as more material cultural products or artifacts \citep[e.g., food, fashion, architecture, or arts, such as film, music, literature, and fine arts; e.g., see][]{Alexander2001}. The content of these external influences will likely be relevant in the expected patterns of behavior (e.g., dress or communication styles), cognition (e.g., sense of race-, class-, gender-, and sexual identities), emotions (e.g., expressions of emotions), and motivations (e.g., virtues and duties).
 
 % Interaction of multiple cultures: Use Berry to highlight power imbalances of where once culture might be more influential than another.
-In the case cultural adaptation (at least) two sets of cultural arrangements will be influencing the experience of the individual. Quite a substantial body of literature has considered this interaction between the two cultures. For our conceptualization we will use Berry's framework for acculturation research \citep[e.g., see][p. 15, Fig. 2]{Berry1997b} and Berry's acculturation framework for stress and adaptation \citep[e.g., see][p. 45, Fig. 4.1]{Berry2006a}, because they explicitly propose to jointly consider the cultural influences on the ``acculturation experience'', which we consider here (see Figure \ref{fig:ModelContext}). Once we consider this encounter of multiple cultures within the structure of culture as social facts, it also becomes apparent that there are usually considerable power imbalances between the cultures \citep[e.g., see][]{Bhatia2001}. This imbalance is especially apparent in formal or material elements, such as laws or language, but similarly extends to more informal elements, such as default expectations in communication or behavioral norms and customs. Factors such as cultural distance \citep{Triandis2001} or majority group's attitudes \citep[e.g.,][]{Berry1997b, Berry2003} might, of course, influence such power imbalances, but the structuring of both acculturation and culture encourages and facilitates reflections and discussions of these issues. As part of the analyses presented in this paper, we will offer such a reflection by extracting the cultures for which acculturation measures were validated and investigated in empirical papers. This allows us to examine how much the external influences of culture on motives, emotions, thoughts, and behaviors are reflected within structural differences of measures and definitions (that is, if we can consolidate a meaningful number of studies per cultural context).
+In the case of cultural adaptation (at least) two sets of cultural arrangements will be influencing the experience of the individual. Quite a substantial body of literature has considered this interaction between the two cultures. For our conceptualization we will use Berry's framework for acculturation research \citep[e.g., see][p. 15, Fig. 2]{Berry1997b} and Berry's acculturation framework for stress and adaptation \citep[e.g., see][p. 45, Fig. 4.1]{Berry2006a}, because they explicitly propose to jointly consider the cultural influences on the ``acculturation experience'', which we consider here (see Figure \ref{fig:ModelContext}). Once we consider this encounter of multiple cultures within the structure of culture as social facts, it also becomes apparent that there are usually considerable power imbalances between the cultures \citep[e.g., see][]{Bhatia2001}. This imbalance is especially apparent in formal or material elements, such as laws or language, but similarly extends to more informal elements, such as default expectations in communication or behavioral norms and customs. Factors such as cultural distance \citep{Triandis2001} or majority group's attitudes \citep[e.g.,][]{Berry1997b, Berry2003} might, of course, influence such power imbalances, but the structuring of both acculturation and culture encourages and facilitates reflections and discussions of these issues. As part of the analyses presented in this paper, we will offer such a reflection by extracting the cultures for which acculturation measures were validated and investigated in empirical papers. This allows us to examine how much the external influences of culture on motives, emotions, thoughts, and behaviors are reflected within structural differences of measures and definitions (that is, if we can consolidate a meaningful number of studies per cultural context).
 
 \subsubsection{Individual} 
 % Individual based on intergroup contact and Berry: Individual differences in general (e.g., age, gender) but also migration related differences (e.g., reason for migration, language proficiency)
 Another contextual factor to consider during the cultural adaptation process are the interacting individuals themselves. There has been a rising focus on the idea that acculturation centers around the daily interpersonal interactions a person has with people of the other group \citep{Maxwell2017, Sam2010}. And although it can, at times, be difficult to disentangle cultural from individual influences, there are a range of personal features that likely influence the cultural adaptation process. These personal differences might relate to relatively stable individual differences, such as gender or personality, but also migration related differences, such as the reason for migration (e.g., voluntary vs. forced migration), cultural distance, or migration status. Within the migration related factor we would also include aspects that might change over the course of the adaptation process but give migrants different starting positions, such as language skills and education level.
-Similar to the influences of cultures, the individual differences of the interaction partners (if there are multiple people) will likely impact the cultural adaptation. And similar to culture, individual differences likely play a role for multiple aspects of the cultural adaptation process (also see Figure \ref{fig:ModelContext}). As part of this study, we will mainly analyze the migration relevant differences. Considering individual differences on a larger, cross-study, level we will mainly extract data on the type of samples collected within the validation and the empirical papers (e.g., forced vs. voluntary, youth, or clinical samples). If we find reasonable numbers of studies with specific types of samples, we will assess whether these individual differences are related to structural differences in measures or definitions used by the authors.
+Similar to the influences of cultures, the individual differences of the interaction partners (if there are multiple people) will likely impact the cultural adaptation. And similar to culture, individual differences likely play a role for multiple aspects of the cultural adaptation process (also see Figure \ref{fig:ModelContext}). As part of this study, we will mainly analyze the migration relevant differences. Considering individual differences on a larger, cross-study level we will mainly extract data on the type of samples collected within the validation and the empirical papers (e.g., forced vs. voluntary, youth, or clinical samples). If we find reasonable numbers of studies with specific types of samples, we will assess whether these individual differences are related to structural differences in measures or definitions used by the authors.
 
 \subsubsection{Situation} 
 \todo[inline]{The Situation (domains of psycho-social functioning)}
 % Situations as domains of psycho-social functioning: Many theories have come up with life domains that form different cultural interaction situations.
-Beyond the cultural group and the individuals, the interactions of cultural adaptation are further dependent on the situational context. One way of structuring this situational context is what we will here refer to as the \textit{domains of psycho-social functioning} -- the idea that the social experience will take place within different domains in life. There are many social-scientific theories that have discussed these spheres of life. One famous example is Bronfenbrenner's Ecological systems theory \citep{Bronfenbrenner1992}, according to which humans get into contact with other, and society at large, through a number of environmental systems that range from the closest relations (e.g., family or colleagues) to the more remote relationships (e.g., mass media or societal services). A similar framework was suggested by prominent theorists of the (structural) functionalist traditions with the concept of social institutions \citep[e.g.,][]{Turner1997}. According to these sociological theorists, it is through societal institutions (commonly: family, government, economy, media, education, healthcare, and religion) that culture is transmitted and maintained \citep[e.g.,][]{Durkheim1982}. Similar ideas for domains of interaction with society and culture have also been proposed within the acculturation literature. \citet{Arends-Toth2006, Arends-Toth2007} have, for example, suggested 15 public and private life domains (e.g., education [public], child-rearing [private]) in which acculturation takes place. Empirical research in the individual acculturation field, have also provided evidence that acculturation processes can develop separately and differently within these domains \citep[e.g.,][]{Arends-Toth2003a}. 
+Beyond the cultural group and the individuals, the interactions of cultural adaptation are further dependent on the situational context. One way of structuring this situational context is what we will here refer to as the \textit{domains of psycho-social functioning} -- the idea that the social experience will take place within different domains in life. There are many social-scientific theories that have discussed these spheres of life. One famous example is Bronfenbrenner's Ecological systems theory \citep{Bronfenbrenner1992}, according to which humans get into contact with others, and society at large, through a number of environmental systems that range from the closest relations (e.g., family or colleagues) to the more remote relationships (e.g., mass media or societal services). A similar framework was suggested by prominent theorists of the (structural) functionalist traditions with the concept of social institutions \citep[e.g.,][]{Turner1997}. According to these sociological theorists, it is through societal institutions (commonly: family, government, economy, media, education, healthcare, and religion) that culture is transmitted and maintained \citep[e.g.,][]{Durkheim1982}. Similar ideas for domains of interaction with society and culture have also been proposed within the acculturation literature. \citet{Arends-Toth2006, Arends-Toth2007} have, for example, suggested 15 public and private life domains (e.g., education [public], child-rearing [private]) in which acculturation takes place. Empirical research in the individual acculturation field, have also provided evidence that acculturation processes can develop separately and differently within these domains \citep[e.g.,][]{Arends-Toth2003a}. 
 
 % point of convergence: We aggregate a list of micro to macro domains from past literature.
 What structurally unites the conceptualizations of life domains is the dimension of closeness to the individual. That is, most areas of life found in the literature can be arranged from the most immediate (i.e., micro or private, such as family) to the broadest levels (i.e., macro or public, including government or media). So, based on sociological theories of social institutions \citep{Durkheim1982}, literature on life domains in acculturation \citep{Arends-Toth2006, Arends-Toth2007, Zane2004}, a categorization of psychological influences by the British Psychological Society \citep{Michie2005a}, and Bronfenbrenner's Ecological systems theory \citep{Bronfenbrenner1992}, we conceptualized a range of life domains relevant to the migration process (see Figure \ref{fig:ModelContext}). Interestingly, most methodological and empirical authors mention explicitly which domains of acculturation they measure or very clearly focus on a limited number of domains in their measurement or definition of acculturation. As part of this study we will, therefore, extract information on the domains mentioned and measured in the literature. We will then assess whether different foci on life domains also show differences in their understanding and measurement of the motivational, emotional, cognitive, and behavioral cultural adaptation.
 
 \subsubsection{Process} 
 % Dynamic process rather than static end-product: Experience can answer this call because it can only be understood based on past experiences
-A final, fundamental factor we would like to address in the cultural adaptation framework the understanding of cultural adaptation as a dynamic process rather than a static end-product. That cultural adaptation is a developmental process, and that ``acculturation occurs when two independent cultural groups come into \textit{continuous first-hand contact over an extended period of time}'' \citep[][186]{Berry1989} seem to be a generally accepted assumption within the field. Yet, within the empirical literature, few studies have actually considered the theoretical implications of migration as a process and even fewer have methodologically followed the trajectories of migrants over time. Recent years have seen a growing awareness of this discrepancy \citep[e.g.,][]{Brown2011, Ward2019}. We believe that the experience framework of cultural adaptation, as it is presented here, is ideally suited to deal with this conceptualization as a developmental process. Philosophers of the phenomenological tradition have long highlighted that subjective experience can only be understood within the history of past experiences \citep[e.g.,][; also see Figure \ref{fig:ModelContext}]{Heidegger1867}. In this study we apply our interest in the role of time by extracting the types of analyses (static vs. dynamic) done by the authors, and assessing whether data was collected prior to migration, after migration, or both. We will then also assess whether different traditions of data collection show differences in their understanding and measurement of the motivations, emotions, thoughts, and behaviors aspects of cultural adaptation (if the systematic review includes a reasonable number of longitudinal studies).
+A final, fundamental factor we would like to address in the cultural adaptation framework is the understanding of cultural adaptation as a dynamic process rather than a static end-product. That cultural adaptation is a developmental process, and that ``acculturation occurs when two independent cultural groups come into \textit{continuous first-hand contact over an extended period of time}'' \citep[][186]{Berry1989} seem to be a generally accepted assumption within the field. Yet, within the empirical literature, few studies have actually considered the theoretical implications of migration as a process and even fewer have methodologically followed the trajectories of migrants over time. Recent years have seen a growing awareness of this discrepancy \citep[e.g.,][]{Brown2011, Ward2019}. We believe that the experience framework of cultural adaptation, as it is presented here, is ideally suited to deal with this conceptualization as a developmental process. Philosophers of the phenomenological tradition have long highlighted that subjective experience can only be understood within the history of past experiences \citep[e.g.,][; also see Figure \ref{fig:ModelContext}]{Heidegger1867}. In this study we apply our interest in the role of time by extracting the types of analyses (static vs. dynamic) done by the authors, and assessing whether data was collected prior to migration, after migration, or both. We will then also assess whether different traditions of data collection show differences in their understanding and measurement of the motivations, emotions, thoughts, and behaviors aspects of cultural adaptation (if the systematic review includes a reasonable number of longitudinal studies).
 
 \subsubsection{Bottom-up Approach} 
 % Experience as Critical Research Tool: Thinking about experience forces you to take the perspective of your research participants.
@@ -234,6 +313,7 @@ One further strength of the experience concept is that it highlights the conside
 % Host-Migrant Interconnectedness: Focus on migrant perspective because often disadvantaged position but any interdependent aspect should show up in ABCD + framework can also be used for majority perspective (but not focus of this paper)
 Before we move on to the systematic review and our test of the conceptual framework, we would like to remark on our focus on the migrant's rather than the majority group member's experiences. 
 While this framework explicitly focuses on the migrant's experience as the structuring experience, this is not meant to put the sole responsibility of ``migration success'' on the newcomer or ignore the interconnectedness of intercultural exchange. We focus on the migrant experience as the structuring element because migrants usually find themselves in disadvantaged positions. 
+
 We would also like to address the issue of interactive acculturation. \citet{Bourhis1997a} and others, have often highlighted that cultural adaptation is essentially interactive and one should not consider the acculturation process of one individual or group without the consideration of the other group and the interaction partners. We agree, and while we address some of these issues explicitly in the framework, we would also like to highlight that within the experience framework aspects of cultural adaptation that are interconnected, co-dependent, or depend on the host majority members likely influence the individual's migration experience. As an example, if a migrant is frequently confronted with exclusion and hostility, this will likely affect their motivations, emotions, thoughts, and behaviors. 
 We would also like to highlight that the framework is equally applicable to the cultural adaptation experience of host majority members in their interactions with or perceptions of migrants. Although not the focus of this paper, the same assessments of measures, definitions, and understandings should be able to be conducted with the experience of the majority group.
 Additionally, this framework is not meant as an exhaustive or exclusive list of all adaptation aspects but rather offers a structural framework to analyze and understand the broad experience of cultural adaptation.
@@ -279,16 +359,6 @@ To capture the situational focus of the authors, we coded which life domains the
 To capture the process focus, we also coded which migration step(s) the authors focused on. We coded whether the authors focused on the migration experience after the arrival in the new society, prior to the migration, or focused on both time points. We, additionally, coded whether cross-sectional or longitudinal data was collected and how this data was analyzed. Given the observations of past reviews \citep[e.g.,][]{Brown2011, Ward2019}, we expect that most researchers will collect cross-sectional data at a single time-point after migration.
 
 \input{Methods-and-Results}
-
-
-
-
-
-
-
-
-
-
 
 \section{Discussion}
 \todo[inline]{*Summary*}
@@ -353,7 +423,7 @@ As shown in Figure~\ref{fig:FigureAppendix}, these results are impressive.
 
 \begin{figure}
     \caption{This is my figure caption.}
-    \includegraphics[bb=0in 0in 2.5in 2.5in, height=2.5in, width=2.5in]{Figures/Figure1.pdf}
+    \includegraphics[bb=0in 0in 2.5in 2.5in, height=2.5in, width=2.5in]{Figures/Backup/Figure1.pdf}
     \label{fig:FigureAppendix}
 \end{figure}
 
