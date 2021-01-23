@@ -62,6 +62,8 @@ data.frame(table(Exclusion = dt.Scales$Comment)) %>%
         align = c("l", "c"))  %>%
   kable_styling(position = "left", latex_options = "hold_position") %>%
   #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
+  gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
   save_kable("Tables/ScalesExclusion.tex")
 ```
 
