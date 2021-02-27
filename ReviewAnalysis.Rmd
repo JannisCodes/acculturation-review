@@ -100,9 +100,9 @@ In a first step we import the raw data of the review from the shared coding [Goo
 
 ```{r importCoding, warning=F, message=F}
 urlPsycInfo <- gsheet::construct_download_url('https://docs.google.com/spreadsheets/d/1j3j7q15lhNqPxp3qGnRtc2zuaE7plxWYR7tWKltkdU8/edit?usp=sharing',
-                                              format = "csv", sheetid = "1151157759")
+                                              format = "csv", sheetid = "2129881335")
 urlScales <- gsheet::construct_download_url('https://docs.google.com/spreadsheets/d/1j3j7q15lhNqPxp3qGnRtc2zuaE7plxWYR7tWKltkdU8/edit?usp=sharing',
-                                             format = "csv", sheetid = "799109777")
+                                             format = "csv", sheetid = "1211291373")
 urlInput <- gsheet::construct_download_url('https://docs.google.com/spreadsheets/d/1j3j7q15lhNqPxp3qGnRtc2zuaE7plxWYR7tWKltkdU8/edit?usp=sharing',
                                              format = "csv", sheetid = "168002198")
 urlDomains <- gsheet::construct_download_url('https://docs.google.com/spreadsheets/d/1j3j7q15lhNqPxp3qGnRtc2zuaE7plxWYR7tWKltkdU8/edit?usp=sharing',
@@ -161,23 +161,18 @@ We then go on to clean the data sets in order to use them in later analyses and 
 n_occur_ScaleDT <- data.frame(table(Scale = dt.Scales$Scale)) 
 
 # Extract publication year (crude but seems to work)
-dt.Scales$year <- str_extract(dt.Scales$`reference with doi`, "([0-9]{4})")
+dt.Scales$year <- str_extract(dt.Scales$CitationKey, "([0-9]{4})")
 
-# remove duplicates
-dt.Scales.Unique <- dt.Scales %>%
-  filter(Duplicate == "Unique")
+## remove duplicates
+# not necessary in this sheet
 
 # remove non-available scales
-dt.Scales.Added <- dt.Scales %>%
-  filter(Duplicate == "Unique",
-         added == 1)
+dt.Scales.Coded <- dt.Scales %>%
+  filter(Coded == 1)
 
 # remove excluded scales
 dt.Scales.Included <- dt.Scales %>%
-  filter(Duplicate == "Unique",
-         added == 1, 
-         is.na(Comment)
-         )
+  filter(Coded == 1)
 ```
 
 ```{r cleanEmpirical, results='asis'}
@@ -186,23 +181,23 @@ dt.psych <- dt.PsycInfo
 
 # title screening
 dt.psych.title <- dt.PsycInfo %>%
-  filter(FinalTitle == 1)
+  filter(TitleScreening == 1)
 
 # abstract screening
 dt.psych.abstract <- dt.PsycInfo %>%
-  filter(FinalTitle == 1,
-         FinalAbstract == 1)
+  filter(TitleScreening == 1,
+         AbstractScreening == 1)
 
 # empirical
 dt.psych.empirical <- dt.PsycInfo %>%
-  filter(FinalTitle == 1,
-         FinalAbstract == 1,
+  filter(TitleScreening == 1,
+         AbstractScreening == 1,
          empirical != 0)
 
 # included
 dt.psych.included <- dt.PsycInfo %>%
-  filter(FinalTitle == 1,
-         FinalAbstract == 1,
+  filter(TitleScreening == 1,
+         AbstractScreening == 1,
          empirical != 0,
          MissingABCD == 0)
 ```
@@ -225,10 +220,10 @@ psychData <- sqldf("SELECT l.*, r.*
 The first data set we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review we found five major reviews that reviewed the measurement of acculturation [@Celenk2011; @Maestas2000; @Matsudaira2006; @Wallace2010; @Zane2004].  
 
 ### Exclusions  
-Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Review != "own",])` scales, of which `r nrow(dt.Scales[dt.Scales$Duplicate == "Duplicate" & dt.Scales$Review != "own",])` were duplicates. From our own review we added `r nrow(dt.Scales[dt.Scales$Review == "own review",])` additional validation studies. After removing duplicates this meant that we considered a total of `r nrow(dt.Scales[dt.Scales$Duplicate == "Unique",])` unique scales for our coding. Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$Comment),])`, because they were either not accessible or did not fit the the topic of our review (see Table \@ref(tab:ScalesExclusion)).  
+Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Source != "own review",])` scales. From our own review we added `r nrow(dt.Scales[dt.Scales$Source == "own review",])` additional validation studies. ]. Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$MissingNote),])`, because they were either not accessible or did not fit the the topic of our review (see Table \@ref(tab:ScalesExclusion)).  
 
 ```{r ScalesExclusion, results='asis'}
-data.frame(table(Exclusion = dt.Scales$Comment)) %>%
+data.frame(table(Exclusion = dt.Scales$MissingNote)) %>%
   arrange(desc(Freq)) %>%
   kbl(., caption = "Reasons for Exclusion",
       format = "html",
@@ -237,7 +232,7 @@ data.frame(table(Exclusion = dt.Scales$Comment)) %>%
   kable_classic(full_width = F, 
                 lightable_options = "hover", 
                 html_font = "Cambria")
-data.frame(table(Exclusion = dt.Scales$Comment)) %>%
+data.frame(table(Exclusion = dt.Scales$MissingNote)) %>%
   arrange(desc(Freq)) %>%
   kbl(., 
       label = "ScalesExclusion",
@@ -253,7 +248,7 @@ data.frame(table(Exclusion = dt.Scales$Comment)) %>%
   save_kable("Tables/ScalesExclusion.tex")
 ```
 
-The remaining `r nrow(dt.Scales[dt.Scales$Duplicate == "Unique" & is.na(dt.Scales$Comment),])` scales are listed in Table \@ref(tab:ScaleTbl).  
+The remaining `r nrow(dt.Scales[is.na(dt.Scales$Comment),])` scales are listed in Table \@ref(tab:ScaleTbl).  
 
 ```{r ScaleTbl}
 dt.Scales.Included %>%
@@ -261,9 +256,9 @@ dt.Scales.Included %>%
                                          pattern = c("@Celenk2011", "@Maestas2000", "@Matsudaira2006", "@Wallace2010", "@Zane2004", "own review"), 
                                          replacement = c("CEL", "MAE", "MAT", "WAL", "ZAN", "OWN"), 
                                          vectorize_all = FALSE)) %>%
-  dplyr::select(Scale, Reference, `Source ^a^` = SourceShort, 
+  dplyr::select(Scale, CitationKey, `Source ^a^` = SourceShort, 
                 Affect, 	Behavior,	Cognition,	Desire,
-                domainScale,Sample,	IncludesMajority, 
+                Sample,	IncludesMajority, 
                 HostCountry,	OriginCountry) %>%
   mutate_at(vars(Affect, 	Behavior,	Cognition, Desire), ~replace_na(., 0)) %>%
   kbl(., caption = "Integration Scales",
@@ -279,9 +274,9 @@ dt.Scales.Included %>%
                                          pattern = c("@Celenk2011", "@Maestas2000", "@Matsudaira2006", "@Wallace2010", "@Zane2004", "own review"), 
                                          replacement = c("CEL", "MAE", "MAT", "WAL", "ZAN", "OWN"), 
                                          vectorize_all = FALSE)) %>%
-  dplyr::select(Scale, Reference, `Source [note]"` = SourceShort, 
+  dplyr::select(Scale, CitationKey, `Source [note]"` = SourceShort, 
                 Affect, 	Behavior,	Cognition,	Desire,
-                domainScale,Sample,	IncludesMajority, 
+                Sample,	IncludesMajority, 
                 HostCountry,	OriginCountry) %>%
   mutate_at(vars(Affect, 	Behavior,	Cognition, Desire), ~replace_na(., 0)) %>%
   kbl(., 
@@ -602,7 +597,7 @@ After analysis of the scales validations, we assessed the empirical papers we co
 ### Exclusions  
 The search produced a total of `r nrow(dt.psych)` results. We subsequently screened out results that did not fit into our review. We excluded `r nrow(dt.psych)-nrow(dt.psych.title)` results in the title screening (for exclusion reasons see Table \@ref(tab:PsychExclusionTitle)) as well as an additional `r nrow(dt.psych.title)-nrow(dt.psych.abstract)` results during the abstract screening (for exclusion reasons see Table \@ref(tab:PsychExclusionAbstract)).  
 ```{r PsychExclusionTitle, results='asis'}
-data.frame(table(Exclusion = dt.psych$NoteTitle)) %>%
+data.frame(table(Exclusion = dt.psych$TitleNote)) %>%
   arrange(desc(Freq)) %>%
   kbl(., caption = "Reasons for Exclusion Title Screening",
       format = "html",
@@ -614,7 +609,7 @@ data.frame(table(Exclusion = dt.psych$NoteTitle)) %>%
 ```
 
 ```{r PsychExclusionAbstract, results='asis'}
-data.frame(table(Exclusion = dt.psych$NoteAbstract)) %>%
+data.frame(table(Exclusion = dt.psych$AbstractNote)) %>%
   arrange(desc(Freq)) %>%
   kbl(., caption = "Reasons for Exclusion Abstract Screening",
       format = "html",
@@ -1919,27 +1914,27 @@ Parallel coordinates plot is frequently recommended in the literature of multidi
 
 ```{r PsychDisciplineDimensionNetwork, message= F, fig.cap="Parallel coordinates plot showing all combinaitons of scale dimensions colored by discipline."}
 library(viridis)
-psychDataDisciplines %>%
-  dplyr::select(Key, discipline02, Affect, Behavior, Cognition, Desire) %>%
-  mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
-  gather(ABCD, value, -c(Key, discipline02)) %>%
-  ggplot(aes(x = ABCD,y = value, group = Key, color = discipline02)) +
-  geom_path(position = position_jitter(w=0.02, h=0.04), 
-            alpha = .2,
-            size = 1) +
-  scale_y_continuous(breaks=c(0,1),
-                     labels=c("No", "yes")) +
-  xlab("Dimension") +
-  ylab("Dimension measured") +
-  #scale_color_viridis(discrete = TRUE, option = "D") +
-  # scale_color_discrete(name="Test",
-  #                        labels=discipline_labs_lng) +
-  scale_color_brewer(palette = "Set1", 
-                     name="Discipline",
-                     labels=discipline_labs_lng) +
-  theme_Publication()+
-  theme(strip.background =element_rect(fill="grey14", color="grey14"),
-        strip.text = element_text(colour = 'white', face="bold"))
+# psychDataDisciplines %>%
+#   dplyr::select(Key, discipline02, Affect, Behavior, Cognition, Desire) %>%
+#   mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+#   gather(ABCD, value, -c(Key, discipline02)) %>%
+#   ggplot(aes(x = ABCD,y = value, group = Key, color = discipline02)) +
+#   geom_path(position = position_jitter(w=0.02, h=0.04), 
+#             alpha = .2,
+#             size = 1) +
+#   scale_y_continuous(breaks=c(0,1),
+#                      labels=c("No", "yes")) +
+#   xlab("Dimension") +
+#   ylab("Dimension measured") +
+#   #scale_color_viridis(discrete = TRUE, option = "D") +
+#   # scale_color_discrete(name="Test",
+#   #                        labels=discipline_labs_lng) +
+#   scale_color_brewer(palette = "Set1", 
+#                      name="Discipline",
+#                      labels=discipline_labs_lng) +
+#   theme_Publication()+
+#   theme(strip.background =element_rect(fill="grey14", color="grey14"),
+#         strip.text = element_text(colour = 'white', face="bold"))
   
 ```
 

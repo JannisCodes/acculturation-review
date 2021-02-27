@@ -46,10 +46,10 @@ load("data/wrangled.RData")
 Based on the systematic review and its coding, the first data set we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review we found five major works that reviewed the measurement of acculturation \citep{Celenk2011, Maestas2000, Matsudaira2006, Wallace2010, Zane2004}. After removal of duplicate scales, we added any scale validation that was present in our own systematic review but not included in the previous reviews. For each measure we extracted the full item list as well as the item scoring prior to coding. A comprehensive and interactive database of the scales, with reference- and publication information, as well as our experience elements and -context coding is available in our online supplementary information as well as on our open science repository (\hl{OSF and/or github citation here}).  
 
 \subsubsection{Methods}  
-Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Review != "own",])` scales, of which `r nrow(dt.Scales[dt.Scales$Duplicate == "Duplicate" & dt.Scales$Review != "own",])` were duplicates. From our own review we added `r nrow(dt.Scales[dt.Scales$Review == "own review",])` additional validation studies. After removing duplicates this meant that we considered a total of `r nrow(dt.Scales[dt.Scales$Duplicate == "Unique",])` unique scales for our coding. Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$Comment),])`, because they were either not accessible or did not fit the the topic of our review (see Table \ref{tab:ScalesExclusion}). The scales had an average of \hl{X.XX} items and \hl{X.XX} sub-scales. Most items were rated on a five-point (\hl{XX.XX}\%) or four-point likert-type scale (\hl{XX.XX}\%), with only \hl{X} scales including categorical ratings. About a fifth of scales (`r round(nrow(filter(dt.Scales, IncludesMajority == 1, Duplicate == "Unique"))/nrow(dt.Scales[dt.Scales$Duplicate=="Unique",])*100,2)`\%) included majority group members in their validation studies. The earliest included validation was from `r min(dt.Scales$year, na.rm = T)` with a majority of scales being validated around the turn of the 21\textsuperscript{st} century and the latest included validation study in `r max(dt.Scales$year, na.rm = T)`.  
+Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Source != "own review",])` scales. From our own review we added `r nrow(dt.Scales[dt.Scales$Source == "own review",])` additional validation studies. After removing duplicates this meant that we considered a total of `r nrow(dt.Scales)` unique scales for our coding. Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$MissingNote),])`, because they were either not accessible or did not fit the the topic of our review (see Table \ref{tab:ScalesExclusion}). The scales had an average of \hl{X.XX} items and \hl{X.XX} sub-scales. Most items were rated on a five-point (\hl{XX.XX}\%) or four-point likert-type scale (\hl{XX.XX}\%), with only \hl{X} scales including categorical ratings. About a fifth of scales (`r round(nrow(filter(dt.Scales, IncludesMajority == 1))/nrow(dt.Scales)*100,2)`\%) included majority group members in their validation studies. The earliest included validation was from `r min(dt.Scales$year, na.rm = T)` with a majority of scales being validated around the turn of the 21\textsuperscript{st} century and the latest included validation study in `r max(dt.Scales$year, na.rm = T)`.  
 
 ```{r ScalesExclusion}
-data.frame(table(Exclusion = dt.Scales$Comment)) %>%
+data.frame(table(Exclusion = dt.Scales$MissingNote)) %>%
   arrange(desc(Freq)) %>%
   kbl(., 
         #label = "",
@@ -337,32 +337,32 @@ After analysis of the scales validations, we assessed the broader empirical work
 \subsubsection{Methods}
 ```{r EmpiricalExclusion, include=F}
 dt.psych.title <- dt.psych %>%
-  filter(FinalTitle == 1)
+  filter(TitleScreening == 1)
 
 # abstract screening
 dt.psych.abstract <- dt.psych %>%
-  filter(FinalTitle == 1,
-         FinalAbstract == 1)
+  filter(TitleScreening == 1,
+         AbstractScreening == 1)
 
 # empirical
 dt.psych.empirical <- dt.psych %>%
-  filter(FinalTitle == 1,
-         FinalAbstract == 1,
+  filter(TitleScreening == 1,
+         AbstractScreening == 1,
          empirical != 0)
 
 # included
 dt.psych.included <- dt.psych %>%
-  filter(FinalTitle == 1,
-         FinalAbstract == 1,
+  filter(TitleScreening == 1,
+         AbstractScreening == 1,
          empirical != 0,
          MissingABCD == 0)
 
 # reasons for exclusion
-exclTitle <- data.frame(table(Exclusion = dt.psych$NoteTitle)) %>%
+exclTitle <- data.frame(table(Exclusion = dt.psych$TitleNote)) %>%
   mutate(screening = "Title") %>%
   arrange(desc(Freq))
 
-exclAbstract <- data.frame(table(Exclusion = dt.psych$NoteAbstract)) %>%
+exclAbstract <- data.frame(table(Exclusion = dt.psych$AbstractNote)) %>%
   mutate(screening = "Abstract") %>%
   arrange(desc(Freq))
 
@@ -394,8 +394,8 @@ rbind(exclTitle, exclAbstract, exclFull) %>%
 The search produced a total of \hl{XXX} results to which we added \hl{XX} articles through contacts with experts in the field. We subsequently screened out results that did not fit into our review. After duplicate removal ($N_{excluded}$ = \hl{XX}, $N_{screened}$ = `r nrow(dt.psych)`), we excluded `r nrow(dt.psych)-nrow(dt.psych.title)` results in the title screening as well as an additional `r nrow(dt.psych.title)-nrow(dt.psych.abstract)` results during the abstract screening. Of the remaining `r nrow(dt.psych.abstract)` results, `r nrow(dt.psych.empirical)` papers presented empirical work on acculturation and were coded. The `r nrow(dt.psych.abstract %>% filter(empirical==0))` non-empirical results were reviews, which were not coded because they did not measure cultural adaptation. During the full text coding we excluded an additional `r length(dt.psych.empirical$MissingABCD[dt.psych.empirical$MissingABCD==1])` results because they were either not relevant or were not accessible (for exclusion reasons see Table \ref{tab:EmpiricalExclusion} and for our PRISMA diagram see Figure \ref{fig:PRISMA}). 
 
 ```{r PRISMA, include=F}
-prismaGr(found = 516,
-         found_other = 18,
+prismaGr(found = 1625,
+         found_other = 187,
          no_dupes = nrow(dt.psych), 
          screened = nrow(dt.psych), 
          screen_exclusions = nrow(dt.psych)-nrow(dt.psych.title), 
