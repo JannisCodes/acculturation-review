@@ -336,6 +336,9 @@ After analysis of the scales validations, we assessed the broader empirical work
 
 \subsubsection{Methods}
 ```{r EmpiricalExclusion, include=F}
+dt.psych.unique <- dt.psych %>%
+  filter(SearchDuplicate != "TRUE")
+
 dt.psych.title <- dt.psych %>%
   filter(TitleScreening == 1)
 
@@ -391,19 +394,19 @@ rbind(exclTitle, exclAbstract, exclFull) %>%
   save_kable("Tables/EmpiricalExclusion.tex")
 ```
 
-The search produced a total of \hl{XXX} results to which we added \hl{XX} articles through contacts with experts in the field. We subsequently screened out results that did not fit into our review. After duplicate removal ($N_{excluded}$ = \hl{XX}, $N_{screened}$ = `r nrow(dt.psych)`), we excluded `r nrow(dt.psych)-nrow(dt.psych.title)` results in the title screening as well as an additional `r nrow(dt.psych.title)-nrow(dt.psych.abstract)` results during the abstract screening. Of the remaining `r nrow(dt.psych.abstract)` results, `r nrow(dt.psych.empirical)` papers presented empirical work on acculturation and were coded. The `r nrow(dt.psych.abstract %>% filter(empirical==0))` non-empirical results were reviews, which were not coded because they did not measure cultural adaptation. During the full text coding we excluded an additional `r length(dt.psych.empirical$MissingABCD[dt.psych.empirical$MissingABCD==1])` results because they were either not relevant or were not accessible (for exclusion reasons see Table \ref{tab:EmpiricalExclusion} and for our PRISMA diagram see Figure \ref{fig:PRISMA}). 
+The search produced a total of `r nrow(dt.psych)` results to which we added \hl{XX} articles through contacts with experts in the field. We subsequently screened out results that did not fit into our review. After duplicate removal ($N_{excluded}$ = `r nrow(dt.psych)-nrow(dt.psych.unique)`, $N_{screened}$ = `r nrow(dt.psych.unique)`), we excluded `r nrow(dt.psych.unique)-nrow(dt.psych.title)` results in the title screening as well as an additional `r nrow(dt.psych.title)-nrow(dt.psych.abstract)` results during the abstract screening. Of the remaining `r nrow(dt.psych.abstract)` results, `r nrow(dt.psych.empirical)` papers presented empirical work on acculturation and were coded. The `r nrow(dt.psych.abstract %>% filter(empirical==0))` non-empirical results were reviews, which were not coded because they did not measure cultural adaptation. During the full text coding we excluded an additional `r length(dt.psych.empirical$MissingABCD[dt.psych.empirical$MissingABCD==1])` results because they were either not relevant or were not accessible (for exclusion reasons see Table \ref{tab:EmpiricalExclusion} and for our PRISMA diagram see Figure \ref{fig:PRISMA}). 
 
 ```{r PRISMA, include=F}
-prismaGr(found = 1625,
+prismaGr(found = nrow(dt.psych),
          found_other = 187,
-         no_dupes = nrow(dt.psych), 
-         screened = nrow(dt.psych), 
+         no_dupes = nrow(dt.psych.unique), 
+         screened = nrow(dt.psych.unique), 
          screen_exclusions = nrow(dt.psych)-nrow(dt.psych.title), 
          full_text = nrow(dt.psych.title),
          full_text_exclusions = nrow(dt.psych.title)-nrow(dt.psych.abstract), 
          qualitative = nrow(dt.psych.abstract), 
          quantitative = nrow(dt.psych.empirical),
-         extra_dupes_box = F,
+         extra_dupes_box = T,
          width = 800, height = 800) %>%
   export_svg() %>%
   charToRaw %>% 
