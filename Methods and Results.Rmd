@@ -977,15 +977,18 @@ PostHocField <- compare_means(Percentage ~ field_labs_lng,
 
 p <- ggplot(FieldComplexity, aes(y=Percentage, x=field_labs_lng, fill=fct_rev(as.factor(complexity))))+
   geom_bar(position = "fill",stat = "identity", color = "black", width = .9) +
-  #stat_compare_means(label.y = 1.1)+
-  #stat_compare_means(data = PostHocField, comparisons = my_comparisons, label = "p.signif", label.y = c(1.05, 1.1), tip.length = 0.01) +
   scale_y_continuous(labels = scales::percent, breaks = seq(0,1,.2)) +
-  geom_text(aes(label = paste0(round(Percentage,2),"%"), y = Percentage/100), position = position_stack(vjust = 0.5), size = 3) +
+    geom_label(aes(label = paste0(round(Percentage,2),"% [", complexity, "]"), y = Percentage/100),
+             position = position_stack(vjust = 0.5),
+             size = 4,
+             colour = 'black',
+             fill = 'white') +
   labs(title = "Distributions Measurement Complexity",
        y = "Complexity",
        x = "Field",
        fill = "Number of Elements Measured") +
-  scale_fill_brewer(palette = "Pastel1")+
+  #scale_fill_brewer(palette = "Pastel1")+
+  scale_fill_grey(start = 0.8, end = 0.1) +
   theme_Publication()+
   theme(strip.background =element_rect(fill="black", color="black"),
         strip.text = element_text(colour = 'white', face="bold"))
@@ -1005,7 +1008,7 @@ ggstatsplot:::ggsignif_adder(
   x = field_labs_lng,
   y = Percentage,
   df_pairwise = df_pair,
-  ggsignif.args = list(textsize = 3, tip_length = 0.0001)
+  ggsignif.args = list(textsize = 4, tip_length = 0.00025)
 )
 
 ```
