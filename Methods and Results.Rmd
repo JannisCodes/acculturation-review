@@ -1388,6 +1388,7 @@ ggplot(FieldElementComplexity, aes(fill=field_labs_lng, y=avgComplexity, x=reord
 \end{figure}
 <!-- END SECTION -->
 
-
+\subsection{Theoretical Literature}
+We then ran an additional literature search for theories of acculturation...
 
 
