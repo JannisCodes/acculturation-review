@@ -149,10 +149,11 @@ With our main aim of examining the experience structure within the scales, we ex
 
 ```{r  ABCDFreq, include=F, fig.width=12, fig.height=12}
 # barplot of dimension frequency
-ScaleABCDBar <- ggplot(data=ScaleElementFreq, aes(x=Element, y=Frequency)) +
+ScaleABCDBar <- ggplot(data=ScaleElementFreq, aes(x=Element, y=Percentage)) +
   geom_bar(stat="identity", fill="grey14") +
   geom_text(
-    aes(label = paste0("N = ",Frequency)),
+    #aes(label = paste0("N = ",Frequency)),
+    aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
     position=position_stack(vjust=0.5),
     color = "white",
     size = 2.5,
@@ -177,10 +178,11 @@ ScaleABCDBar <- ggplot(data=ScaleElementFreq, aes(x=Element, y=Frequency)) +
         legend.position="none")
 
 # barplot of complexity frequency
-ScaleComplexityBar <- ggplot(data=scaleComplexity, aes(x=complexity, y=Frequency)) +
+ScaleComplexityBar <- ggplot(data=scaleComplexity, aes(x=complexity, y=Percentage)) +
   geom_bar(stat="identity", fill="grey14") +
   geom_text(
-    aes(label = paste0("N = ",Frequency)),
+    #aes(label = paste0("N = ",Frequency)),
+    aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
     position=position_stack(vjust=0.5),
     color = "white",
     size = 2.5,
@@ -209,7 +211,7 @@ ScaleComplexityBar <- ggplot(data=scaleComplexity, aes(x=complexity, y=Frequency
 ScaleABCDComb <- ggplot(ScaleElementCombFreq, aes(x=ExperienceCombination, y=Percentage)) +
   geom_bar(stat="identity", fill="grey14") +
   geom_text(
-    aes(y=Percentage, label = paste0(round(Percentage,2),"% [N = ", Frequency, "]")),
+    aes(y=Percentage, label = paste0(format(round(Percentage,2), nsmall=2),"% [N = ", Frequency, "]")),
     color = "grey14",
     size = 4,
     hjust = -.1,
@@ -486,10 +488,11 @@ We assessed the role of experience aspects in the measurement and then compared 
 
 ```{r EmpPlotFreq, include=F, fig.width=12, fig.height=12}
 # barplot of dimension frequency
-EmpABCDBar <- ggplot(data=EmpElementFreq, aes(x=Element, y=Frequency)) +
+EmpABCDBar <- ggplot(data=EmpElementFreq, aes(x=Element, y=Percentage)) +
   geom_bar(stat="identity", fill="grey14") +
   geom_text(
-    aes(label = paste0("N = ",Frequency)),
+    #aes(label = paste0("N = ",Frequency)),
+    aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
     position=position_stack(vjust=0.5),
     color = "white",
     size = 2.5,
@@ -514,10 +517,11 @@ EmpABCDBar <- ggplot(data=EmpElementFreq, aes(x=Element, y=Frequency)) +
         legend.position="none")
 
 # barplot of complexity frequency
-EmpComplexityBar <- ggplot(data=empComplexity, aes(x=complexity, y=Frequency)) +
+EmpComplexityBar <- ggplot(data=empComplexity, aes(x=complexity, y=Percentage)) +
   geom_bar(stat="identity", fill="grey14") +
   geom_text(
-    aes(label = paste0("N = ",Frequency)),
+    #aes(label = paste0("N = ",Frequency)),
+    aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
     position=position_stack(vjust=0.5),
     color = "white",
     size = 2.5,
@@ -546,7 +550,7 @@ EmpComplexityBar <- ggplot(data=empComplexity, aes(x=complexity, y=Frequency)) +
 EmpABCDComb <- ggplot(EmpElementCombFreq, aes(x=ExperienceCombination, y=Percentage)) +
   geom_bar(stat="identity", fill="grey14") +
   geom_text(
-    aes(y=Percentage, label = paste0(round(Percentage,2),"% [N = ", Frequency, "]")),
+    aes(y=Percentage, label = paste0(format(round(Percentage,2), nsmall=2),"% [N = ", Frequency, "]")),
     color = "grey14",
     size = 4,
     hjust = -.1,
@@ -1238,10 +1242,10 @@ FieldElementBar <- ggplot(data=FieldElementFreq, aes(x=reorder(Element, Percenta
   geom_bar(stat="identity", fill="grey14") +
   geom_text(
     #aes(label = paste0("N = ",Frequency)),
-    aes(label = paste0(round(Percentage,1),"%")),
+    aes(label = paste0(format(round(Percentage,1), nsmall=1), "%")),
     position=position_stack(vjust=0.5),
     color = "white",
-    size = 2.5,
+    size = 3,
     vjust = 0.5
     ) +
   labs(title = "Element Frequency",
@@ -1264,13 +1268,14 @@ FieldElementBar <- ggplot(data=FieldElementFreq, aes(x=reorder(Element, Percenta
         legend.position="none")
 
 # barplot of complexity frequency
-FieldComplexityBar <- ggplot(data=FieldComplexity, aes(x=reorder(complexity, -complexity), y=Frequency)) +
+FieldComplexityBar <- ggplot(data=FieldComplexity, aes(x=reorder(complexity, -complexity), y=Percentage)) +
   geom_bar(stat="identity", fill="grey14") +
   geom_text(
-    aes(label = paste0("N = ",Frequency)),
+    #aes(label = paste0("N = ",Frequency)),
+    aes(label = paste0(format(round(Percentage,1), nsmall=1), "%")),
     position=position_stack(vjust=0.5),
     color = "white",
-    size = 2.5,
+    size = 3,
     vjust = 0.5
     ) +
   labs(title = "Scale Complexity",
@@ -1395,5 +1400,184 @@ We then ran an additional literature search for theories of acculturation...
 Methods here ...
 
 \subsubsection{Results}
-Results here ...
+Results here ...  
+see Figure \ref{fig:ElementsTheories} and Table \ref{tab:TheoriesElementCooccurrences}
 
+```{r TheoriesElementCalc, include=F}
+# Count the times each dimension is measured
+TheoElementFreq <- dt.Theories.Included %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
+  mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+  colSums(., na.rm = FALSE, dims = 1) 
+
+# transform to data frame and make row names name variable
+TheoElementFreq <- data.frame(Element = names(TheoElementFreq), 
+                            Frequency = TheoElementFreq, 
+                            Percentage = TheoElementFreq/nrow(dt.Theories.Included)*100) %>%
+  mutate(Element = fct_reorder(Element, Frequency))
+
+# frequency of unique combinations
+TheoElementCombFreq <- dt.Theories.Included %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
+  #mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+  group_by(Affect, Behavior, Cognition, Desire) %>%
+  summarise(Frequency = n()) %>%
+  ungroup() %>%
+  mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T))
+
+# fill replace ones with colnames to be combined
+for (i in 1:4) {
+    TheoElementCombFreq[[i]] <- str_replace(as.character(TheoElementCombFreq[[i]]), "1", colnames(TheoElementCombFreq)[i])
+}
+
+# collect Elements names for each combination
+TheoElementCombFreq <- TheoElementCombFreq %>%
+  unite("ExperienceCombination",c("Affect", "Behavior", "Cognition", "Desire"), na.rm = TRUE, sep = ", ") %>%
+  mutate(ExperienceCombination = fct_reorder(ExperienceCombination, Frequency),
+         Percentage = Frequency/nrow(dt.Theories.Included)*100,
+         Affect = ifelse(grepl("Affect", ExperienceCombination, fixed = TRUE), 1,0),
+         Behavior = ifelse(grepl("Behavior", ExperienceCombination, fixed = TRUE), 1,0),
+         Cognition = ifelse(grepl("Cognition", ExperienceCombination, fixed = TRUE), 1,0),
+         Desire = ifelse(grepl("Desire", ExperienceCombination, fixed = TRUE), 1,0)) %>%
+  arrange(Frequency)
+
+TheoComplexity <- TheoElementCombFreq %>%
+  select(complexity, Frequency) %>%
+  group_by(complexity) %>%
+  summarise(Frequency = sum(Frequency),
+            Percentage = sum(Frequency)/nrow(dt.Theories.Included)*100) %>%
+  ungroup() %>%
+  mutate(complexity = as.factor(complexity),
+         complexity = fct_reorder(complexity, Frequency))
+
+# Scale complexity for each element
+TheoElementComplexity <- TheoElementCombFreq %>%
+  gather(key = "Element", value = "ElementDum", Affect, Behavior, Cognition, Desire) %>%
+  filter(ElementDum == 1) %>%
+  group_by(Element) %>%
+  summarise(avgComplexity = weighted.mean(x = complexity, w = Frequency),
+            sdComplexity = wtd.var(x = complexity, weights = Frequency),
+            n = sum(Frequency)) %>%
+  ungroup() %>%
+  mutate(seComplexity = sdComplexity/sqrt(n))
+```
+
+```{r TheoriesElementCooccurrences, include=F}
+# make crossproduct matrix to condense co-occurrences (off-diagonals) and get frequencies (diagonals)
+TheoElementCooccure <- as.matrix(dt.Theories.Included %>% dplyr::select(Affect, Behavior, Cognition, Desire) %>% mutate_all(~replace(., is.na(.), 0)))
+TheoElementCooccure <- crossprod(TheoElementCooccure)  # Same as: t(X) %*% X
+#diag(TheoElementCooccure) <- 0       # remove frequencies on diagonals
+#TheoElementCooccure[upper.tri(TheoElementCooccure)] <- ""
+
+TheoElementCooccure %>%
+  kbl(., 
+        #label = "",
+        caption = "Theoretical Literature: Element Co-occurrence Matrix",
+        format = "latex", 
+        linesep = "",
+        booktabs = T,
+        align = rep('c', ncol(TheoElementCooccure)))  %>%
+  kable_styling(position = "left") %>%
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
+  gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  save_kable("Tables/TheoreticalElementCooccurrences.tex")
+```
+
+```{r TheoriesFreq, include=F, fig.width=12, fig.height=12}
+# barplot of dimension frequency
+TheoABCDBar <- ggplot(data=TheoElementFreq, aes(x=Element, y=Percentage)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    #aes(label = paste0("N = ",Frequency)),
+    aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 4.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Element Frequency",
+       y = "Percentage across all Theories",
+       x = "Experience Element")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14"),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+# barplot of complexity frequency
+TheoComplexityBar <- ggplot(data=TheoComplexity, aes(x=complexity, y=Percentage)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    #aes(label = paste0("N = ",Frequency)),
+    aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 4.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Scale Complexity",
+       y = "Frequency across all Theories",
+       x = "Complexity")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+
+# bar plot frequencies
+TheoABCDComb <- ggplot(TheoElementCombFreq, aes(x=ExperienceCombination, y=Percentage)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(y=Percentage, label = paste0(format(round(Percentage,2), nsmall=2),"% [N = ", Frequency, "]")),
+    color = "grey14",
+    size = 4,
+    hjust = -.1,
+    inherit.aes = TRUE
+    ) +
+  scale_y_continuous(limits = c(0, ceiling(max(TheoElementCombFreq$Percentage)*1.15)),
+                     breaks = seq(0, ceiling(max(TheoElementCombFreq$Percentage)*1.15), 5))+
+  labs(y = "Proportion of all theories [in %]",
+       x = "Combination of Experience Elements")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14"),
+        strip.text = element_text(colour = 'white', face="bold"),
+        legend.position="none")
+
+# draw combined graph
+ggdraw() +
+  draw_plot(TheoABCDComb, x = 0, y = 0.3, width = 1, height = .7)+
+  draw_plot(TheoABCDBar, x = 0, y = 0, width = .55, height = .3) +
+  draw_plot(TheoComplexityBar, x = .55, y = 0, width = .45, height = .3) +
+  draw_plot_label(c("(A)", "(B)", "(C)"), c(0, 0, 0.55), c(1, 0.3, 0.3), size = 15)
+```
+
+\begin{figure}[h]
+\centering
+\caption{Scales: Bar graph of the experience element combinations.}
+\includegraphics[width=\textwidth]{Figures/TheoriesFreq-1}
+\label{fig:ElementsTheories}
+\end{figure}
+
+\input{Tables/TheoreticalElementCooccurrences}  

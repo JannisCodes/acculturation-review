@@ -107,12 +107,15 @@ urlInput <- gsheet::construct_download_url('https://docs.google.com/spreadsheets
                                              format = "csv", sheetid = "168002198")
 urlDomains <- gsheet::construct_download_url('https://docs.google.com/spreadsheets/d/1j3j7q15lhNqPxp3qGnRtc2zuaE7plxWYR7tWKltkdU8/edit?usp=sharing',
                                              format = "csv", sheetid = "1826792378")
+urlTheories <- gsheet::construct_download_url('https://docs.google.com/spreadsheets/d/1j3j7q15lhNqPxp3qGnRtc2zuaE7plxWYR7tWKltkdU8/edit?usp=sharing',
+                                             format = "csv", sheetid = "1370266195")
 
 
 dt.PsycInfo <- gsheet::gsheet2tbl(urlPsycInfo)
 dt.Scales <- gsheet::gsheet2tbl(urlScales)
 dt.Input <- gsheet::gsheet2tbl(urlInput)
 dt.Domains <- gsheet::gsheet2tbl(urlDomains)
+dt.Theories <- gsheet::gsheet2tbl(urlTheories)
 
 rm(list = ls(pattern='^url'))
 ```
@@ -155,6 +158,21 @@ rm(fileNam, fieldNam, fieldList, colNam)
 ## Prepare Data Frames  
 
 We then go on to clean the data sets in order to use them in later analyses and keep track of exclusion filters.  
+
+```{r cleanTheories, results='asis'}
+# Extract publication year (crude but seems to work)
+dt.Theories$year <- str_extract(dt.Theories$Source, "([0-9]{4})")
+
+## remove duplicates
+# not necessary in this sheet
+
+# remove non-available scales
+# not necessary in this sheet
+
+# remove excluded scales
+dt.Theories.Included <- dt.Theories %>%
+  filter(is.na(MissingABCD))
+```
 
 ```{r cleanScales, results='asis'}
 # Frequency of all scales within the 
@@ -1601,7 +1619,7 @@ data.frame(table(psychDataDisciplines$discipline02)) %>%
                 lightable_options = "hover",
                 html_font = "Cambria")
 
-save(dt.Scales, dt.Scales.Included, dt.psych, dt.psych.included, psychData, dt.Domains, psychDataDisciplines, file = "data/wrangled.RData")
+save(dt.Scales, dt.Scales.Included, dt.psych, dt.psych.included, psychData, dt.Domains, dt.Theories, dt.Theories.Included, psychDataDisciplines, file = "data/wrangled.RData")
 ```
 
 This coding resulted in `r length(unique(psychDataDisciplines$discipline02))` relatively well-balanced categories with non of the fields having too few observations. In the following sections we use these discipline codes to assess some general differences in assessing and addressing acculturation.    
