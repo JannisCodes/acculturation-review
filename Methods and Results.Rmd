@@ -156,7 +156,7 @@ ScaleABCDBar <- ggplot(data=ScaleElementFreq, aes(x=Element, y=Percentage)) +
     aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
     position=position_stack(vjust=0.5),
     color = "white",
-    size = 2.5,
+    size = 4,
     vjust = 0.5
     ) +
   labs(title = "Element Frequency",
@@ -185,7 +185,7 @@ ScaleComplexityBar <- ggplot(data=scaleComplexity, aes(x=complexity, y=Percentag
     aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
     position=position_stack(vjust=0.5),
     color = "white",
-    size = 2.5,
+    size = 4,
     vjust = 0.5
     ) +
   labs(title = "Scale Complexity",
@@ -495,7 +495,7 @@ EmpABCDBar <- ggplot(data=EmpElementFreq, aes(x=Element, y=Percentage)) +
     aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
     position=position_stack(vjust=0.5),
     color = "white",
-    size = 2.5,
+    size = 4,
     vjust = 0.5
     ) +
   labs(title = "Element Frequency",
@@ -524,7 +524,7 @@ EmpComplexityBar <- ggplot(data=empComplexity, aes(x=complexity, y=Percentage)) 
     aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
     position=position_stack(vjust=0.5),
     color = "white",
-    size = 2.5,
+    size = 4,
     vjust = 0.5
     ) +
   labs(title = "Scale Complexity",
@@ -1494,7 +1494,7 @@ TheoABCDBar <- ggplot(data=TheoElementFreq, aes(x=Element, y=Percentage)) +
     aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
     position=position_stack(vjust=0.5),
     color = "white",
-    size = 4.5,
+    size = 4,
     vjust = 0.5
     ) +
   labs(title = "Element Frequency",
@@ -1523,7 +1523,7 @@ TheoComplexityBar <- ggplot(data=TheoComplexity, aes(x=complexity, y=Percentage)
     aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
     position=position_stack(vjust=0.5),
     color = "white",
-    size = 4.5,
+    size = 4,
     vjust = 0.5
     ) +
   labs(title = "Scale Complexity",
