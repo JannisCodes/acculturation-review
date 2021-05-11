@@ -1672,9 +1672,10 @@ ggplot(data=ComplexityFrequencyAll, aes(x=reorder(ExperienceCombination, AspectT
   geom_bar(position="stack", stat="identity") +
   labs(title = "Complexity Proportions for each Experience Aspect",
        y = "Percentage across all articles",
-       x = "Number of Aspects")+
+       x = "Number of Aspects",
+       fill = "Number of Aspects Considered")+
   scale_y_continuous(limits = c(0, 100))+
-  scale_fill_grey(start = 0.1, end = 0.8) +
+  scale_fill_grey(start = 0.1, end = 0.8, breaks=c("1","2","3", "4")) +
   #scale_fill_manual(values=c("#F98F45", "#12908E"))+
   #scale_fill_brewer(palette="YlGnBu")+
   facet_wrap(~source)+
@@ -1705,7 +1706,7 @@ ggplot(data=ComplexityFrequencyAll, aes(x=reorder(ExperienceCombination, AspectT
         strip.text = element_text(colour = 'white', face="bold", size = 16),
         panel.background = element_rect(fill = "transparent"),
         plot.background = element_rect(fill = alpha('white', 0.5)),
-        legend.title = element_blank(),
+        #legend.title = element_blank(),
         legend.key.size = unit(.4, "cm"),
         legend.position="bottom")
 ```
