@@ -1371,7 +1371,7 @@ ggdraw() +
 
 \subsection{Compare Literature Levels [to be incorporated with the overall conclusions]}
 
-Compare Theory - Scale - Application levels --- see Figures \ref{fig:CombinedAspects}, \ref{fig:CombinedComplexity}, \ref{fig:CombinedComplexityAspects}.
+Compare Theory - Scale - Application levels --- see Figures \ref{fig:CombinedAspects}, \ref{fig:CombinedComplexity}, \ref{fig:CombinedAspectComplexity}.
 
 ```{r CombinedABCDBar, include=F, fig.width=16, fig.height=9}
 ElementFrequencyAll <- gdata::combine(Theories = TheoElementFreq,
@@ -1522,7 +1522,11 @@ ggplot(data=ComplexityFrequencyAllLong, aes(x=reorder(complexity, Proportion), y
         legend.position="none")
 ```
 
-```{r CombinedComplexityBarAspects, include=F, fig.width=16, fig.height=9}
+```{r CombinedComplexityAspectBar, include=F, fig.width=16, fig.height=9}
+#                         #
+#       OLD VERSION       #
+#                         #
+
 Theories <- TheoElementCombFreq %>%
   mutate(Affect = Affect*Frequency,
          Behavior = Behavior*Frequency,
@@ -1629,6 +1633,83 @@ ggplot(data=ComplexityFrequencyAllLong, aes(x=reorder(complexity, Proportion), y
         legend.position="bottom")
 ```
 
+```{r CombinedAspectComplexityBar, include=F, fig.width=16, fig.height=9}
+Theories <- TheoElementCombFreq %>% 
+  mutate(ExperienceCombination = strsplit(as.character(ExperienceCombination), ", ")) %>% 
+  unnest(ExperienceCombination) %>%
+  group_by(ExperienceCombination, complexity) %>%
+  summarise(Frequency = sum(Frequency)) %>%
+  mutate(AspectTotal = sum(Frequency), 
+         Proportion = Frequency/AspectTotal,
+         Percentage = Frequency/sum(Frequency)*100)
+
+Scales <- ScaleElementCombFreq %>%
+  mutate(ExperienceCombination = strsplit(as.character(ExperienceCombination), ", ")) %>% 
+  unnest(ExperienceCombination) %>%
+  group_by(ExperienceCombination, complexity) %>%
+  summarise(Frequency = sum(Frequency)) %>%
+  mutate(AspectTotal = sum(Frequency), 
+         Proportion = Frequency/AspectTotal,
+         Percentage = Frequency/sum(Frequency)*100)
+
+Empirical <- EmpElementCombFreq %>%
+  mutate(ExperienceCombination = strsplit(as.character(ExperienceCombination), ", ")) %>% 
+  unnest(ExperienceCombination) %>%
+  group_by(ExperienceCombination, complexity) %>%
+  summarise(Frequency = sum(Frequency)) %>%
+  mutate(AspectTotal = sum(Frequency), 
+         Proportion = Frequency/AspectTotal,
+         Percentage = Frequency/sum(Frequency)*100)
+
+ComplexityFrequencyAll <- gdata::combine(Theories, Scales, Empirical)
+
+# ComplexityFrequencyAllLong <- ComplexityFrequencyAll %>% 
+#   select(source, complexity, Percentage, AffectProp, BehaviorProp, CognitionProp, DesireProp) %>%
+#   gather(., Aspect, Proportion, c(AffectProp, BehaviorProp, CognitionProp, DesireProp), factor_key=TRUE) %>%
+#   mutate(Aspect = gsub("Prop","",Aspect))
+
+ggplot(data=ComplexityFrequencyAll, aes(x=reorder(ExperienceCombination, AspectTotal), y=Percentage, fill=forcats::fct_rev(as.factor(complexity)))) +
+  geom_bar(position="stack", stat="identity") +
+  labs(title = "Complexity Proportions for each Experience Aspect",
+       y = "Percentage across all articles",
+       x = "Number of Aspects")+
+  scale_y_continuous(limits = c(0, 100))+
+  scale_fill_grey(start = 0.1, end = 0.8) +
+  #scale_fill_manual(values=c("#F98F45", "#12908E"))+
+  #scale_fill_brewer(palette="YlGnBu")+
+  facet_wrap(~source)+
+  #scale_fill_brewer(palette="Paired")+
+  coord_flip()+
+  # geom_text(data = ComplexityFrequencyAll, 
+  #           aes(x=reorder(complexity,Percentage), 
+  #               y=Percentage, 
+  #               fill=NULL, 
+  #               label = paste0(format(round(Percentage,1), nsmall = 1), " %")),
+  #   position = position_dodge(.9),
+  #   size = 5,
+  #   vjust = 0.7,
+  #   color = "Black",
+  #   hjust = -0.2
+  #   #color = "White",
+  #   #hjust = 1.2
+  #   ) +
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14"),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=18, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=16),
+        axis.text.y = element_text(size=16),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold", size = 16),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)),
+        legend.title = element_blank(),
+        legend.key.size = unit(.4, "cm"),
+        legend.position="bottom")
+```
+
 \begin{figure}[h]
 \centering
 \caption{Literaure Levels: Bar graph of the experience aspect frequencies for theoretical, methodological, and broader empirical literature.}
@@ -1645,7 +1726,7 @@ ggplot(data=ComplexityFrequencyAllLong, aes(x=reorder(complexity, Proportion), y
 
 \begin{figure}[h]
 \centering
-\caption{Literaure Levels: Bar graph showing the relative importance of the experience aspects within each of the complexity levels for theoretical, methodological, and broader empirical literature.}
-\includegraphics[width=\textwidth]{Figures/CombinedComplexityBarAspects-1}
-\label{fig:CombinedComplexityAspects}
+\caption{Literaure Levels: Bar graph showing the relative importance of the complexity level within each of the experience aspects for theoretical, methodological, and broader empirical literature.}
+\includegraphics[width=\textwidth]{Figures/CombinedAspectComplexityBar-1}
+\label{fig:CombinedAspectComplexity}
 \end{figure}
