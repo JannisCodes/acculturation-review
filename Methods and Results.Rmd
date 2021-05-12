@@ -1181,14 +1181,100 @@ ggplot(FieldElementComplexity, aes(fill=field_labs_lng, y=avgComplexity, x=reord
 <!-- END SECTION -->
 
 \subsection{Theoretical Literature}
-We then ran an additional literature search for theories of acculturation...  
+```{r TheoryExclusion, include=F}
+# duplicate
+dt.TheorySearch.unique <- dt.TheorySearch %>%
+  filter(DuplicateAny != "TRUE")
 
-\subsubsection{Methods}   
-Methods here ...
+# title screening
+dt.TheorySearch.title <- dt.TheorySearch %>%
+  filter(TitleScreening == 1)
+
+# abstract screening
+dt.TheorySearch.abstract <- dt.TheorySearch %>%
+  filter(TitleScreening == 1,
+         AbstractScreening == 1)
+
+# full-text inclusion
+dt.TheorySearch.included <- dt.TheorySearch %>%
+  filter(TitleScreening == 1,
+         AbstractScreening == 1,
+         Extracted == 1)
+
+# added from empirical literature
+dt.TheorySearch.added <- nrow(dt.Theories.Included)-nrow(dt.TheorySearch.included)
+
+## reasons for exclusion ##
+# title exclusion reason
+exclTitle <- data.frame(table(Exclusion = dt.TheorySearch$TitleNote)) %>%
+  mutate(screening = "Title") %>%
+  arrange(desc(Freq))
+
+# abstract exclusion reason
+exclAbstract <- data.frame(table(Exclusion = dt.TheorySearch$AbstractNote)) %>%
+  mutate(screening = "Abstract") %>%
+  arrange(desc(Freq))
+
+# full text exclusion reason
+exclFull <- data.frame(table(Exclusion = dt.TheorySearch$ExtractedReason)) %>%
+  mutate(screening = "Full Text") %>%
+  arrange(desc(Freq))
+
+rbind(exclTitle, exclAbstract, exclFull) %>%
+  reshape(., idvar = "Exclusion", timevar = "screening", direction = "wide") %>%
+  mutate_if(is.numeric, ~replace(., is.na(.), "")) %>%
+  rename_at(vars(starts_with("Freq.")),
+            funs(sub("Freq[.]", "", .))) %>%
+  rename(., "Exclusion Reason" = Exclusion) %>%
+  kbl(., 
+        #label = "",
+        caption = "Exclusion Reasons Theoretical Literature",
+        format = "latex",
+        linesep = "",
+        booktabs = T,
+        align = c("l", "c", "c", "c"))  %>%
+  add_header_above(., c(" ", "Screening" = 3)) %>%
+  kable_styling(position = "left") %>%
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
+  gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
+  save_kable("Tables/TheoreticalExclusion.tex")
+```
+
+```{r PrismaTheories, include=F}
+prismaGr(found = nrow(dt.TheorySearch),
+         found_other = dt.TheorySearch.added,
+         no_dupes = nrow(dt.TheorySearch.unique)+dt.TheorySearch.added, 
+         screened = nrow(dt.TheorySearch.unique)+dt.TheorySearch.added, 
+         screen_exclusions = nrow(dt.TheorySearch.unique)-nrow(dt.TheorySearch.abstract), 
+         full_text = nrow(dt.TheorySearch.abstract)+dt.TheorySearch.added,
+         full_text_exclusions = nrow(dt.TheorySearch.abstract)-nrow(dt.TheorySearch.included), 
+         qualitative = nrow(dt.Theories.Included), 
+         #quantitative = nrow(dt.Theories.Included), 
+         extra_dupes_box = F,
+         width = 800, height = 800) %>%
+  export_svg() %>%
+  charToRaw %>% 
+  rsvg_pdf("./Figures/PRISMA_Theories.pdf")
+```
+
+The most abstract level of our review was concerned with how researchers conceptualized psychological acculturation in their theoretical work. Our theory-specific literature search produced a total of `r nrow(dt.TheorySearch)` results from which we identified `r nrow(dt.TheorySearch.included)` theories. From our review of the empirical literature we added an additional `r dt.TheorySearch.added` theories (total N = `r nrow(dt.Theories.Included)`, for exclusion reasons see Table \ref{tab:TheoreticalExclusion} and for our PRISMA diagram see Figure \ref{fig:PRISMA_Theories}. A full table of all theories, with references, and final coding is available in our online supplementary information as well as on our open science repository (\hl{OSF and/or github citation here}). 
+
+\begin{figure}[h]
+\centering
+\caption{PRISMA Diagram Theoretical Literature. Currently generated in R based on n(row) maybe make prettier.}
+\includegraphics[width=\textwidth]{Figures/PRISMA_Theories}
+\label{fig:PRISMA_Theories}
+\end{figure}
+
+\input{Tables/TheoreticalExclusion}
+
+\subsubsection{Methods}  
+The authors of the `r nrow(dt.Theories.Included)` included theoretical works self-categoried their contributions as a theoretical conceptualization `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Conceptualization"))`, theoretical framework `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Framework"))`, theory `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Theory"))`, or theoretical model `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Model"))`. And while `r nrow(dt.Theories.Included %>% filter(GeneralAspect=="Aspect"))` authors explicitly targeted a specific part of acculturation (e.g., `r nrow(dt.Theories.Included %>% filter(Target=="Identity"))` identity acculturation theories and `r nrow(dt.Theories.Included %>% filter(Target=="Work"))` labor market acculturation theories), a majority of theoretical works offered commentary on the overall construct of acculturation (N = `r nrow(dt.Theories.Included %>% filter(GeneralAspect=="General"))`). Looking at the types of theory building, a majority of proposal were purely theoretical (N = `r nrow(dt.Theories.Included %>% filter(SourceType=="theoretical"))`) with the remaining theoretical works growing out of qualitative investigations (such as grounded theory approaches; N = `r nrow(dt.Theories.Included %>% filter(SourceType=="empirical"))`).
+
+\Warning\ CODING SHOULD BE DISCUSSED. 
 
 \subsubsection{Results}
-Results here ...  
-see Figure \ref{fig:ElementsTheories} and Table \ref{tab:TheoriesElementCooccurrences}
 
 ```{r TheoriesElementCalc, include=F}
 # Count the times each dimension is measured
@@ -1228,6 +1314,7 @@ TheoElementCombFreq <- TheoElementCombFreq %>%
          Desire = ifelse(grepl("Desire", ExperienceCombination, fixed = TRUE), 1,0)) %>%
   arrange(Frequency)
 
+# summarize by aspect complexity
 TheoComplexity <- TheoElementCombFreq %>%
   select(complexity, Frequency) %>%
   group_by(complexity) %>%
@@ -1236,6 +1323,9 @@ TheoComplexity <- TheoElementCombFreq %>%
   ungroup() %>%
   mutate(complexity = as.factor(complexity),
          complexity = fct_reorder(complexity, Frequency))
+
+# overall complexity
+TheoComplexityAverage <- weighted.mean(as.numeric(as.character(TheoComplexity$complexity)), TheoComplexity$Frequency)
 
 # Scale complexity for each element
 TheoElementComplexity <- TheoElementCombFreq %>%
@@ -1246,7 +1336,8 @@ TheoElementComplexity <- TheoElementCombFreq %>%
             sdComplexity = wtd.var(x = complexity, weights = Frequency),
             n = sum(Frequency)) %>%
   ungroup() %>%
-  mutate(seComplexity = sdComplexity/sqrt(n))
+  mutate(seComplexity = sdComplexity/sqrt(n)) %>%
+  arrange(-avgComplexity)
 ```
 
 ```{r TheoriesElementCooccurrences, include=F}
@@ -1359,6 +1450,10 @@ ggdraw() +
   draw_plot(TheoComplexityBar, x = .55, y = 0, width = .45, height = .3) +
   draw_plot_label(c("(A)", "(B)", "(C)"), c(0, 0, 0.55), c(1, 0.3, 0.3), size = 15)
 ```
+
+Our main goal was to assess the use of the four affect, behavior, cognition, and desire elements within the theoretical conceptualizations of psychological acculturation. Looking at the overall usage of the experience aspects we find that virtually all theoretical works included behavioral aspects (`r round(TheoElementFreq$Percentage[TheoElementFreq$Element=="Behavior"],2)`\%; e.g., cultural practices, media consumption) and a vast majority considered cognitive aspects (`r round(TheoElementFreq$Percentage[TheoElementFreq$Element=="Cognition"],2)`\%; e.g., navigation knowledge, ethnic identification). We found considerably less mentions of affective (`r round(TheoElementFreq$Percentage[TheoElementFreq$Element=="Affect"],2)`\%; e.g., anxiety, pride) and motivational aspects (`r round(TheoElementFreq$Percentage[TheoElementFreq$Element=="Desire"],2)`\%; e.g., independence goals, need to belong). This also meant that only about a tenth of the theories focused on a single aspect (`r round(TheoComplexity$Percentage[TheoComplexity$complexity==1],2)`\%). Interestingly, all theories that considered only one aspect were exclusively focusing on behaviors (N = `r TheoElementCombFreq$Frequency[TheoElementCombFreq$ExperienceCombination=="Behavior"]`) or cognitions (N = `r TheoElementCombFreq$Frequency[TheoElementCombFreq$ExperienceCombination=="Cognition"]`). Of the remaining theories, `r TheoComplexity$Frequency[TheoComplexity$complexity==4]` (`r round(TheoComplexity$Percentage[TheoComplexity$complexity==4],2)`\%) considered all four aspects, leaving a majority of theoretical works to considered two (`r round(TheoComplexity$Percentage[TheoComplexity$complexity==2],2)`\%) or three aspects (`r round(TheoComplexity$Percentage[TheoComplexity$complexity==3],2)`\%). The most common combinations of experience aspects were behavioral and cognitive acculturation (`r round(TheoElementCombFreq$Percentage[TheoElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`\%) or behavioral, cognitive, and motivational aspects combined (`r round(TheoElementCombFreq$Percentage[TheoElementCombFreq$ExperienceCombination=="Behavior, Cognition, Desire"],2)`\%; also see Figure \ref{fig:ElementsTheories} and Table \ref{tab:TheoriesElementCooccurrences}).
+
+Looking at the number of aspects considered together we also see substantial differences in what kind of theories include a certain aspect. Theories that included behaviors considered an average of `r round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Behavior"],2)-1` other aspects, and theories considering cognitions, on average, also included `r round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Cognition"],2)-1` other aspects. Theories that included the more internal aspects of affect or desire showed a considerably higher number of additional aspects considered (affect = `r round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Affect"],2)`, desire = `r round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Desire"],2)`). Thus, most scales measure multiple dimensions (\textit{m} = `r TheoComplexityAverage`), yet they focus on external accessible aspects of psychological acculturation (i.e., behavior and cognition), less of what is considered 'internal' or 'subjective' (i.e., affect and desires). This is further underscored by the observation that there were no theories that exclusively focused on emotional or motivational acculturation while this was the case for both cognitions and behaviors. And if emotional or desire aspects were considered they were found in theories that tend to already include a higher number of other experience aspects. 
 
 \begin{figure}[h]
 \centering
