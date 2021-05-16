@@ -42,27 +42,317 @@ rm(lib)
 load("data/wrangled.RData")
 ```
 
+To assess the past empirical and theoretical literature on psychological acculturation, we performed a systematic review. We first read seminal and review works within the field, including \hl{...}. Based on our reading of the literature we designed a comprehensive literature search strategy in an iterative fashion. For the empirical work on acculturation we performed a literature search on March 4\textsuperscript{th}, 2020 and February 14\textsuperscript{th}, 2021, within the ``APA PsycINFO'' bibliographic databases using the EBSCO\textit{host} provider. The databases also included the PsycARTICLES, PsycBOOKS, and PsycCRITIQUES databases as well ProQuest Dissertations with psychological relevance (for the full information on the search strategy see Appendix \ref{app:AppendixSearchStrategy}). \Warning\ Introduction Search Terms \Warning
+Together with past reviews, we used this literature search to identify validated scales as well as empirical works more generally. For the theoretical literature we collected the theories used in the empirical works and performed an additional, more specific, search of the same databases as well as the Web of Science Core Collection using the Clarivate Analytics provider on March 3\textsuperscript{rd}, 2021 (for full information see Appendix \ref{app:AppendixSearchStrategy}). \Warning\ Introduction Search Terms \Warning
+From the literature searches we created three separate databases of theoretical, methodological, and applied empirical works on psychological acculturation. For each literature search, we downloaded all references and abstracts, which two independent coders screened for relevance after duplicate removal --- first based on the titles and then based on the abstracts. We downloaded all relevant and available works for full-text coding. For all three types of works we extracted a range of variables to apply our framework. The full coding process and data extraction is described in the online Supplemental Information \hl{B} (as well as on \hl{citation to public osf and/or github repository goes here}).
 
-%% Search Strategy:
-To assess the past empirical and theoretical literature on psychological acculturation, we performed a systematic review. We first read seminal and review works within the field, including \hl{...}. Based on our reading of the literature we designed a comprehensive literature search strategy in an iterative fashion. For the empirical work on acculturation we performed a literature search on March 4\textsuperscript{th}, 2020 and February 14\textsuperscript{th}, 2021, within the ``APA PsycINFO'' bibliographic databases using the EBSCO\textit{host} provider. The databases also included the PsycARTICLES, PsycBOOKS, and PsycCRITIQUES databases as well ProQuest Dissertations with psychological relevance (for the full information on the search strategy see Appendix \ref{app:AppendixSearchStrategy}). 
-Together with past reviews, we used this literature search to identify validated scales as well as empirical works more generally. For the theoretical literature we collected the theories used in the empirical works and performed an additional more specific search of the same databases as well as the Web of Science Core Collection using the Clarivate Analytics provider on March 3\textsuperscript{rd}, 2021 (for full information see Appendix \ref{app:AppendixSearchStrategy}). From the literature searches we created three separate databases of theoretical, methodological, and applied empirical works on psychological acculturation. For each literature search, we downloaded all references and abstracts, which two independent coders screened for relevance after duplicate removal -- first based on the titles and then based on the abstracts. We downloaded all relevant and available works for full-text coding. For all three types of works we extracted a range of variables to apply our framework.
+\subsection{Theoretical Literature}
+```{r TheoryExclusion, include=F}
+# duplicate
+dt.TheorySearch.unique <- dt.TheorySearch %>%
+  filter(DuplicateAny != "TRUE")
 
-\Warning\ MOVE THIS TO EMPIRICAL METHODS \Warning
-Before we describe each of the three data sets in more detail we will briefly lay out how we extracted the variables for our main analyses. The full coding process and data extraction is described in the online Supplemental Information \hl{B} (as well as on \hl{citation to public osf and/or github repository goes here}).
+# title screening
+dt.TheorySearch.title <- dt.TheorySearch %>%
+  filter(TitleScreening == 1)
 
-\subsection{Framework Coding}
-For our main application of the proposed framework, we extracted data on the experience aspects as well as contextual information. One major focus of our coding efforts was, thus, identifying the experience elements that were assessed within each manuscript. For each article we retrieved the items used and coded whether the measure included references to affects, behaviours, cognitions, and desires. Because this concerned the most central aspect of our framework, each manuscript was double-coded and inconsistent codes were resolved after discussion. Examples of how individual aspects were identified and coded are in Table \ref{tab:DimensionExamples}.
+# abstract screening
+dt.TheorySearch.abstract <- dt.TheorySearch %>%
+  filter(TitleScreening == 1,
+         AbstractScreening == 1)
+
+# full-text inclusion
+dt.TheorySearch.included <- dt.TheorySearch %>%
+  filter(TitleScreening == 1,
+         AbstractScreening == 1,
+         Extracted == 1)
+
+# added from empirical literature
+dt.TheorySearch.added <- nrow(dt.Theories.Included)-nrow(dt.TheorySearch.included)
+
+## reasons for exclusion ##
+# title exclusion reason
+exclTitle <- data.frame(table(Exclusion = dt.TheorySearch$TitleNote)) %>%
+  mutate(screening = "Title") %>%
+  arrange(desc(Freq))
+
+# abstract exclusion reason
+exclAbstract <- data.frame(table(Exclusion = dt.TheorySearch$AbstractNote)) %>%
+  mutate(screening = "Abstract") %>%
+  arrange(desc(Freq))
+
+# full text exclusion reason
+exclFull <- data.frame(table(Exclusion = dt.TheorySearch$ExtractedReason)) %>%
+  mutate(screening = "Full Text") %>%
+  arrange(desc(Freq))
+
+rbind(exclTitle, exclAbstract, exclFull) %>%
+  reshape(., idvar = "Exclusion", timevar = "screening", direction = "wide") %>%
+  mutate_if(is.numeric, ~replace(., is.na(.), "")) %>%
+  rename_at(vars(starts_with("Freq.")),
+            funs(sub("Freq[.]", "", .))) %>%
+  rename(., "Exclusion Reason" = Exclusion) %>%
+  kbl(., 
+        #label = "",
+        caption = "Exclusion Reasons Theoretical Literature",
+        format = "latex",
+        linesep = "",
+        booktabs = T,
+        align = c("l", "c", "c", "c"))  %>%
+  add_header_above(., c(" ", "Screening" = 3)) %>%
+  kable_styling(position = "left") %>%
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
+  gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
+  save_kable("Tables/TheoreticalExclusion.tex")
+```
+
+```{r PrismaTheories, include=F}
+prismaGr(found = nrow(dt.TheorySearch),
+         found_other = dt.TheorySearch.added,
+         no_dupes = nrow(dt.TheorySearch.unique)+dt.TheorySearch.added, 
+         screened = nrow(dt.TheorySearch.unique)+dt.TheorySearch.added, 
+         screen_exclusions = nrow(dt.TheorySearch.unique)-nrow(dt.TheorySearch.abstract), 
+         full_text = nrow(dt.TheorySearch.abstract)+dt.TheorySearch.added,
+         full_text_exclusions = nrow(dt.TheorySearch.abstract)-nrow(dt.TheorySearch.included), 
+         qualitative = nrow(dt.Theories.Included), 
+         #quantitative = nrow(dt.Theories.Included), 
+         extra_dupes_box = F,
+         width = 800, height = 800) %>%
+  export_svg() %>%
+  charToRaw %>% 
+  rsvg_pdf("./Figures/PRISMA_Theories.pdf")
+```
+
+The most abstract level of our review was concerned with how researchers conceptualized psychological acculturation in their theoretical work. Our theory-specific literature search produced a total of `r nrow(dt.TheorySearch)` results from which we identified `r nrow(dt.TheorySearch.included)` theories. From our review of the empirical literature we added an additional `r dt.TheorySearch.added` theories (total N = `r nrow(dt.Theories.Included)`, for exclusion reasons see Table \ref{tab:TheoreticalExclusion} and for our PRISMA diagram see Figure \ref{fig:PRISMA_Theories}. A full table of all theories, with references, and final coding is available in our online supplementary information as well as on our open science repository (\hl{OSF and/or github citation here}). 
+
+\begin{figure}[h]
+\centering
+\caption{PRISMA Diagram Theoretical Literature. Currently generated in R based on n(row) maybe make prettier.}
+\includegraphics[width=\textwidth]{Figures/PRISMA_Theories}
+\label{fig:PRISMA_Theories}
+\end{figure}
+
+\input{Tables/TheoreticalExclusion}
+
+\subsubsection{Methods}
+\subsubsubsection{Dataset}
+The authors of the `r nrow(dt.Theories.Included)` included theoretical works self-categoried their contributions as a theoretical conceptualization (\textit{N} = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Conceptualization"))`), theoretical framework (\textit{N} = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Framework"))`), theory (\textit{N} = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Theory"))`), or theoretical model (\textit{N} = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Model"))`). And while `r nrow(dt.Theories.Included %>% filter(GeneralAspect=="Aspect"))` authors explicitly targeted a specific part of acculturation (e.g., `r nrow(dt.Theories.Included %>% filter(Target=="Identity"))` identity acculturation theories and `r nrow(dt.Theories.Included %>% filter(Target=="Work"))` labor market acculturation theories), a majority of theoretical works offered commentary on the overall construct of acculturation (N = `r nrow(dt.Theories.Included %>% filter(GeneralAspect=="General"))`). Looking at the types of theory building, a majority of proposal were purely theoretical (N = `r nrow(dt.Theories.Included %>% filter(SourceType=="theoretical"))`) with the remaining theoretical works growing out of qualitative investigations (such as grounded theory approaches; N = `r nrow(dt.Theories.Included %>% filter(SourceType=="empirical"))`).
+
+\subsubsubsection{Experience Aspects}
+To assess the experience aspects that were considered as part of the theoretical works, two independent coders coded the authors' axioms, theorems, and model elements for self-identified inclusions of affects, behaviors, and cognitions (Cohen's \varkappa = \hl{X.XX} (pooled and individual?)). We only coded explicit mentions by the authors and we did so on three different levels. An example of these three levels for affect would be phrases of "mood" or "emotions" (construct level), "anxiety" or "pride" (concept level), and "the migrant feels ..." (operationalization level). A full list with further examples can be found in Table ref{tab:DimensionExamples}.
 \input{Tables/tabDimEx}
+
+\subsubsubsection{Process}
+To assess the focus on psychological acculturation as a process or an outcome, we coded whether authors self-identified the theory as a process (e.g., "process", "development", "longitudinal", "temporal", "dynamic") or an outcome (e.g., "static", "outcome", "markers", "consequence"). 
+
+\subsubsection{Results}
+
+```{r TheoriesElementCalc, include=F}
+# Count the times each dimension is measured
+TheoElementFreq <- dt.Theories.Included %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
+  mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+  colSums(., na.rm = FALSE, dims = 1) 
+
+# transform to data frame and make row names name variable
+TheoElementFreq <- data.frame(Element = names(TheoElementFreq), 
+                            Frequency = TheoElementFreq, 
+                            Percentage = TheoElementFreq/nrow(dt.Theories.Included)*100) %>%
+  mutate(Element = fct_reorder(Element, Frequency))
+
+# frequency of unique combinations
+TheoElementCombFreq <- dt.Theories.Included %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
+  #mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+  group_by(Affect, Behavior, Cognition, Desire) %>%
+  summarise(Frequency = n()) %>%
+  ungroup() %>%
+  mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T))
+
+# fill replace ones with colnames to be combined
+for (i in 1:4) {
+    TheoElementCombFreq[[i]] <- str_replace(as.character(TheoElementCombFreq[[i]]), "1", colnames(TheoElementCombFreq)[i])
+}
+
+# collect Elements names for each combination
+TheoElementCombFreq <- TheoElementCombFreq %>%
+  unite("ExperienceCombination",c("Affect", "Behavior", "Cognition", "Desire"), na.rm = TRUE, sep = ", ") %>%
+  mutate(ExperienceCombination = fct_reorder(ExperienceCombination, Frequency),
+         Percentage = Frequency/nrow(dt.Theories.Included)*100,
+         Affect = ifelse(grepl("Affect", ExperienceCombination, fixed = TRUE), 1,0),
+         Behavior = ifelse(grepl("Behavior", ExperienceCombination, fixed = TRUE), 1,0),
+         Cognition = ifelse(grepl("Cognition", ExperienceCombination, fixed = TRUE), 1,0),
+         Desire = ifelse(grepl("Desire", ExperienceCombination, fixed = TRUE), 1,0)) %>%
+  arrange(Frequency)
+
+# summarize by aspect complexity
+TheoComplexity <- TheoElementCombFreq %>%
+  select(complexity, Frequency) %>%
+  group_by(complexity) %>%
+  summarise(Frequency = sum(Frequency),
+            Percentage = sum(Frequency)/nrow(dt.Theories.Included)*100) %>%
+  ungroup() %>%
+  mutate(complexity = as.factor(complexity),
+         complexity = fct_reorder(complexity, Frequency))
+
+# overall complexity
+TheoComplexityAverage <- weighted.mean(as.numeric(as.character(TheoComplexity$complexity)), TheoComplexity$Frequency)
+
+# Scale complexity for each element
+TheoElementComplexity <- TheoElementCombFreq %>%
+  gather(key = "Element", value = "ElementDum", Affect, Behavior, Cognition, Desire) %>%
+  filter(ElementDum == 1) %>%
+  group_by(Element) %>%
+  summarise(avgComplexity = weighted.mean(x = complexity, w = Frequency),
+            sdComplexity = wtd.var(x = complexity, weights = Frequency),
+            n = sum(Frequency)) %>%
+  ungroup() %>%
+  mutate(seComplexity = sdComplexity/sqrt(n)) %>%
+  arrange(-avgComplexity)
+```
+
+```{r TheoriesElementCooccurrences, include=F}
+# make crossproduct matrix to condense co-occurrences (off-diagonals) and get frequencies (diagonals)
+TheoElementCooccure <- as.matrix(dt.Theories.Included %>% dplyr::select(Affect, Behavior, Cognition, Desire) %>% mutate_all(~replace(., is.na(.), 0)))
+TheoElementCooccure <- crossprod(TheoElementCooccure)  # Same as: t(X) %*% X
+#diag(TheoElementCooccure) <- 0       # remove frequencies on diagonals
+#TheoElementCooccure[upper.tri(TheoElementCooccure)] <- ""
+
+TheoElementCooccure %>%
+  kbl(., 
+        #label = "",
+        caption = "Theoretical Literature: Element Co-occurrence Matrix",
+        format = "latex", 
+        linesep = "",
+        booktabs = T,
+        align = rep('c', ncol(TheoElementCooccure)))  %>%
+  kable_styling(position = "left") %>%
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
+  gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  save_kable("Tables/TheoreticalElementCooccurrences.tex")
+```
+
+```{r TheoriesFreq, include=F, fig.width=12, fig.height=12}
+# barplot of dimension frequency
+TheoABCDBar <- ggplot(data=TheoElementFreq, aes(x=Element, y=Percentage)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    #aes(label = paste0("N = ",Frequency)),
+    aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 4,
+    vjust = 0.5
+    ) +
+  labs(title = "Element Frequency",
+       y = "Percentage across all Theories",
+       x = "Experience Element")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14"),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+# barplot of complexity frequency
+TheoComplexityBar <- ggplot(data=TheoComplexity, aes(x=complexity, y=Percentage)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    #aes(label = paste0("N = ",Frequency)),
+    aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 4,
+    vjust = 0.5
+    ) +
+  labs(title = "Scale Complexity",
+       y = "Frequency across all Theories",
+       x = "Complexity")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+
+# bar plot frequencies
+TheoABCDComb <- ggplot(TheoElementCombFreq, aes(x=ExperienceCombination, y=Percentage)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(y=Percentage, label = paste0(format(round(Percentage,2), nsmall=2),"% [N = ", Frequency, "]")),
+    color = "grey14",
+    size = 4,
+    hjust = -.1,
+    inherit.aes = TRUE
+    ) +
+  scale_y_continuous(limits = c(0, ceiling(max(TheoElementCombFreq$Percentage)*1.15)),
+                     breaks = seq(0, ceiling(max(TheoElementCombFreq$Percentage)*1.15), 5))+
+  labs(y = "Proportion of all theories [in %]",
+       x = "Combination of Experience Elements")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14"),
+        strip.text = element_text(colour = 'white', face="bold"),
+        legend.position="none")
+
+# draw combined graph
+ggdraw() +
+  draw_plot(TheoABCDComb, x = 0, y = 0.3, width = 1, height = .7)+
+  draw_plot(TheoABCDBar, x = 0, y = 0, width = .55, height = .3) +
+  draw_plot(TheoComplexityBar, x = .55, y = 0, width = .45, height = .3) +
+  draw_plot_label(c("(A)", "(B)", "(C)"), c(0, 0, 0.55), c(1, 0.3, 0.3), size = 15)
+```
+
+Our main goal was to assess the use of the four affect, behavior, cognition, and desire elements within the theoretical conceptualizations of psychological acculturation. Looking at the overall usage of the experience aspects we find that virtually all theoretical works included behavioral aspects (`r round(TheoElementFreq$Percentage[TheoElementFreq$Element=="Behavior"],2)`\%; e.g., cultural practices, media consumption) and a vast majority considered cognitive aspects (`r round(TheoElementFreq$Percentage[TheoElementFreq$Element=="Cognition"],2)`\%; e.g., navigation knowledge, ethnic identification). We found considerably less mentions of affective (`r round(TheoElementFreq$Percentage[TheoElementFreq$Element=="Affect"],2)`\%; e.g., anxiety, pride) and motivational aspects (`r round(TheoElementFreq$Percentage[TheoElementFreq$Element=="Desire"],2)`\%; e.g., independence goals, need to belong). But the generally high usage of the aspects, also meant that only about a tenth of the theories focused on a single aspect (`r round(TheoComplexity$Percentage[TheoComplexity$complexity==1],2)`\%). Interestingly, all theories that considered only one aspect were exclusively focusing on behaviors (N = `r TheoElementCombFreq$Frequency[TheoElementCombFreq$ExperienceCombination=="Behavior"]`) or cognitions (N = `r TheoElementCombFreq$Frequency[TheoElementCombFreq$ExperienceCombination=="Cognition"]`). Of the remaining theories, `r TheoComplexity$Frequency[TheoComplexity$complexity==4]` (i.e., `r round(TheoComplexity$Percentage[TheoComplexity$complexity==4],2)`\%) considered all four aspects, leaving a majority of theoretical works to considered two aspects (`r round(TheoComplexity$Percentage[TheoComplexity$complexity==2],2)`\%) or three aspects (`r round(TheoComplexity$Percentage[TheoComplexity$complexity==3],2)`\%). Among these, the most common combinations of experience aspects were behavioral and cognitive acculturation (`r round(TheoElementCombFreq$Percentage[TheoElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`\%) or behavioral, cognitive, and motivational aspects combined (`r round(TheoElementCombFreq$Percentage[TheoElementCombFreq$ExperienceCombination=="Behavior, Cognition, Desire"],2)`\%; also see Figure \ref{fig:ElementsTheories} and Table \ref{tab:TheoriesElementCooccurrences}).
+
+Looking at the number of aspects considered together we also see substantial differences in what kind of theories include a certain aspect. Theories that included behaviors considered an average of `r round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Behavior"],2)-1` other aspects, and theories considering cognitions, on average, also included `r round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Cognition"],2)-1` other aspects. Theories that included the more internal aspects of affect or desire showed a considerably higher number of additional aspects considered (affect = `r round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Affect"],2)`, desire = `r round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Desire"],2)`). Thus, most scales measure multiple dimensions (\textit{m} = `r format(round(TheoComplexityAverage,2),nsmall=2)`). Yet they tend to focus on more external aspects of behavioral and cognitive acculturation, and less on internal aspects  of affects and desires. This is also visible in the observation that there were no theories that exclusively focused on emotional or motivational acculturation while this was the case for both cognitions and behaviors. And if emotional or desire aspects were considered they were found in theories that tended to already include a higher number of other experience aspects. 
+
+\begin{figure}[h]
+\centering
+\caption{Theories: Bar graph of the experience element combinations.}
+\includegraphics[width=\textwidth]{Figures/TheoriesFreq-1}
+\label{fig:ElementsTheories}
+\end{figure}
+
+\input{Tables/TheoreticalElementCooccurrences}  
+
+\subsection{Methodological Literature}  
+Based on the systematic review and its coding, the first empirical dataset we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review we found five major works that reviewed the measurement of acculturation \citep{Celenk2011, Maestas2000, Matsudaira2006, Wallace2010, Zane2004}. After removal of duplicate scales, we added any scale validation that was present in our own systematic review but not included in the previous reviews. For each measure we extracted the full item list as well as the item scoring prior to coding. A comprehensive and interactive database of the scales, with reference- and publication information, as well as our experience elements and -context coding is available in our online supplementary information as well as on our open science repository (\hl{OSF and/or github citation here}).  
+
+\subsubsection{Methods}  
+\subsubsubsection{Dataset}
+Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Source != "own review",])` scales. From our own review we added `r nrow(dt.Scales[dt.Scales$Source == "own review",])` additional validation studies. After removing duplicates this meant that we considered a total of `r nrow(dt.Scales)` unique scales for our coding. Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$MissingNote),])`, because they were either not accessible or did not fit the the topic of our review (see Table \ref{tab:ScalesExclusion}). About a quarter of scales (`r round(nrow(filter(dt.Scales, IncludesMajority == 1))/nrow(dt.Scales)*100,2)`\%) included majority group members in their validation studies. The earliest included validation was from `r min(dt.Scales$year, na.rm = T)` with a majority of scales being validated around the turn of the 21\textsuperscript{st} century and the most recent included validation study was published in `r max(dt.Scales$year, na.rm = T)`.  
+
+\subsubsubsection{Experience Aspects}
+We extracted data on the experience aspects by primarily focusing on the measured concepts and their operationalizations (also see Table \ref{tab:DimensionExamples}). For each article we retrieved the items used and coded whether the measure included references to affects, behaviors, cognitions, and desires. Because this concerned the most central aspect of our framework, each manuscript was double-coded and inconsistent codes were resolved after discussion.
 
 At this stage we also noted if items measured concepts that are complex and relate to multiple experience aspects. As an example, a single item asking about `satisfaction with the new life' might include emotional and cognitive elements. In this case, we code the manuscript as measuring both emotions and cognitions, but note that these elements are not measured independently. We also noted if the measures do not consider an individual's experiences, such as reporting migration status or length of residency.
 
-We additionally coded a range of contextual variables, including the type of sample collected (e.g., student, clinical), the life domain targeted (e.g., school, family), the cultures considered (i.e., host and migrant groups), the type of analysis conducted (e.g., correlation, regression), the measurement type (e.g., continuous scale, categorical classification), the variable type of acculturation in the analysis (e.g., predictor, dependent), as well as the migration time that was considered (e.g., pre-migration, post-migration). We will present data on the migration time and analysis here to assess whether the concept was assessed as a process. Additional information on the contextual variables is available in Supplementary Materials A.
+\subsubsubsection{Process}
+To extract an indicator of whether the scales were aimed at psychological acculturation as a process or an outcome, we collected information on assessed migration times (e.g., pre-migration, post-migration) and the  the validation type (e.g., cross-sectional, longitudinal). 
 
-\subsection{Methodological Literature}  
-Based on the systematic review and its coding, the first data set we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review we found five major works that reviewed the measurement of acculturation \citep{Celenk2011, Maestas2000, Matsudaira2006, Wallace2010, Zane2004}. After removal of duplicate scales, we added any scale validation that was present in our own systematic review but not included in the previous reviews. For each measure we extracted the full item list as well as the item scoring prior to coding. A comprehensive and interactive database of the scales, with reference- and publication information, as well as our experience elements and -context coding is available in our online supplementary information as well as on our open science repository (\hl{OSF and/or github citation here}).  
-
-\subsubsection{Methods}  
-Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Source != "own review",])` scales. From our own review we added `r nrow(dt.Scales[dt.Scales$Source == "own review",])` additional validation studies. After removing duplicates this meant that we considered a total of `r nrow(dt.Scales)` unique scales for our coding. Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$MissingNote),])`, because they were either not accessible or did not fit the the topic of our review (see Table \ref{tab:ScalesExclusion}). About a quarter of scales (`r round(nrow(filter(dt.Scales, IncludesMajority == 1))/nrow(dt.Scales)*100,2)`\%) included majority group members in their validation studies. The earliest included validation was from `r min(dt.Scales$year, na.rm = T)` with a majority of scales being validated around the turn of the 21\textsuperscript{st} century and the most recent included validation study was published in `r max(dt.Scales$year, na.rm = T)`.  
+\subsubsubsection{Context}
+We additionally coded a range of contextual variables, including the type of sample collected (e.g., student, clinical), the life domain targeted (e.g., school, family), the cultures considered (i.e., host and migrant groups), the type of analysis conducted (e.g., correlation, regression), the measurement type (e.g., continuous scale, categorical classification), as well as the variable type of acculturation in the analysis (e.g., predictor, dependent). Further information as well as analyses of the contextual variables go beyond the scope of the immediate framework validation and are thus only presented in Supplementary Material A.
 
 ```{r ScalesExclusion}
 data.frame(table(Exclusion = dt.Scales$MissingNote)) %>%
@@ -161,7 +451,9 @@ scaleElementCooccure %>%
   save_kable("Tables/ScaleElementCooccurrences.tex")
 ```
 
-With our main aim of examining the experience structure within the scales, we examined whether scales included a specific experience elements but also examined the used elements in their complex combinations. In terms of general inclusion of elements, most studies included a measure of cognition (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Cognition"]*100,2)`\%) and behavior (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Behavior"]*100,2)`\%), whereas only roughly half the studies included a measure of affect (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Affect"]*100,2)`\%) and only a fourth of the scales included a measure of desires (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Desire"]*100,2)`\%). However, only a minority of scales included only a single aspect. There were only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Cognition"]` scales that exclusively relied on cognitions (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Cognition"],2)`\%) and `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Behavior"]` scales that measured only behaviors (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior"],2)`\%). Yet, inversely, there were also only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"]` scales that measured all four aspects (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"],2)`\%). Most studies measured two (`r ScaleElementCombFreq %>% filter(complexity == 2) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`\%) or three (`r ScaleElementCombFreq %>% filter(complexity == 3) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`\%) aspects. A majority of scales either measured behavioral and cognitive aspects (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`\%) or behavioral, cognitive, and affective elements (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"],2)`\%; also see Figure \ref{fig:ElementsScales} and Table \ref{tab:ScaleElementCooccurrences}). Looking at the number of aspects measured together we also see substantial differences in what kind of scales include a certain aspect. Scales that included cognitions measured an average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Cognition"],2)` aspects, scales measuring behavior, on average, measured a `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Behavior"],2)`, while scales that included affect measures had a complexity average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Affect"],2)` and scales measuring desires even measured an average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Desire"],2)` aspects per scale. Thus, most scales measure multiple dimensions, yet they focus on external accessible aspects of psychological acculturation (i.e., behavior and cognition), less of what is considered 'internal' or 'subjective' (i.e., affect and desires). This is further underscored by the observation that there were only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Affect"]` scales that exclusively measured emotional acculturation and not a single scale that exclusively focused on motivational acculturation (while this was the case for both cognitions and behaviors). And if emotional or desire aspects were measured they were on average measured in scales that had already included more experience aspects.   
+With our main aim of examining the experience structure within the scales, we examined whether scales included a specific experience elements but also examined the used elements in their complex combinations. In terms of general inclusion of elements, most studies included a measure of cognition (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Cognition"]*100,2)`\%) and behavior (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Behavior"]*100,2)`\%), whereas only roughly half the studies included a measure of affect (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Affect"]*100,2)`\%) and only a fourth of the scales included a measure of desires (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Desire"]*100,2)`\%). However, only a minority of scales included only a single aspect. There were only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Cognition"]` scales that exclusively relied on cognitions (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Cognition"],2)`\%) and `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Behavior"]` scales that measured only behaviors (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior"],2)`\%). Yet, inversely, there were also only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"]` scales that measured all four aspects (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"],2)`\%). Most studies measured two (`r ScaleElementCombFreq %>% filter(complexity == 2) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`\%) or three (`r ScaleElementCombFreq %>% filter(complexity == 3) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`\%) aspects. A majority of scales either measured behavioral and cognitive aspects (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`\%) or behavioral, cognitive, and affective elements (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"],2)`\%; also see Figure \ref{fig:ElementsScales} and Table \ref{tab:ScaleElementCooccurrences}). 
+
+Looking at the number of aspects measured together we also see substantial differences in what kind of scales include a certain aspect. Scales that included cognitions measured an average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Cognition"],2)` aspects, scales measuring behavior, on average, measured a `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Behavior"],2)`, while scales that included affect measures had a complexity average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Affect"],2)` and scales measuring desires even measured an average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Desire"],2)` aspects per scale. Thus, most scales measure multiple dimensions, yet they focus on external accessible aspects of psychological acculturation (i.e., behavior and cognition), less of what is considered 'internal' or 'subjective' (i.e., affect and desires). This is further underscored by the observation that there were only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Affect"]` scales that exclusively measured emotional acculturation and not a single scale that exclusively focused on motivational acculturation (while this was the case for both cognitions and behaviors). And if emotional or desire aspects were measured they were on average measured in scales that had already included more experience aspects.   
 
 ```{r  ABCDFreq, include=F, fig.width=12, fig.height=12}
 # barplot of dimension frequency
@@ -278,11 +570,7 @@ summarytools::freq(dt.Scales.Included$MigrationTime, order = "freq")
 
 To assess the process focus of the scales we also assessed the migration time the scale validators considered. Except for a single scale that was validated for potential migrants, all scales were validated using cross-sectional data after the migrant arrived in the settlement society. This is in line with observations by previous reviews of the field \citep[e.g.,][]{Brown2011}.
 
-
 \subsection{Empirical Literature}
-After analysis of the scales validations, we assessed the broader empirical works we collected within the systematic review. We first looked at all available empirical publications (incl. books, chapters, and dissertations). We later also assessed differences between journal fields to assess differences between fields.  
-
-\subsubsection{Methods}
 ```{r EmpiricalExclusion, include=F}
 dt.psych.unique <- dt.psych %>%
   filter(SearchDuplicate != "TRUE")
@@ -342,11 +630,9 @@ rbind(exclTitle, exclAbstract, exclFull) %>%
   save_kable("Tables/EmpiricalExclusion.tex")
 ```
 
-The search produced a total of `r nrow(dt.psych)` results to which we added 399 articles through contacts with experts in the field and from referenced works within the review. We subsequently screened out results that did not fit into our review. After duplicate removal ($N_{excluded}$ = `r nrow(dt.psych)-nrow(dt.psych.unique)`, $N_{screened}$ = `r nrow(dt.psych.unique)`), we excluded `r nrow(dt.psych.unique)-nrow(dt.psych.title)` results in the title screening as well as an additional `r nrow(dt.psych.title)-nrow(dt.psych.abstract)` results during the abstract screening. Of the remaining `r nrow(dt.psych.abstract)` results, `r nrow(dt.psych.empirical)` papers presented empirical work on acculturation and were coded. The `r nrow(dt.psych.abstract %>% filter(empirical==0))` non-empirical results were reviews, which were not coded because they did not measure cultural adaptation. During the full text coding we excluded an additional `r length(dt.psych.empirical$MissingABCD[dt.psych.empirical$MissingABCD==1])` results because they were either not relevant or were not accessible (for exclusion reasons see Table \ref{tab:EmpiricalExclusion} and for our PRISMA diagram see Figure \ref{fig:PRISMA}). 
-
 ```{r PRISMA, include=F}
 prismaGr(found = nrow(dt.psych),
-         found_other = 399,
+         found_other = 133,
          no_dupes = nrow(dt.psych.unique), 
          screened = nrow(dt.psych.unique), 
          screen_exclusions = nrow(dt.psych)-nrow(dt.psych.title), 
@@ -361,6 +647,8 @@ prismaGr(found = nrow(dt.psych),
   rsvg_pdf("./Figures/PRISMA.pdf")
 ```
 
+At the most applied level, we assessed the broader empirical studies. This final database included the largest number of manuscripts and is in theory the application of the theoretical and methodological literature. The search produced a total of `r nrow(dt.psych)` results to which we added 133 articles through contacts with experts in the field and from referenced works within the review. We subsequently screened out results that did not fit into our review. After duplicate removal ($N_{excluded}$ = `r nrow(dt.psych)-nrow(dt.psych.unique)`, $N_{screened}$ = `r nrow(dt.psych.unique)`), we excluded `r nrow(dt.psych.unique)-nrow(dt.psych.title)` results in the title screening as well as an additional `r nrow(dt.psych.title)-nrow(dt.psych.abstract)` results during the abstract screening. Of the remaining `r nrow(dt.psych.abstract)` results, `r nrow(dt.psych.empirical)` papers presented empirical work on acculturation and were coded. The `r nrow(dt.psych.abstract %>% filter(empirical==0))` non-empirical results were reviews, which were not coded because they did not measure cultural adaptation. During the full text coding we excluded an additional `r length(dt.psych.empirical$MissingABCD[dt.psych.empirical$MissingABCD==1])` results because they were either not relevant or were not accessible (for exclusion reasons see Table \ref{tab:EmpiricalExclusion} and for our PRISMA diagram see Figure \ref{fig:PRISMA}). 
+
 <!-- Scale  chart goes somewhere here} -->
 \begin{figure}[h]
 \centering
@@ -370,6 +658,10 @@ prismaGr(found = nrow(dt.psych),
 \end{figure}
 
 \input{Tables/EmpiricalExclusion}
+
+\subsubsection{Methods}
+
+\subsubsubsection{Dataset}
 
 ```{r EmpiricalPublicationType, include=F}
 empPubType <- as.data.frame(summarytools::freq(dt.psych.included$PublicationType, order = "freq"))
@@ -392,8 +684,8 @@ empFocus <- as.data.frame(summarytools::freq(tolower(dt.psych.included$domainPap
 names(empFocus) <- gsub("% ", "Perc", names(empFocus))
 empFocusAcc <- sum(empFocus[grepl("acculturation|assimilation|integration|adjustment|adaptation", rownames(empFocus)),]$Freq)
 empFocusAccPerc <- sum(empFocus[grepl("acculturation|assimilation|integration|adjustment|adaptation", rownames(empFocus)),]$PercValid)
-empFocusHealth <- sum(empFocus[grepl("helth|stress|depression|disorder", rownames(empFocus)),]$Freq)
-empFocusHealthPerc <- sum(empFocus[grepl("helth|stress|depression|disorder", rownames(empFocus)),]$PercValid)
+empFocusHealth <- sum(empFocus[grepl("health|stress|depression|disorder", rownames(empFocus)),]$Freq)
+empFocusHealthPerc <- sum(empFocus[grepl("health|stress|depression|disorder", rownames(empFocus)),]$PercValid)
 empFocusRelation <- sum(empFocus[grepl("relations|intergroup|multiculturalism", rownames(empFocus)),]$Freq)
 empFocusRelationPerc <- sum(empFocus[grepl("relations|intergroup|multiculturalism", rownames(empFocus)),]$PercValid)
 
@@ -403,7 +695,16 @@ names(empYear) <- gsub("% ", "Perc", names(empYear))
 
 Of the final works we coded, `r empPubType["journalArticle",]$Freq` were journal articles, `r empPubType["thesis",]$Freq` theses, and `r empPubType["bookSection",]$Freq` book chapters. Most studies presented quantitative data (\textit{N} = `r empDataType["quantitative",]$Freq`), mixed methods (\textit{N} = `r empDataType["mixed method",]$Freq`), or qualitative data (\textit{N} = `r empDataType["qualitative",]$Freq`), while the remaining `r empDataType["Review",]$Freq` manuscripts were reviews of empirical data. Notably, a majority of the empirical investigations did not share common measures of cultural adaptation -- `r sum(empMeasure$Freq[empMeasure$Freq<=5])` studies used measures that were reported a maximum of five times, with a considerable majority of papers using new or ad-hoc measures of cultural adaptation. Less than a fifth of studies included the local majority in the study (\textit{N} = `r empMajority["1",]$Freq`, `r round(empMajority["1",]$PercValid,2)`\%). Cultural adaptation most frequently was a predictor variable (\textit{N} = `r empVarType["predictor",]$Freq`, `r round(empVarType["predictor",]$PercValid,2)`\%), a dependent variable (\textit{N} = `r empVarType["dependent",]$Freq`, `r round(empVarType["dependent",]$PercValid,2)`\%), or a correlation variable (\textit{N} = `r empVarType["correlation",]$Freq`, `r round(empVarType["correlation",]$PercValid,2)`\%) in the empirical works. This pattern was mirrored when looking at the focus of the papers, where a majority of the papers had acculturation as their main focus (\textit{N} = `r empFocusAcc`, `r round(empFocusAccPerc,2)`\%), with other bodies of work focusing on health outcomes (\textit{N} = `r empFocusHealth`, `r round(empFocusHealthPerc,2)`\%), or inter-group relations (\textit{N} = `r empFocusRelation`, `r round(empFocusRelationPerc,2)`\%) as their main outcomes. The earliest included study was published in `r min(dt.psych.included$year)`, with a strong increase of publications after the year 2000, and a peak of publications in 2012. We provide full descriptions of descriptive data extractions and additional information about the data description in Online Supplementary Information \hl{X}.
 
-\paragraph{Field of Publication} For the broader empirical literature, we also collected additional data on the field the studies were published in. To assess the differences between fields we merged the 'Scimago Journal Ranking Database' \citep{SCImago2020} with our data base. For all available journal articles we added information on key journal metrics (incl. H index, impact factor, and data on the field and audiences). This also meant that dissertations, book chapters, and books were excluded from this analysis because data on their publishers is not readily available or unreliable. Additionally, `r nrow(psychData %>% filter(PublicationType == "journalArticle", is.na(PublicationTitleDb)) %>% dplyr::select(PublicationTitle) %>% unique())` journals were not included in the Scimago database (likely because they do not have an ISSN identifier or were discontinued before 1996, see Online Appendix \hl{X}, Table \hl{X} for the missing journals). We ultimately had journal metrics for `r nrow(psychData %>% filter(!is.na(PublicationTitleDb)))` empirical articles. 
+\subsubsubsection{Experience Aspects}
+Extraction of the used experience aspects mirrored the methodological literature assessment and we primarily focused on the measured concepts and their operationalizations (also see Table \ref{tab:DimensionExamples}). The only exception was qualitative studies, which we coded following the same codebook of the theoretical literature.
+
+\subsubsubsection{Process}
+To assess the static or dynamic conceptualization of the empirical studies, we again collected information on assessed migration times (e.g., pre-migration, post-migration) and additionally coded the type of data collected and analyzed (e.g., cross-sectional, longitudinal data and data analysis). 
+
+\subsubsubsection{Context}
+Contextual variables on sample, life domain, cultural groups, measurement type, and variable type are again beyond the scope of the framework validation but are presented in Supplementary Material A.
+
+\subsubsubsection{Field of Publication} For the broader empirical literature, we also collected additional data on the field the studies were published in. To that end, we merged the 'Scimago Journal Ranking Database' \citep{SCImago2020} with our database. For all available journal articles we added information on key journal metrics (incl. H index, impact factor, and data on the field and audiences). This also meant that dissertations, book chapters, and books were excluded from this analysis because data on their publishers is not readily available or unreliable. Additionally, `r nrow(psychData %>% filter(PublicationType == "journalArticle", is.na(PublicationTitleDb)) %>% dplyr::select(PublicationTitle) %>% unique())` journals were not included in the Scimago database (likely because they do not have an ISSN identifier or were discontinued before 1996, see Online Appendix \hl{X}, Table \hl{X} for the missing journals). We ultimately had journal metrics for `r nrow(psychData %>% filter(!is.na(PublicationTitleDb)))` empirical articles. 
 <!-- The Scimago database classifies each journal according to the field(s) that the journal aims to address. Importantly, (1) each journal can be be classified to address multiple fields and (2) the field include codes of fields (e.g., ‘Social Sciences’) as well as sub-fields (e.g., ‘Social Psychology’). This leads to the case that there can be substantial overlap between fields, and journals cannot readily be assessed in mutually exclusive subgroups. -->
 
 ```{r disciplines, include=F}
@@ -500,7 +801,7 @@ empElementCooccure %>%
 
 We assessed the role of experience aspects in the measurement and then compared differences between fields.  
 
-\paragraph{General}In terms of the overall frequencies of experience elements, the broader empirical data mirrored that of the validation studies. Most studies included a measure of cognition (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Cognition"],2)`\%) and behavior (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Behavior"],2)`\%), whereas only about half of all studies included a measure of affect (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Affect"],2)`\%) and less than a fifth of the studies included a measure of desires (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Desire"],2)`\%). Yet, only `r empComplexity$Frequency[empComplexity$complexity=="1"]` studies focused on a single experience aspect ($N_{behavior\ only}$ = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Behavior"]`,  $N_{cognition\ only}$ = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Cognition"]`, $N_{emotion\ only}$ = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Affect"]`). Similarly, only `r empComplexity$Frequency[empComplexity$complexity=="4"]` papers included measures of all four experience aspects (`r round(empComplexity$Percentage[empComplexity$complexity=="4"],2)`\%). Most studies measured three (`r round(empComplexity$Percentage[empComplexity$complexity=="3"],2)`\%) or two aspects (`r round(empComplexity$Percentage[empComplexity$complexity=="2"],2)`\%). Different from the scale validations, within the broader empirical works, most works included measures of emotions, behaviors, and cognitions (\textit{N} = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"]`, `r round(EmpElementCombFreq$Percentage[EmpElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"],2)`\%), with a further substantial number of articles measuring behaviors and cognitions (\textit{N} = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Behavior, Cognition"]`, `r round(EmpElementCombFreq$Percentage[EmpElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`\%. Also see Figure \ref{fig:EmpPlotFreq-1} and Table \ref{tab:EmpiricalElementCooccurrences}). Looking at the number of aspects measured together we again see substantial differences in what kind of scales include the individual aspects. Scales that included cognitions measured an average of `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Cognition"],2)` aspects, scales measuring behavior, on average, measured `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Behavior"],2)`, while scales that included affect measured an average of `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Affect"],2)` experience aspects and scales measuring desires even measured an average of `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Desire"],2)` experience aspects. Thus, not a single study measured only motivation (i.e., desires), and measures of desires remained mostly limited to scales that were already measuring many of the other experience aspects. The results exacerbate the pattern found in the scale validations, complex measures and conceptions of acculturation are seen infrequently and exteral aspects of cognition and behavior remain the focus of most studies.
+In terms of the overall frequencies of experience elements, the broader empirical data mirrored that of the validation studies. Most studies included a measure of cognition (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Cognition"],2)`\%) and behavior (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Behavior"],2)`\%), whereas only about half of all studies included a measure of affect (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Affect"],2)`\%) and less than a fifth of the studies included a measure of desires (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Desire"],2)`\%). Yet, only `r empComplexity$Frequency[empComplexity$complexity=="1"]` studies focused on a single experience aspect ($N_{behavior\ only}$ = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Behavior"]`,  $N_{cognition\ only}$ = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Cognition"]`, $N_{emotion\ only}$ = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Affect"]`). Similarly, only `r empComplexity$Frequency[empComplexity$complexity=="4"]` papers included measures of all four experience aspects (`r round(empComplexity$Percentage[empComplexity$complexity=="4"],2)`\%). Most studies measured three (`r round(empComplexity$Percentage[empComplexity$complexity=="3"],2)`\%) or two aspects (`r round(empComplexity$Percentage[empComplexity$complexity=="2"],2)`\%). Different from the scale validations, within the broader empirical works, most works included measures of emotions, behaviors, and cognitions (\textit{N} = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"]`, `r round(EmpElementCombFreq$Percentage[EmpElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"],2)`\%), with a further substantial number of articles measuring behaviors and cognitions (\textit{N} = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Behavior, Cognition"]`, `r round(EmpElementCombFreq$Percentage[EmpElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`\%. Also see Figure \ref{fig:EmpPlotFreq-1} and Table \ref{tab:EmpiricalElementCooccurrences}). Looking at the number of aspects measured together we again see substantial differences in what kind of scales include the individual aspects. Scales that included cognitions measured an average of `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Cognition"],2)` aspects, scales measuring behavior, on average, measured `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Behavior"],2)`, while scales that included affect measured an average of `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Affect"],2)` experience aspects and scales measuring desires even measured an average of `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Desire"],2)` experience aspects. Thus, not a single study measured only motivation (i.e., desires), and measures of desires remained mostly limited to scales that were already measuring many of the other experience aspects. The results exacerbate the pattern found in the scale validations, complex measures and conceptions of acculturation are seen infrequently and exteral aspects of cognition and behavior remain the focus of most studies.
 
 ```{r EmpPlotFreq, include=F, fig.width=12, fig.height=12}
 # barplot of dimension frequency
@@ -649,7 +950,6 @@ EmpLongPerc <- round(sum(empAnalysis[grepl("lagged|longitudinal|dynamic", rownam
 
 To assess the process focus of the broader empirical works, we again assessed when in the migration process the data was collected and we additionally assessed the type analysis done by the authors. We found that `r empMigrationTime["post",]$Freq` studies (`r round(empMigrationTime["post",]$PercValid,2)`\%) collected data after the arrival of the migrant in the new society. Two studies targeted potential migrants and `r empMigrationTime["pre & post",]$Freq` studies collected data prior and following the migration event. Moreover, only `r EmpLong` studies included longitudinal data analyses of psychological acculturation (`r EmpLongPerc`\%). This observation, again underscores the arguments that the acculturation literature has thus far failed to provide data that meaningfully captures migration as a process \citep[e.g.,][]{Brown2011, Ward2019}.  
 
-\paragraph{Fields}
 To further assess the comparative utility of the experience framework, we further assessed differences of experience aspects between academic fields. We provide more elaborate descriptions of the differences in the methods, and publication types as well as contextual differences in terms of sampling procedures, situational domains, analyses, and cultural contexts in Supplementary Online Material \hl{X}. 
 
 ```{r FieldCalc, include=F}
@@ -1037,7 +1337,7 @@ ggplot(FieldIndividualComplexity, aes(y=complexity, x=reorder(field_labs_lng, co
 \label{fig:FieldPlotComplexityAverage}
 \end{figure}
 
-Further looking at the qualitative differences of aspect combinations can be informative as well. For example, there were a mere `r FieldElementCombFreq %>% ungroup %>% filter(discipline02=="Psychology", ExperienceCombination == "Behavior") %>% select(Frequency)` study published in a psychological journal that conceptualized cultural adaptation by behavior alone --- eventhough this is the most common or second most common conceptualization in the other three fields (also see Figure \ref{fig:FieldPlotFreq} A). There are also interesting pattern when one considers how many other elements an aspect is measured with, within each of the fields. For example, while for all fields motivations are found in the most complex scales \footnote{Except for the broader social science journals that do not have many papers measuring motivation in the first place.}, medical and multidisciplinary journals have a substantially higher average scale complexity when measuring motivations. Inversely, psychological journal on average report behavioral measures of cultural adaptation in more complex scales. This hints to a pattern, where complexity might indicate relative importance of an aspect within the field -- where only scales that already have a broad and diverse measure also include the aspects that are usually measured less within a field (also see Figure \ref{fig:FieldElementComp}). We did not test these differences formally because the number of experience aspects were not independent between scales. There are likely other and more nuanced differences in the conceptualizations highlighted within this analysis (e.g., patterns relevant to a single field). Yet, the broader patterns described here already speak to the utility of the framework. 
+Further looking at the qualitative differences of aspect combinations can be informative as well. For example, there were a mere `r FieldElementCombFreq %>% ungroup %>% filter(discipline02=="Psychology", ExperienceCombination == "Behavior") %>% select(Frequency)` study published in a psychological journal that conceptualized cultural adaptation by behavior alone --- eventhough this is the most common or second most common conceptualization in the other three fields (also see Figure \ref{fig:FieldPlotFreq} A). There are also interesting pattern when one considers how many other elements an aspect is measured with, within each of the fields. For example, while for all fields motivations are found in the most complex scales \footnote{Except for the broader social science journals that do not have many papers measuring motivation in the first place.}, medical and multidisciplinary journals have a substantially higher average scale complexity when measuring motivations. Inversely, psychological journal on average report behavioral measures of cultural adaptation in more complex scales. This hints to a pattern, where complexity might indicate relative importance of an aspect within the field -- where only scales that already have a broad and diverse measure also include the aspects that are usually measured less within a field (also see Figure \ref{fig:FieldElementComp}). We did not test these differences formally because the number of experience aspects were not independent between scales. There are likely other and more nuanced differences in the conceptualizations highlighted within this analysis (e.g., patterns relevant to a single field). Yet, the broader patterns described here already point to heterogeneity between fields and show that different fields diverge in the number and types of acculturation aspects they tend to consider. 
 
 ```{r FieldPlotFreq, include=F, fig.width=12, fig.height=16}
 # barplot of dimension frequency
@@ -1195,294 +1495,6 @@ ggplot(FieldElementComplexity, aes(fill=field_labs_lng, y=avgComplexity, x=reord
 \label{fig:FieldElementComp}
 \end{figure}
 <!-- END SECTION -->
-
-\subsection{Theoretical Literature}
-```{r TheoryExclusion, include=F}
-# duplicate
-dt.TheorySearch.unique <- dt.TheorySearch %>%
-  filter(DuplicateAny != "TRUE")
-
-# title screening
-dt.TheorySearch.title <- dt.TheorySearch %>%
-  filter(TitleScreening == 1)
-
-# abstract screening
-dt.TheorySearch.abstract <- dt.TheorySearch %>%
-  filter(TitleScreening == 1,
-         AbstractScreening == 1)
-
-# full-text inclusion
-dt.TheorySearch.included <- dt.TheorySearch %>%
-  filter(TitleScreening == 1,
-         AbstractScreening == 1,
-         Extracted == 1)
-
-# added from empirical literature
-dt.TheorySearch.added <- nrow(dt.Theories.Included)-nrow(dt.TheorySearch.included)
-
-## reasons for exclusion ##
-# title exclusion reason
-exclTitle <- data.frame(table(Exclusion = dt.TheorySearch$TitleNote)) %>%
-  mutate(screening = "Title") %>%
-  arrange(desc(Freq))
-
-# abstract exclusion reason
-exclAbstract <- data.frame(table(Exclusion = dt.TheorySearch$AbstractNote)) %>%
-  mutate(screening = "Abstract") %>%
-  arrange(desc(Freq))
-
-# full text exclusion reason
-exclFull <- data.frame(table(Exclusion = dt.TheorySearch$ExtractedReason)) %>%
-  mutate(screening = "Full Text") %>%
-  arrange(desc(Freq))
-
-rbind(exclTitle, exclAbstract, exclFull) %>%
-  reshape(., idvar = "Exclusion", timevar = "screening", direction = "wide") %>%
-  mutate_if(is.numeric, ~replace(., is.na(.), "")) %>%
-  rename_at(vars(starts_with("Freq.")),
-            funs(sub("Freq[.]", "", .))) %>%
-  rename(., "Exclusion Reason" = Exclusion) %>%
-  kbl(., 
-        #label = "",
-        caption = "Exclusion Reasons Theoretical Literature",
-        format = "latex",
-        linesep = "",
-        booktabs = T,
-        align = c("l", "c", "c", "c"))  %>%
-  add_header_above(., c(" ", "Screening" = 3)) %>%
-  kable_styling(position = "left") %>%
-  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
-  gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
-  gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
-  save_kable("Tables/TheoreticalExclusion.tex")
-```
-
-```{r PrismaTheories, include=F}
-prismaGr(found = nrow(dt.TheorySearch),
-         found_other = dt.TheorySearch.added,
-         no_dupes = nrow(dt.TheorySearch.unique)+dt.TheorySearch.added, 
-         screened = nrow(dt.TheorySearch.unique)+dt.TheorySearch.added, 
-         screen_exclusions = nrow(dt.TheorySearch.unique)-nrow(dt.TheorySearch.abstract), 
-         full_text = nrow(dt.TheorySearch.abstract)+dt.TheorySearch.added,
-         full_text_exclusions = nrow(dt.TheorySearch.abstract)-nrow(dt.TheorySearch.included), 
-         qualitative = nrow(dt.Theories.Included), 
-         #quantitative = nrow(dt.Theories.Included), 
-         extra_dupes_box = F,
-         width = 800, height = 800) %>%
-  export_svg() %>%
-  charToRaw %>% 
-  rsvg_pdf("./Figures/PRISMA_Theories.pdf")
-```
-
-The most abstract level of our review was concerned with how researchers conceptualized psychological acculturation in their theoretical work. Our theory-specific literature search produced a total of `r nrow(dt.TheorySearch)` results from which we identified `r nrow(dt.TheorySearch.included)` theories. From our review of the empirical literature we added an additional `r dt.TheorySearch.added` theories (total N = `r nrow(dt.Theories.Included)`, for exclusion reasons see Table \ref{tab:TheoreticalExclusion} and for our PRISMA diagram see Figure \ref{fig:PRISMA_Theories}. A full table of all theories, with references, and final coding is available in our online supplementary information as well as on our open science repository (\hl{OSF and/or github citation here}). 
-
-\begin{figure}[h]
-\centering
-\caption{PRISMA Diagram Theoretical Literature. Currently generated in R based on n(row) maybe make prettier.}
-\includegraphics[width=\textwidth]{Figures/PRISMA_Theories}
-\label{fig:PRISMA_Theories}
-\end{figure}
-
-\input{Tables/TheoreticalExclusion}
-
-\subsubsection{Methods}  
-The authors of the `r nrow(dt.Theories.Included)` included theoretical works self-categoried their contributions as a theoretical conceptualization `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Conceptualization"))`, theoretical framework `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Framework"))`, theory `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Theory"))`, or theoretical model `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Model"))`. And while `r nrow(dt.Theories.Included %>% filter(GeneralAspect=="Aspect"))` authors explicitly targeted a specific part of acculturation (e.g., `r nrow(dt.Theories.Included %>% filter(Target=="Identity"))` identity acculturation theories and `r nrow(dt.Theories.Included %>% filter(Target=="Work"))` labor market acculturation theories), a majority of theoretical works offered commentary on the overall construct of acculturation (N = `r nrow(dt.Theories.Included %>% filter(GeneralAspect=="General"))`). Looking at the types of theory building, a majority of proposal were purely theoretical (N = `r nrow(dt.Theories.Included %>% filter(SourceType=="theoretical"))`) with the remaining theoretical works growing out of qualitative investigations (such as grounded theory approaches; N = `r nrow(dt.Theories.Included %>% filter(SourceType=="empirical"))`).
-
-\Warning\ CODING SHOULD BE DISCUSSED. 
-
-\subsubsection{Results}
-
-```{r TheoriesElementCalc, include=F}
-# Count the times each dimension is measured
-TheoElementFreq <- dt.Theories.Included %>%
-  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
-  mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
-  colSums(., na.rm = FALSE, dims = 1) 
-
-# transform to data frame and make row names name variable
-TheoElementFreq <- data.frame(Element = names(TheoElementFreq), 
-                            Frequency = TheoElementFreq, 
-                            Percentage = TheoElementFreq/nrow(dt.Theories.Included)*100) %>%
-  mutate(Element = fct_reorder(Element, Frequency))
-
-# frequency of unique combinations
-TheoElementCombFreq <- dt.Theories.Included %>%
-  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
-  #mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
-  group_by(Affect, Behavior, Cognition, Desire) %>%
-  summarise(Frequency = n()) %>%
-  ungroup() %>%
-  mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T))
-
-# fill replace ones with colnames to be combined
-for (i in 1:4) {
-    TheoElementCombFreq[[i]] <- str_replace(as.character(TheoElementCombFreq[[i]]), "1", colnames(TheoElementCombFreq)[i])
-}
-
-# collect Elements names for each combination
-TheoElementCombFreq <- TheoElementCombFreq %>%
-  unite("ExperienceCombination",c("Affect", "Behavior", "Cognition", "Desire"), na.rm = TRUE, sep = ", ") %>%
-  mutate(ExperienceCombination = fct_reorder(ExperienceCombination, Frequency),
-         Percentage = Frequency/nrow(dt.Theories.Included)*100,
-         Affect = ifelse(grepl("Affect", ExperienceCombination, fixed = TRUE), 1,0),
-         Behavior = ifelse(grepl("Behavior", ExperienceCombination, fixed = TRUE), 1,0),
-         Cognition = ifelse(grepl("Cognition", ExperienceCombination, fixed = TRUE), 1,0),
-         Desire = ifelse(grepl("Desire", ExperienceCombination, fixed = TRUE), 1,0)) %>%
-  arrange(Frequency)
-
-# summarize by aspect complexity
-TheoComplexity <- TheoElementCombFreq %>%
-  select(complexity, Frequency) %>%
-  group_by(complexity) %>%
-  summarise(Frequency = sum(Frequency),
-            Percentage = sum(Frequency)/nrow(dt.Theories.Included)*100) %>%
-  ungroup() %>%
-  mutate(complexity = as.factor(complexity),
-         complexity = fct_reorder(complexity, Frequency))
-
-# overall complexity
-TheoComplexityAverage <- weighted.mean(as.numeric(as.character(TheoComplexity$complexity)), TheoComplexity$Frequency)
-
-# Scale complexity for each element
-TheoElementComplexity <- TheoElementCombFreq %>%
-  gather(key = "Element", value = "ElementDum", Affect, Behavior, Cognition, Desire) %>%
-  filter(ElementDum == 1) %>%
-  group_by(Element) %>%
-  summarise(avgComplexity = weighted.mean(x = complexity, w = Frequency),
-            sdComplexity = wtd.var(x = complexity, weights = Frequency),
-            n = sum(Frequency)) %>%
-  ungroup() %>%
-  mutate(seComplexity = sdComplexity/sqrt(n)) %>%
-  arrange(-avgComplexity)
-```
-
-```{r TheoriesElementCooccurrences, include=F}
-# make crossproduct matrix to condense co-occurrences (off-diagonals) and get frequencies (diagonals)
-TheoElementCooccure <- as.matrix(dt.Theories.Included %>% dplyr::select(Affect, Behavior, Cognition, Desire) %>% mutate_all(~replace(., is.na(.), 0)))
-TheoElementCooccure <- crossprod(TheoElementCooccure)  # Same as: t(X) %*% X
-#diag(TheoElementCooccure) <- 0       # remove frequencies on diagonals
-#TheoElementCooccure[upper.tri(TheoElementCooccure)] <- ""
-
-TheoElementCooccure %>%
-  kbl(., 
-        #label = "",
-        caption = "Theoretical Literature: Element Co-occurrence Matrix",
-        format = "latex", 
-        linesep = "",
-        booktabs = T,
-        align = rep('c', ncol(TheoElementCooccure)))  %>%
-  kable_styling(position = "left") %>%
-  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
-  gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
-  gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
-  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
-  save_kable("Tables/TheoreticalElementCooccurrences.tex")
-```
-
-```{r TheoriesFreq, include=F, fig.width=12, fig.height=12}
-# barplot of dimension frequency
-TheoABCDBar <- ggplot(data=TheoElementFreq, aes(x=Element, y=Percentage)) +
-  geom_bar(stat="identity", fill="grey14") +
-  geom_text(
-    #aes(label = paste0("N = ",Frequency)),
-    aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
-    position=position_stack(vjust=0.5),
-    color = "white",
-    size = 4,
-    vjust = 0.5
-    ) +
-  labs(title = "Element Frequency",
-       y = "Percentage across all Theories",
-       x = "Experience Element")+
-  coord_flip()+
-  theme_Publication()+
-  theme(strip.background = element_rect(fill="grey14", color="grey14"),
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        plot.title = element_text(size=10, face="bold", hjust = 0.5),
-        axis.text.x = element_text(size=10),
-        axis.text.y = element_text(size=10),
-        panel.grid.major.x = element_blank(),
-        panel.grid.major.y = element_blank(),
-        strip.text = element_text(colour = 'white', face="bold"),
-        panel.background = element_rect(fill = "transparent"),
-        plot.background = element_rect(fill = alpha('white', 0.5)), 
-        legend.position="none")
-
-# barplot of complexity frequency
-TheoComplexityBar <- ggplot(data=TheoComplexity, aes(x=complexity, y=Percentage)) +
-  geom_bar(stat="identity", fill="grey14") +
-  geom_text(
-    #aes(label = paste0("N = ",Frequency)),
-    aes(label = paste0(format(round(Percentage,2), nsmall=2), "%")),
-    position=position_stack(vjust=0.5),
-    color = "white",
-    size = 4,
-    vjust = 0.5
-    ) +
-  labs(title = "Scale Complexity",
-       y = "Frequency across all Theories",
-       x = "Complexity")+
-  coord_flip()+
-  theme_Publication()+
-  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        plot.title = element_text(size=10, face="bold", hjust = 0.5),
-        axis.text.x = element_text(size=10),
-        axis.text.y = element_text(size=10),
-        panel.grid.major.x = element_blank(),
-        panel.grid.major.y = element_blank(),
-        strip.text = element_text(colour = 'white', face="bold"),
-        panel.background = element_rect(fill = "transparent"),
-        plot.background = element_rect(fill = alpha('white', 0.5)), 
-        legend.position="none")
-
-
-# bar plot frequencies
-TheoABCDComb <- ggplot(TheoElementCombFreq, aes(x=ExperienceCombination, y=Percentage)) +
-  geom_bar(stat="identity", fill="grey14") +
-  geom_text(
-    aes(y=Percentage, label = paste0(format(round(Percentage,2), nsmall=2),"% [N = ", Frequency, "]")),
-    color = "grey14",
-    size = 4,
-    hjust = -.1,
-    inherit.aes = TRUE
-    ) +
-  scale_y_continuous(limits = c(0, ceiling(max(TheoElementCombFreq$Percentage)*1.15)),
-                     breaks = seq(0, ceiling(max(TheoElementCombFreq$Percentage)*1.15), 5))+
-  labs(y = "Proportion of all theories [in %]",
-       x = "Combination of Experience Elements")+
-  coord_flip()+
-  theme_Publication()+
-  theme(strip.background = element_rect(fill="grey14", color="grey14"),
-        strip.text = element_text(colour = 'white', face="bold"),
-        legend.position="none")
-
-# draw combined graph
-ggdraw() +
-  draw_plot(TheoABCDComb, x = 0, y = 0.3, width = 1, height = .7)+
-  draw_plot(TheoABCDBar, x = 0, y = 0, width = .55, height = .3) +
-  draw_plot(TheoComplexityBar, x = .55, y = 0, width = .45, height = .3) +
-  draw_plot_label(c("(A)", "(B)", "(C)"), c(0, 0, 0.55), c(1, 0.3, 0.3), size = 15)
-```
-
-Our main goal was to assess the use of the four affect, behavior, cognition, and desire elements within the theoretical conceptualizations of psychological acculturation. Looking at the overall usage of the experience aspects we find that virtually all theoretical works included behavioral aspects (`r round(TheoElementFreq$Percentage[TheoElementFreq$Element=="Behavior"],2)`\%; e.g., cultural practices, media consumption) and a vast majority considered cognitive aspects (`r round(TheoElementFreq$Percentage[TheoElementFreq$Element=="Cognition"],2)`\%; e.g., navigation knowledge, ethnic identification). We found considerably less mentions of affective (`r round(TheoElementFreq$Percentage[TheoElementFreq$Element=="Affect"],2)`\%; e.g., anxiety, pride) and motivational aspects (`r round(TheoElementFreq$Percentage[TheoElementFreq$Element=="Desire"],2)`\%; e.g., independence goals, need to belong). But the generally high usage of the aspects, also meant that only about a tenth of the theories focused on a single aspect (`r round(TheoComplexity$Percentage[TheoComplexity$complexity==1],2)`\%). Interestingly, all theories that considered only one aspect were exclusively focusing on behaviors (N = `r TheoElementCombFreq$Frequency[TheoElementCombFreq$ExperienceCombination=="Behavior"]`) or cognitions (N = `r TheoElementCombFreq$Frequency[TheoElementCombFreq$ExperienceCombination=="Cognition"]`). Of the remaining theories, `r TheoComplexity$Frequency[TheoComplexity$complexity==4]` (i.e., `r round(TheoComplexity$Percentage[TheoComplexity$complexity==4],2)`\%) considered all four aspects, leaving a majority of theoretical works to considered two aspects (`r round(TheoComplexity$Percentage[TheoComplexity$complexity==2],2)`\%) or three aspects (`r round(TheoComplexity$Percentage[TheoComplexity$complexity==3],2)`\%). Among these, the most common combinations of experience aspects were behavioral and cognitive acculturation (`r round(TheoElementCombFreq$Percentage[TheoElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`\%) or behavioral, cognitive, and motivational aspects combined (`r round(TheoElementCombFreq$Percentage[TheoElementCombFreq$ExperienceCombination=="Behavior, Cognition, Desire"],2)`\%; also see Figure \ref{fig:ElementsTheories} and Table \ref{tab:TheoriesElementCooccurrences}).
-
-Looking at the number of aspects considered together we also see substantial differences in what kind of theories include a certain aspect. Theories that included behaviors considered an average of `r round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Behavior"],2)-1` other aspects, and theories considering cognitions, on average, also included `r round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Cognition"],2)-1` other aspects. Theories that included the more internal aspects of affect or desire showed a considerably higher number of additional aspects considered (affect = `r round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Affect"],2)`, desire = `r round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Desire"],2)`). Thus, most scales measure multiple dimensions (\textit{m} = `r format(round(TheoComplexityAverage,2),nsmall=2)`). Yet they tend to focus on external accessible aspects of behavioral and cognitive acculturation, and less on more internal aspects  of affects and desires. This is also visible in the observation that there were no theories that exclusively focused on emotional or motivational acculturation while this was the case for both cognitions and behaviors. And if emotional or desire aspects were considered they were found in theories that tended to already include a higher number of other experience aspects. 
-
-\begin{figure}[h]
-\centering
-\caption{Theories: Bar graph of the experience element combinations.}
-\includegraphics[width=\textwidth]{Figures/TheoriesFreq-1}
-\label{fig:ElementsTheories}
-\end{figure}
-
-\input{Tables/TheoreticalElementCooccurrences}  
-
-\subsection{Compare Literature Levels [to be incorporated with the overall conclusions]}
-
-Compare Theory - Scale - Application levels --- see Figures \ref{fig:CombinedAspects}, \ref{fig:CombinedComplexity}, \ref{fig:CombinedAspectComplexity}.
 
 ```{r CombinedABCDBar, include=F, fig.width=16, fig.height=9}
 ElementFrequencyAll <- gdata::combine(Theories = TheoElementFreq,
