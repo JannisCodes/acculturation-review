@@ -1182,8 +1182,8 @@ p <- ggplot(FieldComplexity, aes(y=Percentage, x=field_labs_lng, fill=fct_rev(as
   labs(y = "Complexity",
        x = "Field",
        fill = "Number of Elements Measured") +
-  scale_fill_brewer(palette = "YlGnBu")+
-  #scale_fill_grey(start = 0.8, end = 0.1) +
+  #scale_fill_brewer(palette = "YlGnBu")+
+  scale_fill_grey(start = 0.1, end = 0.8, breaks=c("1","2","3", "4")) +
   theme_Publication()+
   theme(strip.background =element_rect(fill="black", color="black"),
         strip.text = element_text(colour = 'white', face="bold"))
