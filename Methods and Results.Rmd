@@ -74,21 +74,21 @@ dt.TheorySearch.added <- nrow(dt.Theories.Included)-nrow(dt.TheorySearch.include
 
 ## reasons for exclusion ##
 # title exclusion reason
-exclTitle <- data.frame(table(Exclusion = dt.TheorySearch$TitleNote)) %>%
+theoryExclTitle <- data.frame(table(Exclusion = dt.TheorySearch$TitleNote)) %>%
   mutate(screening = "Title") %>%
   arrange(desc(Freq))
 
 # abstract exclusion reason
-exclAbstract <- data.frame(table(Exclusion = dt.TheorySearch$AbstractNote)) %>%
+theoryExclAbstract <- data.frame(table(Exclusion = dt.TheorySearch$AbstractNote)) %>%
   mutate(screening = "Abstract") %>%
   arrange(desc(Freq))
 
 # full text exclusion reason
-exclFull <- data.frame(table(Exclusion = dt.TheorySearch$ExtractedReason)) %>%
+theoryExclFull <- data.frame(table(Exclusion = dt.TheorySearch$ExtractedReason)) %>%
   mutate(screening = "Full Text") %>%
   arrange(desc(Freq))
 
-rbind(exclTitle, exclAbstract, exclFull) %>%
+rbind(theoryExclTitle, theoryExclAbstract, theoryExclFull) %>%
   reshape(., idvar = "Exclusion", timevar = "screening", direction = "wide") %>%
   mutate_if(is.numeric, ~replace(., is.na(.), "")) %>%
   rename_at(vars(starts_with("Freq.")),
@@ -107,6 +107,13 @@ rbind(exclTitle, exclAbstract, exclFull) %>%
   gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
   gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
   save_kable("Tables/TheoreticalExclusion.tex")
+
+theoryExclCombined <- rbind(theoryExclTitle, theoryExclAbstract, theoryExclFull) %>%
+  reshape(., idvar = "Exclusion", timevar = "screening", direction = "wide") %>%
+  mutate_if(is.numeric, ~replace(., is.na(.), "")) %>%
+  rename_at(vars(starts_with("Freq.")),
+            funs(sub("Freq[.]", "", .))) %>%
+  rename(., "Exclusion Reason" = Exclusion)
 ```
 
 ```{r PrismaTheories, include=F}
@@ -126,7 +133,7 @@ prismaGr(found = nrow(dt.TheorySearch),
   rsvg_pdf("./Figures/PRISMA_Theories.pdf")
 ```
 
-The most abstract level of our review was concerned with how researchers conceptualized psychological acculturation in their theoretical work. Our theory-specific literature search produced a total of `r nrow(dt.TheorySearch)` results from which we identified `r nrow(dt.TheorySearch.included)` theories. From our review of the empirical literature we added an additional `r dt.TheorySearch.added` theories (total N = `r nrow(dt.Theories.Included)`, for exclusion reasons see Table \ref{tab:TheoryExclusion} and for our PRISMA diagram see Figure \ref{fig:PRISMA_Theories}. A full table of all theories, with references, and final coding is available in our online supplementary information as well as on our open science repository (\hl{OSF and/or GitHub citation here}). 
+The most abstract level of our review was concerned with how researchers conceptualized psychological acculturation in their theoretical work. Our theory-specific literature search produced a total of `r nrow(dt.TheorySearch)` results from which we identified `r nrow(dt.TheorySearch.included)` theories. From our review of the empirical literature we added an additional `r dt.TheorySearch.added` theories (total N = `r nrow(dt.Theories.Included)`, for exclusion reasons see Table \ref{tab:ExclusionsCombined} and for our PRISMA diagram see Figure \ref{fig:PRISMA_Theories}. A full table of all theories, with references, and final coding is available in our online supplementary information as well as on our open science repository (\hl{OSF and/or GitHub citation here}). 
 
 \begin{figure}[h]
 \centering
@@ -135,7 +142,7 @@ The most abstract level of our review was concerned with how researchers concept
 \label{fig:PRISMA_Theories}
 \end{figure}
 
-\input{Tables/TheoreticalExclusion}
+<!-- \input{Tables/TheoreticalExclusion} -->
 
 \subsubsection{Methods}
 \paragraph{Dataset}
@@ -342,7 +349,7 @@ Based on the systematic review and its coding, the first empirical dataset we as
 
 \subsubsection{Methods}  
 \paragraph{Dataset}
-Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Source != "own review",])` scales. From our own review we added `r nrow(dt.Scales[dt.Scales$Source == "own review",])` additional validation studies. After removing duplicates this meant that we considered a total of `r nrow(dt.Scales)` unique scales for our coding. Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$MissingNote),])`, because they were either not accessible or did not fit the the topic of our review (see Table \ref{tab:ScalesExclusion}). About a quarter of scales (`r round(nrow(filter(dt.Scales, IncludesMajority == 1))/nrow(dt.Scales)*100,2)`\%) included majority group members in their validation studies. The earliest included validation was from `r min(dt.Scales$year, na.rm = T)` with a majority of scales being validated around the turn of the 21\textsuperscript{st} century and the most recent included validation study was published in `r max(dt.Scales$year, na.rm = T)`.  
+Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Source != "own review",])` scales. From our own review we added `r nrow(dt.Scales[dt.Scales$Source == "own review",])` additional validation studies. After removing duplicates this meant that we considered a total of `r nrow(dt.Scales)` unique scales for our coding. Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$MissingNote),])`, because they were either not accessible or did not fit the the topic of our review (see Table \ref{tab:ExclusionsCombined}). About a quarter of scales (`r round(nrow(filter(dt.Scales, IncludesMajority == 1))/nrow(dt.Scales)*100,2)`\%) included majority group members in their validation studies. The earliest included validation was from `r min(dt.Scales$year, na.rm = T)` with a majority of scales being validated around the turn of the 21\textsuperscript{st} century and the most recent included validation study was published in `r max(dt.Scales$year, na.rm = T)`.  
 
 \paragraph{Experience Aspects}
 We extracted data on the experience aspects by primarily focusing on the measured concepts and their operationalizations (also see Table \ref{tab:AspectExamples}). For each article we retrieved the items used and coded whether the measure included references to affects, behaviors, cognitions, and desires. Because this concerned the most central aspect of our framework, each manuscript was double-coded and inconsistent codes were resolved after discussion (Cohen's $\varkappa$ = \hl{X.XX} (pooled and individual?)).
@@ -372,9 +379,13 @@ data.frame(table(Exclusion = dt.Scales$MissingNote)) %>%
   gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
   gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
   save_kable("Tables/ScalesExclusion.tex")
+
+scalesExcl <- data.frame(table(dt.Scales$MissingNote)) %>%
+  rename("Exclusion Reason" = Var1, "Full Text" = Freq) %>%
+  arrange(desc(`Full Text`))
 ```
 
-\input{Tables/ScalesExclusion}  
+<!-- \input{Tables/ScalesExclusion}   -->
 
 \subsubsection{Results}
 ```{r ABCDCalc, include=F}
@@ -598,19 +609,19 @@ dt.psych.included <- dt.psych %>%
          MissingABCD == 0)
 
 # reasons for exclusion
-exclTitle <- data.frame(table(Exclusion = dt.psych$TitleNote)) %>%
+empiricalExclTitle <- data.frame(table(Exclusion = dt.psych$TitleNote)) %>%
   mutate(screening = "Title") %>%
   arrange(desc(Freq))
 
-exclAbstract <- data.frame(table(Exclusion = dt.psych$AbstractNote)) %>%
+empiricalExclAbstract <- data.frame(table(Exclusion = dt.psych$AbstractNote)) %>%
   mutate(screening = "Abstract") %>%
   arrange(desc(Freq))
 
-exclFull <- data.frame(table(Exclusion = dt.psych.empirical$NoteMissing)) %>%
+empiricalExclFull <- data.frame(table(Exclusion = dt.psych.empirical$NoteMissing)) %>%
   mutate(screening = "Full Text") %>%
   arrange(desc(Freq))
 
-rbind(exclTitle, exclAbstract, exclFull) %>%
+rbind(empiricalExclTitle, empiricalExclAbstract, empiricalExclFull) %>%
   reshape(., idvar = "Exclusion", timevar = "screening", direction = "wide") %>%
   mutate_if(is.numeric, ~replace(., is.na(.), "")) %>%
   rename_at(vars(starts_with("Freq.")),
@@ -629,6 +640,45 @@ rbind(exclTitle, exclAbstract, exclFull) %>%
   gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
   gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
   save_kable("Tables/EmpiricalExclusion.tex")
+
+empiricalEclCombined <- rbind(empiricalExclTitle, empiricalExclAbstract, empiricalExclFull) %>%
+  reshape(., idvar = "Exclusion", timevar = "screening", direction = "wide") %>%
+  mutate_if(is.numeric, ~replace(., is.na(.), "")) %>%
+  rename_at(vars(starts_with("Freq.")),
+            funs(sub("Freq[.]", "", .))) %>%
+  rename(., "Exclusion Reason" = Exclusion) 
+```
+
+```{r ExclusionsCombined, include=F}
+exclMerged01 <- merge(theoryExclCombined, empiricalEclCombined, by = "Exclusion Reason", suffixes = c(".Theory",".Empirical"), all=T)
+exclMerged02 <- merge(exclMerged01, scalesExcl %>% rename("Full Text.Scale" = "Full Text"), by = "Exclusion Reason", all=T)
+reasonOrder <- c("not English", "not migration", "not migrant", "not acculturation", "not ABCD", "not theory", "not measured",
+                 "items not accessible", "thesis not accessible", "article not accessible", "book not accessible", "chapter not accessible",
+                 "poster not accessible", "should still be coded")
+
+options(knitr.kable.NA = '')
+exclMerged02 %>%
+  slice(match(reasonOrder, `Exclusion Reason`)) %>%
+  mutate(across(where(is.character), as.numeric)) %>%
+  relocate("Full Text.Scale", .after = "Full Text.Theory") %>%
+  kbl(., 
+        #label = "",
+        col.names = c("Reason", 
+                      "Title", "Abstract", "Full Text",
+                      "Full Text",
+                      "Title", "Abstract", "Full Text"),
+        caption = "Exclusion Reasons for all Literature Levels",
+        format = "latex",
+        linesep = "",
+        booktabs = T,
+        align = c("l", rep("c", length(exclMerged02)-1)))  %>%
+  add_header_above(., c(" ", "Theoretical" = 3, "Methodological", "Empirical" = 3)) %>%
+  kable_styling(position = "left") %>%
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
+  gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
+  save_kable("Tables/ExclusionsCombined.tex")
+
 ```
 
 ```{r PRISMA, include=F}
@@ -648,7 +698,7 @@ prismaGr(found = nrow(dt.psych),
   rsvg_pdf("./Figures/PRISMA.pdf")
 ```
 
-At the most applied level, we assessed the broader empirical studies. This final database included the largest number of manuscripts and is in theory the application of the theoretical and methodological literature. The search produced a total of `r nrow(dt.psych)` results to which we added 133 articles through contacts with experts in the field and from referenced works within the review. We subsequently screened out results that did not fit into our review. After duplicate removal ($N_{excluded}$ = `r nrow(dt.psych)-nrow(dt.psych.unique)`, $N_{screened}$ = `r nrow(dt.psych.unique)`), we excluded `r nrow(dt.psych.unique)-nrow(dt.psych.title)` results in the title screening as well as an additional `r nrow(dt.psych.title)-nrow(dt.psych.abstract)` results during the abstract screening. Of the remaining `r nrow(dt.psych.abstract)` results, `r nrow(dt.psych.empirical)` papers presented empirical work on acculturation and were coded. The `r nrow(dt.psych.abstract %>% filter(empirical==0))` non-empirical results were reviews, which were not coded because they did not measure cultural adaptation. During the full text coding we excluded an additional `r length(dt.psych.empirical$MissingABCD[dt.psych.empirical$MissingABCD==1])` results because they were either not relevant or were not accessible (for exclusion reasons see Table \ref{tab:EmpiricalExclusion} and for our PRISMA diagram see Figure \ref{fig:PRISMA}). 
+At the most applied level, we assessed the broader empirical studies. This final database included the largest number of manuscripts and is in theory the application of the theoretical and methodological literature. The search produced a total of `r nrow(dt.psych)` results to which we added 133 articles through contacts with experts in the field and from referenced works within the review. We subsequently screened out results that did not fit into our review. After duplicate removal ($N_{excluded}$ = `r nrow(dt.psych)-nrow(dt.psych.unique)`, $N_{screened}$ = `r nrow(dt.psych.unique)`), we excluded `r nrow(dt.psych.unique)-nrow(dt.psych.title)` results in the title screening as well as an additional `r nrow(dt.psych.title)-nrow(dt.psych.abstract)` results during the abstract screening. Of the remaining `r nrow(dt.psych.abstract)` results, `r nrow(dt.psych.empirical)` papers presented empirical work on acculturation and were coded. The `r nrow(dt.psych.abstract %>% filter(empirical==0))` non-empirical results were reviews, which were not coded because they did not measure cultural adaptation. During the full text coding we excluded an additional `r length(dt.psych.empirical$MissingABCD[dt.psych.empirical$MissingABCD==1])` results because they were either not relevant or were not accessible (for exclusion reasons see Table \ref{tab:ExclusionsCombined} and for our PRISMA diagram see Figure \ref{fig:PRISMA}). 
 
 <!-- Scale  chart goes somewhere here} -->
 \begin{figure}[h]
@@ -658,7 +708,8 @@ At the most applied level, we assessed the broader empirical studies. This final
 \label{fig:PRISMA}
 \end{figure}
 
-\input{Tables/EmpiricalExclusion}
+<!-- \input{Tables/EmpiricalExclusion} -->
+\input{Tables/ExclusionsCombined}
 
 \subsubsection{Methods}
 
@@ -1079,7 +1130,7 @@ FieldElementComplexity <- FieldElementCombFreq %>%
 
 We first assessed the references to affect, behavior, cognition, and desires separately, for each of the disciplines. We find that for all fields desires (`r FieldElementFreq %>% filter(Element == "Desire") %>% select(Percentage) %>% min %>% round(.,2)`-`r FieldElementFreq %>% filter(Element == "Desire") %>% select(Percentage) %>% max %>% round(.,2)`\% of all measures in the field) and emotions (`r FieldElementFreq %>% filter(Element == "Affect") %>% select(Percentage) %>% min %>% round(.,2)`-`r FieldElementFreq %>% filter(Element == "Affect") %>% select(Percentage) %>% max %>% round(.,2)`\%) are the least frequently measured elements and medical journals measure them the least frequently (in proportional terms). Looking at the common cognitive and behavioral elements the proportions diverge between the fields. While the multidisciplinary field measured behaviors (`r FieldElementFreq %>% filter(Element=="Behavior", discipline02=="Multidisciplinary / Crossdisciplinary") %>% select(Percentage) %>% round(.,2)`\%) and cognition (`r FieldElementFreq %>% filter(Element=="Cognition", discipline02=="Multidisciplinary / Crossdisciplinary") %>% select(Percentage) %>% round(.,2)`\%) almost equally often, in the medical and general social science journals behaviors were measured considerably more often than cognitions ($Behavior_{SoSci}$ = `r  FieldElementFreq %>% filter(Element=="Behavior", discipline02=="Social Sciences (miscellaneous)") %>% select(Percentage) %>% round(.,2)`\% > $Cognition_{SoSci}$ = `r  FieldElementFreq %>% filter(Element=="Cognition", discipline02=="Social Sciences (miscellaneous)") %>% select(Percentage) %>% round(.,2)`\%; $Behavior_{Med}$ = `r  FieldElementFreq %>% filter(Element=="Behavior", discipline02=="Medicine, Nursing, & Health") %>% select(Percentage) %>% round(.,2)`\% > $Cognition_{Med}$ = `r  FieldElementFreq %>% filter(Element=="Cognition", discipline02=="Medicine, Nursing, & Health") %>% select(Percentage) %>% round(.,2)`\%). Inversely, in the psychological journals cognitions (`r  FieldElementFreq %>% filter(Element=="Cognition", discipline02=="Psychology") %>% select(Percentage) %>% round(.,2)`\%) were measured more often than behaviors (`r  FieldElementFreq %>% filter(Element=="Behavior", discipline02=="Psychology") %>% select(Percentage) %>% round(.,2)`\%; also see Figure \ref{fig:FieldPlotFreq} A and B). 
 
-When looking at differences in how many different experience aspects were measured together and patterns within these aspect-combinations, differences between the fields become increasingly evident (also see Figure \ref{fig:FieldPlotFreq} A and C). While 'affect, behavior, and cognition' and 'behavior, and cognition' measures are common combinations across all fields, there is less experience complexity and variation for medical and social science fields. There were statistically significant mean differences between the fields in terms of how many experience aspects were considered (parametric: \textit{F}(`r FieldComplexityAOV$Df[1]`, `r FieldComplexityAOV$Df[2]`) = `r round(FieldComplexityAOV[,names(FieldComplexityAOV)=="F value"][1],2)`, \textit{p} = `r round(FieldComplexityAOV[,names(FieldComplexityAOV)=="Pr(>F)"][1],3)`, non-parametric: \textit{Kruskal-Wallis} $\chi^{2}$ = `r round(FieldComplexityKruska$statistic,2)`, \textit{df} = `r FieldComplexityKruska$parameter`, \textit{p} = `r round(FieldComplexityKruska$p.value,3)`, $\eta_{p}^{2}$ = `r round(FieldComplexityEtaSq$Eta2_partial,2)`, 95\%CI[`r round(FieldComplexityEtaSq$CI_low,2)`, `r round(FieldComplexityEtaSq$CI_high,2)`]). Looking at the mean differences in more detail, empirical works published in psychological journals had significantly higher average aspect counts (\textit{M} = `r FieldAvgComplexity %>% filter(Field=="Psychology") %>% select(avgComplexity) %>% round(.,2)`, \textit{SD} = `r FieldAvgComplexity %>% filter(Field=="Psychology") %>% select(sdComplexity) %>% round(.,2)`) than the medical (\textit{M} = `r FieldAvgComplexity %>% filter(Field=="Medicine") %>% select(avgComplexity) %>% round(.,2)`, \textit{SD} = `r FieldAvgComplexity %>% filter(Field=="Medicine") %>% select(sdComplexity) %>% round(.,2)`) and the general social science journals (\textit{M} = `r FieldAvgComplexity %>% filter(Field=="Social Sci.") %>% select(avgComplexity) %>% round(.,2)`, \textit{SD} = `r FieldAvgComplexity %>% filter(Field=="Social Sci.") %>% select(sdComplexity) %>% round(.,2)`; also see Figure \ref{fig:FieldPlotComplexityAverage}). 
+When looking at differences in how many different experience aspects were measured together and patterns within these aspect-combinations, differences between the fields become increasingly evident (also see Figure \ref{fig:FieldPlotFreq} A and C). While 'affect, behavior, and cognition' and 'behavior, and cognition' measures are common combinations across all fields, there is less experience complexity and variation for medical and social science fields. There were statistically significant mean differences between the fields in terms of how many experience aspects were considered (parametric: \textit{F}(`r FieldComplexityAOV$Df[1]`, `r FieldComplexityAOV$Df[2]`) = `r round(FieldComplexityAOV[,names(FieldComplexityAOV)=="F value"][1],2)`, \textit{p} = `r round(FieldComplexityAOV[,names(FieldComplexityAOV)=="Pr(>F)"][1],3)`, non-parametric: \textit{Kruskal-Wallis} $\chi^{2}$ = `r round(FieldComplexityKruska$statistic,2)`, \textit{df} = `r FieldComplexityKruska$parameter`, \textit{p} = `r ifelse(round(FieldComplexityKruska$p.value,3)==0, "<.001",format(round(FieldComplexityKruska$p.value,3),nsmall=3))`, $\eta_{p}^{2}$ = `r round(FieldComplexityEtaSq$Eta2_partial,2)`, 95\%CI[`r round(FieldComplexityEtaSq$CI_low,2)`, `r round(FieldComplexityEtaSq$CI_high,2)`]). Looking at the mean differences in more detail, empirical works published in psychological journals had significantly higher average aspect counts (\textit{M} = `r FieldAvgComplexity %>% filter(Field=="Psychology") %>% select(avgComplexity) %>% round(.,2)`, \textit{SD} = `r FieldAvgComplexity %>% filter(Field=="Psychology") %>% select(sdComplexity) %>% round(.,2)`) than the medical (\textit{M} = `r FieldAvgComplexity %>% filter(Field=="Medicine") %>% select(avgComplexity) %>% round(.,2)`, \textit{SD} = `r FieldAvgComplexity %>% filter(Field=="Medicine") %>% select(sdComplexity) %>% round(.,2)`) and the general social science journals (\textit{M} = `r FieldAvgComplexity %>% filter(Field=="Social Sci.") %>% select(avgComplexity) %>% round(.,2)`, \textit{SD} = `r FieldAvgComplexity %>% filter(Field=="Social Sci.") %>% select(sdComplexity) %>% round(.,2)`; also see Figure \ref{fig:FieldPlotComplexityAverage}). 
 
 ```{r FieldPlotComplexityAverage, include=F, fig.width=10, fig.height=8}
 # ## ALTERNATE VERSION WITH VIOLIN PLOT
