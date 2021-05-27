@@ -284,9 +284,9 @@ empElementCor <- as.matrix(dt.psych.included %>% dplyr::select(Affect, Behavior,
   BinaryCor(., "pearson") %>%
   tibble::rownames_to_column(., var = "Aspect")
 
-rowPack <- c(rep(paste0("Theoretical (N = ",nrow(dt.Theories.Included), ")"),3), 
-             rep(paste0("Methodological (N = ",nrow(dt.Scales.Included), ")"),3), 
-             rep(paste0("Empirical (N = ",nrow(dt.psych.included), ")"),3)) %>%
+rowPack <- c(rep(paste0("Theoretical (N = ",nrow(dt.Theories.Included), ")"),4), 
+             rep(paste0("Methodological (N = ",nrow(dt.Scales.Included), ")"),4), 
+             rep(paste0("Empirical (N = ",nrow(dt.psych.included), ")"),4)) %>%
   table(.) %>%
   .[c(paste0("Theoretical (N = ",nrow(dt.Theories.Included), ")"), 
       paste0("Methodological (N = ",nrow(dt.Scales.Included), ")"), 
