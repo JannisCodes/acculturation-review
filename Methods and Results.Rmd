@@ -295,15 +295,16 @@ rowPack <- c(rep(paste0("Theoretical (N = ",nrow(dt.Theories.Included), ")"),3),
 rbind(theoElementCor, scaleElementCor, empElementCor) %>%
   kbl(., 
         #label = "",
-        caption = "Aspect Co-occurrences for all Literature Levels. Diagonal: Times aspect occured; upper triangle: Phi Association Matrix; lower triangle: Times aspects co-occured",
+        caption = "Aspect Co-occurrences for all Literature Levels.",
         format = "latex", 
         linesep = "",
         booktabs = T,
         align = c("l", rep('c', ncol(empElementCor)-1)))  %>%
   pack_rows(index = rowPack) %>%
   kable_styling(position = "left") %>%
+  footnote(general = "Diagonal: Times aspect occurred; upper triangle: Phi Association Matrix; lower triangle: Times aspects co-occurred.") %>%
   gsub("Aspect &", "\\multicolumn{1}{c}{Aspect} &", ., fixed = TRUE) %>% # fix Aspect title align
-  gsub("N =", "(\\textit{N} =", ., fixed = TRUE) %>% # fix row pack label
+  gsub("N =", "\\textit{N} =", ., fixed = TRUE) %>% # fix row pack label
   gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
   gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
   #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
