@@ -284,11 +284,18 @@ empElementCor <- as.matrix(dt.psych.included %>% dplyr::select(Affect, Behavior,
   BinaryCor(., "pearson") %>%
   tibble::rownames_to_column(., var = "Aspect")
 
-rowPack <- c("Theoretical"=4, "Methodological"=4, "Empirical"=4)
+rowPack <- c(rep(paste0("Theoretical (\textit{N} = ",nrow(dt.Theories.Included), ")"),3), 
+             rep(paste0("Methodological (\textit{N} = ",nrow(dt.Scales.Included), ")"),3), 
+             rep(paste0("Empirical (\textit{N} = ",nrow(dt.psych.included), ")"),3)) %>%
+  table(.) %>%
+  .[c(paste0("Theoretical (\textit{N} = ",nrow(dt.Theories.Included), ")"), 
+      paste0("Methodological (\textit{N} = ",nrow(dt.Scales.Included), ")"), 
+      paste0("Empirical (\textit{N} = ",nrow(dt.psych.included), ")"))]
+  
 rbind(theoElementCor, scaleElementCor, empElementCor) %>%
   kbl(., 
         #label = "",
-        caption = "Aspect Co-occurrences for all Literature Levels",
+        caption = "Aspect Co-occurrences for all Literature Levels. Diagonal: Times aspect occured; upper triangle: Phi Association Matrix; lower triangle: Times aspects co-occured",
         format = "latex", 
         linesep = "",
         booktabs = T,
