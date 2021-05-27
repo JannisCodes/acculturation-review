@@ -13,7 +13,7 @@ csl: apa.csl
   gc() # garbage collector
   
 # Install and Load Packages
-lib <- c("rmarkdown", "knitr", "citr", "remedy", "bookdown", "papaja", "rmdfiltr", "psych",
+lib <- c("rmarkdown", "knitr", "citr", "remedy", "bookdown", "papaja", "rmdfiltr", "psych", "xtable",
          "ggplot2", "ggthemes", "haven", "RColorBrewer", "plotly", "forcats", "wordcloud", "visNetwork", "ggwordcloud",
          "rworldmap", "rnaturalearth", "rnaturalearthdata", "rgeos", "sp", "ggspatial",
          "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
@@ -244,6 +244,64 @@ TheoElementCooccure %>%
   save_kable("Tables/TheoreticalElementCooccurrences.tex")
 ```
 
+```{r CombinedCooccurrences, include=F}
+BinaryCor <- function(x, type=c("pearson", "spearman"), ...){
+
+  x <- as.matrix(x)
+  C <- crossprod(x)
+  R <- rcorr(x, type=type)$r
+  p <- rcorr(x, type=type)$P
+
+  ## define notions for significance levels; spacing is important.
+  mystars <- ifelse(p < .001, "***", ifelse(p < .01, "** ", ifelse(p < .05, "* ", " ")))
+
+  ## trunctuate the matrix that holds the correlations to two decimal
+  R <- format(round(cbind(rep(-1.11, ncol(x)), R), 2))[,-1]
+
+  ## build a new matrix that includes the correlations with their apropriate stars
+  Rnew <- matrix(paste(R, mystars, sep=""), ncol=ncol(x))
+  diag(Rnew) <- paste("N = ", diag(C), " ", sep="")
+  rownames(Rnew) <- colnames(x)
+  colnames(Rnew) <- paste(colnames(x), "", sep="")
+  
+  ## remove upper triangle
+  Rnew <- as.matrix(Rnew)
+  Rnew[lower.tri(Rnew, diag = FALSE)] <- C[lower.tri(C, diag = FALSE)]
+  Rnew <- as.data.frame(Rnew)
+
+  ## remove last column and return the matrix (which is now a data frame)
+  #Rnew <- cbind(Rnew[1:length(Rnew)-1])
+  return(Rnew)
+}
+
+theoElementCor <- as.matrix(dt.Theories.Included %>% dplyr::select(Affect, Behavior, Cognition, Desire) %>% mutate_all(~replace(., is.na(.), 0))) %>%
+  BinaryCor(., "pearson") %>%
+  tibble::rownames_to_column(., var = "Aspect")
+scaleElementCor <- as.matrix(dt.Scales.Included %>% dplyr::select(Affect, Behavior, Cognition, Desire) %>% mutate_all(~replace(., is.na(.), 0))) %>%
+  BinaryCor(., "pearson") %>%
+  tibble::rownames_to_column(., var = "Aspect")
+empElementCor <- as.matrix(dt.psych.included %>% dplyr::select(Affect, Behavior, Cognition, Desire) %>% mutate_all(~replace(., is.na(.), 0))) %>%
+  BinaryCor(., "pearson") %>%
+  tibble::rownames_to_column(., var = "Aspect")
+
+rowPack <- c("Theoretical"=4, "Methodological"=4, "Empirical"=4)
+rbind(theoElementCor, scaleElementCor, empElementCor) %>%
+  kbl(., 
+        #label = "",
+        caption = "Aspect Co-occurrences for all Literature Levels",
+        format = "latex", 
+        linesep = "",
+        booktabs = T,
+        align = rep('c', ncol(empElementCor)))  %>%
+  pack_rows(index = rowPack) %>%
+  kable_styling(position = "left") %>%
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
+  gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  save_kable("Tables/CombinedElementCooccurrences.tex")
+```
+
 ```{r TheoriesFreq, include=F, fig.width=12, fig.height=12}
 # barplot of dimension frequency
 TheoABCDBar <- ggplot(data=TheoElementFreq, aes(x=Element, y=Percentage)) +
@@ -343,6 +401,7 @@ Looking at the number of aspects considered together we also see substantial dif
 \label{fig:ElementsTheories}
 \end{figure}
 
+\input{Tables/CombinedElementCooccurrences}
 \input{Tables/TheoreticalElementCooccurrences}  
 
 \subsection{Methodological Literature}  
