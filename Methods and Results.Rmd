@@ -302,7 +302,7 @@ rbind(theoElementCor, scaleElementCor, empElementCor) %>%
         align = c("l", rep('c', ncol(empElementCor)-1)))  %>%
   pack_rows(index = rowPack) %>%
   kable_styling(position = "left") %>%
-  footnote(general = c("Diagonal: Times aspect occurred;", "upper triangle: Phi Association Matrix;", "lower triangle: Times aspects co-occurred.")) %>%
+  footnote(general = c("Diagonal: Times aspect occurred;", "Upper triangle: Phi association matrix;", "Lower triangle: Times aspects co-occurred.")) %>%
   gsub("Aspect &", "\\multicolumn{1}{c}{Aspect} &", ., fixed = TRUE) %>% # fix Aspect title align
   gsub("N =", "\\textit{N} =", ., fixed = TRUE) %>% # fix row pack label
   gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
