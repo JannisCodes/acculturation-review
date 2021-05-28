@@ -42,6 +42,10 @@ rm(lib)
 load("data/wrangled.RData")
 ```
 
+\newcommand{\nTheo}{`r nrow(dt.Theories.Included)`}
+\newcommand{\nMeth}{`r nrow(dt.Scales.Included)`}
+\newcommand{\nEmp}{`r nrow(dt.psych.included)`}
+
 To assess the past empirical and theoretical literature on psychological acculturation, we performed a systematic review. We first read seminal and review works within the field \citep[including,][]{Ward2019, Berry1997b, Berry2003, Szapocznik1978, Sam2006a, Rudmin2003a}. Based on our reading of the literature we designed a comprehensive literature search strategy in an iterative fashion. For the empirical work on acculturation we performed a literature search on March 4\textsuperscript{th}, 2020 and February 14\textsuperscript{th}, 2021, within the "APA PsycINFO" bibliographic databases using the EBSCO\textit{host} provider. The databases also included the PsycARTICLES, PsycBOOKS, and PsycCRITIQUES databases as well ProQuest Dissertations with psychological relevance (for the full information on the search strategy see Appendix \ref{app:AppendixSearchStrategy}). \Warning\ Should We Discuss Search Terms in Main Text? \Warning
 
 Together with past reviews, we used this literature search to identify validated scales as well as empirical works more generally. For the theoretical literature we collected the theories used in the empirical works and performed an additional, more specific, search of the same databases as well as the Web of Science Core Collection using the Clarivate Analytics provider on March 3\textsuperscript{rd}, 2021 (for full information see Appendix \ref{app:AppendixSearchStrategy}). \Warning\ Should We Discuss Search Terms in Main Text? \Warning\   
