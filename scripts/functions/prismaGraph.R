@@ -10,7 +10,7 @@ prismaGr <- function (found, found_other, no_dupes, screened, screen_exclusions,
                  screened = paste("Records screened", sprintf("(n = %d)", screened), sep = "\n"), 
                  screen_exclusions = paste("Records excluded", "[reasons, see Table 2]", sprintf("(n = %d)", screen_exclusions), sep = "\n"), 
                  full_text = paste("Full-text articles assessed", "for eligibility", sprintf("(n = %d)", full_text), sep = "\n"), 
-                 full_text_exclusions = paste("Full-text articles excluded", "[reasons, see Table X]", sprintf("(n = %d)", full_text_exclusions), sep = "\n"), 
+                 full_text_exclusions = paste("Full-text articles excluded", "[reasons, see Table 2]", sprintf("(n = %d)", full_text_exclusions), sep = "\n"), 
                  qualitative = paste("Studies included in qualitative synthesis",sprintf("(n = %d)", qualitative), sep = "\n"), 
                  quantitative = paste("Studies included in", "quantitative synthesis", "(empirical)", sprintf("(n = %d)", quantitative), sep = "\n"))
   

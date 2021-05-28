@@ -680,18 +680,18 @@ dt.psych.abstract <- dt.psych %>%
   filter(TitleScreening == 1,
          AbstractScreening == 1)
 
-# empirical
-dt.psych.empirical <- dt.psych %>%
+# full text screening
+dt.psych.fulltext <- dt.psych %>%
   filter(TitleScreening == 1,
          AbstractScreening == 1,
-         empirical != 0)
+         MissingABCD == 0)
 
-# included
+# included (empirical)
 dt.psych.included <- dt.psych %>%
   filter(TitleScreening == 1,
          AbstractScreening == 1,
-         empirical != 0,
-         MissingABCD == 0)
+         MissingABCD == 0,
+         empirical != 0)
 
 # reasons for exclusion
 empiricalExclTitle <- data.frame(table(Exclusion = dt.psych$TitleNote)) %>%
@@ -702,7 +702,7 @@ empiricalExclAbstract <- data.frame(table(Exclusion = dt.psych$AbstractNote)) %>
   mutate(screening = "Abstract") %>%
   arrange(desc(Freq))
 
-empiricalExclFull <- data.frame(table(Exclusion = dt.psych.empirical$NoteMissing)) %>%
+empiricalExclFull <- data.frame(table(Exclusion = dt.psych.abstract$NoteMissing)) %>%
   mutate(screening = "Full Text") %>%
   arrange(desc(Freq))
 
@@ -771,11 +771,11 @@ prismaGr(found = nrow(dt.psych),
          found_other = 133,
          no_dupes = nrow(dt.psych.unique), 
          screened = nrow(dt.psych.unique), 
-         screen_exclusions = nrow(dt.psych)-nrow(dt.psych.title), 
-         full_text = nrow(dt.psych.title),
-         full_text_exclusions = nrow(dt.psych.title)-nrow(dt.psych.abstract), 
-         qualitative = nrow(dt.psych.abstract), 
-         quantitative = nrow(dt.psych.empirical),
+         screen_exclusions = nrow(dt.psych.unique)-nrow(dt.psych.abstract), 
+         full_text = nrow(dt.psych.abstract),
+         full_text_exclusions = nrow(dt.psych.abstract)-nrow(dt.psych.fulltext), 
+         qualitative = nrow(dt.psych.fulltext), 
+         quantitative = nrow(dt.psych.included),
          extra_dupes_box = F,
          width = 800, height = 800) %>%
   export_svg() %>%
