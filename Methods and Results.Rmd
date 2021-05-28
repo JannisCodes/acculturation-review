@@ -2048,8 +2048,8 @@ ggplot(ComplexityAverageAll, aes(y=Mean, x=reorder(Aspect, -Mean)))+
 
 \begin{figure}[h]
 \centering
-\caption{Literature Levels: Average number of additional aspects considered when the aspect was included for theoretical, methodological, and broader empirical literature [Mean ± 95%CI]}
+\caption{Literature Levels: Average number of additional aspects considered when the aspect was included for theoretical, methodological, and broader empirical literature [Mean ± 95\%CI].}
 \includegraphics[width=\textwidth]{Figures/CombinedAspectComplexityMean-1}
-\label{fig:CombinedAspectComplexity}
 \caption*{Note that within each literature body the aspects are not mutually exclusive (and thus not independent) because scales can include multiple experience aspects.}
+\label{fig:CombinedAspectComplexity}
 \end{figure}
