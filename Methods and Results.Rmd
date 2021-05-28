@@ -300,14 +300,14 @@ rowPack <- c(rep(paste0("Theoretical (N = ",nrow(dt.Theories.Included), ")"),4),
 rbind(theoElementCor, scaleElementCor, empElementCor) %>%
   kbl(., 
         #label = "",
-        caption = "Aspect Co-occurrences for all Literature Levels.",
+        caption = "Bivariate Asspociation of Aspects for all Literature Levels.",
         format = "latex", 
         linesep = "",
         booktabs = T,
         align = c("l", rep('c', ncol(empElementCor)-1)))  %>%
   pack_rows(index = rowPack) %>%
   kable_styling(position = "left") %>%
-  footnote(general = c("Diagonal: Times aspect occurred;", "Upper triangle: Phi association matrix;", "Lower triangle: Times aspects co-occurred.")) %>%
+  footnote(general = c("Diagonal: Times aspect occurred;", "Upper triangle: Phi association;", "Lower triangle: Times aspects co-occurred.")) %>%
   gsub("Aspect &", "\\multicolumn{1}{c}{Aspect} &", ., fixed = TRUE) %>% # fix Aspect title align
   gsub("N =", "\\textit{N} =", ., fixed = TRUE) %>% # fix row pack label
   gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
