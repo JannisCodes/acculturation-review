@@ -1919,6 +1919,7 @@ ggplot(data=ComplexityFrequencyAllLong, aes(x=reorder(complexity, Proportion), y
 ```
 
 ```{r CombinedAspectComplexityBar, include=F, fig.width=16, fig.height=9}
+
 Theories <- TheoElementCombFreq %>% 
   mutate(ExperienceCombination = strsplit(as.character(ExperienceCombination), ", ")) %>% 
   unnest(ExperienceCombination) %>%
@@ -1996,6 +1997,41 @@ ggplot(data=ComplexityFrequencyAll, aes(x=reorder(ExperienceCombination, AspectT
         legend.position="bottom")
 ```
 
+
+```{r CombinedAspectComplexityMean, include=F, fig.width=16, fig.height=9}
+ComplexityAverageAll <- rbind(TheoElementComplexity %>% mutate(Literature = "Theoretical"), 
+                              scaleElementComplexity %>% mutate(Literature = "Methodological"), 
+                              empElementComplexity %>% mutate(Literature = "Empirical")) %>%
+  select(Aspect = Element, Mean = avgComplexity, SD=sdComplexity, N=n, SE=seComplexity, Literature) %>%
+  mutate(Mean = Mean-1)
+  
+ggplot(ComplexityAverageAll, aes(y=Mean, x=reorder(Aspect, -Mean)))+
+  geom_point() +
+  scale_y_continuous(limits = c(0,3)) +
+  geom_errorbar(aes(ymin=Mean-1.96*SE, ymax=Mean+1.96*SE), colour="black", width=.1) +
+  geom_text(aes(label=paste0(format(round(Mean,2),nsmall=2),
+                             ", 95%CI[", format(round(Mean-1.96*SE,2),nsmall=2), ", ", format(round(Mean+1.96*SE,2),nsmall=2), "]"),
+                hjust=0.5, vjust=-1.5, size = 14)) +
+  coord_flip() +
+  facet_wrap(~factor(Literature,levels=c("Theoretical","Methodological","Empirical"))) +
+  theme_Publication() +
+  theme(strip.background = element_rect(fill="grey14", color="grey14"),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=18, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=16),
+        axis.text.y = element_text(size=16),
+        #panel.grid.major.x = element_blank(),
+        #panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold", size = 16),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)),
+        #legend.title = element_blank(),
+        #legend.key.size = unit(.4, "cm"),
+        legend.position="none")
+  
+```
+
 \begin{figure}[h]
 \centering
 \caption{Literature Levels: Bar graph of the experience aspect frequencies for theoretical, methodological, and broader empirical literature.}
@@ -2012,7 +2048,8 @@ ggplot(data=ComplexityFrequencyAll, aes(x=reorder(ExperienceCombination, AspectT
 
 \begin{figure}[h]
 \centering
-\caption{Literature Levels: Bar graph showing the relative importance of the complexity level within each of the experience aspects for theoretical, methodological, and broader empirical literature.}
-\includegraphics[width=\textwidth]{Figures/CombinedAspectComplexityBar-1}
+\caption{Literature Levels: Average number of additional aspects considered when the aspect was included for theoretical, methodological, and broader empirical literature [Mean ± 95%CI]}
+\includegraphics[width=\textwidth]{Figures/CombinedAspectComplexityMean-1}
 \label{fig:CombinedAspectComplexity}
+\caption*{Note that within each literature body the aspects are not mutually exclusive (and thus not independent) because scales can include multiple experience aspects.}
 \end{figure}
