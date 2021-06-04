@@ -471,13 +471,15 @@ manipulateWidget::combineWidgets(prismaTheory, prismaScales, prismaEmpirical, nr
 # **Full Databases**  {.tabset}
 
 ## Theoretical Literature
+The `r nrow(dt.Theories.Included)` theoretical works are listed in Table \@ref(tab:theoreticalTbl).  
+
 ```{r theoreticalTbl}
 dt.Theories.Included %>%
-  dplyr::select(Theory, CitationKey,
+  dplyr::select(Theory, Reference = CitationKey,
                 Affect, Behavior,	Cognition,	Desire,
-                 FrameworkTheoryModel, GeneralAspect, Time,	SourceType) %>%
+                `Type of Theoretical Work` = FrameworkTheoryModel, Focus = GeneralAspect, `Migration Time` = Time, `Source Type` = SourceType) %>%
   mutate_at(vars(Affect, 	Behavior,	Cognition, Desire), ~replace_na(., 0)) %>%
-  mutate(CitationKey = paste0("@",CitationKey)) %>%
+  mutate(Reference = paste0("@",Reference)) %>%
   kbl(., caption = "Empirical Literature",
       format = "html") %>%
   kable_classic(full_width = F, 
@@ -495,12 +497,12 @@ dt.Scales.Included %>%
                                          pattern = c("@Celenk2011", "@Maestas2000", "@Matsudaira2006", "@Wallace2010", "@Zane2004", "own review"), 
                                          replacement = c("CEL", "MAE", "MAT", "WAL", "ZAN", "OWN"), 
                                          vectorize_all = FALSE)) %>%
-  dplyr::select(Scale, CitationKey,
+  dplyr::select(Scale, Reference = CitationKey,
                 Affect, 	Behavior,	Cognition,	Desire,
-                `Source ^a^` = SourceShort, Sample,	IncludesMajority, 
-                HostCountry,	OriginCountry) %>%
+                `Source ^a^` = SourceShort, Sample,	`Majority Included` = IncludesMajority, 
+                `Country of Settlement` = HostCountry,	`Country of Origin` = OriginCountry) %>%
   mutate_at(vars(Affect, 	Behavior,	Cognition, Desire), ~replace_na(., 0)) %>%
-  mutate(CitationKey = paste0("@",CitationKey)) %>%
+  mutate(Reference = paste0("@",Reference)) %>%
   kbl(., caption = "Integration Scales",
       format = "html") %>%
   add_footnote(c("CEL = @Celenk2011, MAE = @Maestas2000, MAT = @Matsudaira2006, WAL = @Wallace2010, ZAN = @Zane2004, OWN = own review (only additional)"), 
@@ -509,41 +511,19 @@ dt.Scales.Included %>%
                 lightable_options = "hover", 
                 html_font = "Cambria") %>%
    scroll_box(width = "110%", height = "750px")
-
-# dt.Scales.Included %>%
-#   mutate(SourceShort = stri_replace_all_fixed(Source,
-#                                          pattern = c("@Celenk2011", "@Maestas2000", "@Matsudaira2006", "@Wallace2010", "@Zane2004", "own review"), 
-#                                          replacement = c("CEL", "MAE", "MAT", "WAL", "ZAN", "OWN"), 
-#                                          vectorize_all = FALSE)) %>%
-#   dplyr::select(Scale, CitationKey, `Source [note]"` = SourceShort, 
-#                 Affect, 	Behavior,	Cognition,	Desire,
-#                 Sample,	IncludesMajority, 
-#                 HostCountry,	OriginCountry) %>%
-#   mutate_at(vars(Affect, 	Behavior,	Cognition, Desire), ~replace_na(., 0)) %>%
-#   kbl(., 
-#       label = "ScaleTbl",
-#       caption = "Cultural Adaptation Scales",
-#       format = "latex",
-#       linesep = "",
-#       booktabs = T,
-#       longtable = T,
-#       align = c("l", "c"))  %>%
-#   add_footnote(c("CEL = @Celenk2011, MAE = @Maestas2000, MAT = @Matsudaira2006, WAL = @Wallace2010, ZAN = @Zane2004, OWN = own review (only additional)"), 
-#                notation = "alphabet") %>%
-#   kable_styling(latex_options = c("repeat_header"),
-#                 position = "left") %>%
-#   save_kable("Tables/ScaleTbl.tex")
 ```
 
-## Empirical Literature
+## Empirical Literature  
+The `r nrow(dt.Empirical.included)` empirical works are listed in Table \@ref(tab:empiricalTbl).  
+
 ```{r empiricalTbl}
 dt.Empirical.included %>%
-  dplyr::select(CitationKey, 
-                Affect, 	Behavior,	Cognition,	Desire,
-                PublicationType, Method, Sample,	IncludesMajority, MigrationTime,
-                HostCountry,	OriginCountry) %>%
+  dplyr::select(Reference = CitationKey, 
+                Affect,	Behavior,	Cognition,	Desire,
+                `Publication Type` = PublicationType, Method, Sample,	`Majority Included` = IncludesMajority, `Migration Time` = MigrationTime,
+                `Country of Settlement` = HostCountry,	`Country of Origin` = OriginCountry) %>%
   mutate_at(vars(Affect, 	Behavior,	Cognition, Desire), ~replace_na(., 0)) %>%
-  mutate(CitationKey = paste0("@",CitationKey)) %>%
+  mutate(Reference = paste0("@",Reference)) %>%
   kbl(., caption = "Empirical Literature",
       format = "html") %>%
   kable_classic(full_width = F, 
@@ -1984,9 +1964,9 @@ ggplot(data=empiricalSampleFreq, aes(x=Sample, y=Freq)) +
 The category *general* refers to a sampling strategy in which any consenting adult could participate in the study.  
 
 ### Situation  
-We coded which life domains the authors referred to, either as part of subscale labels, factor labels, explicit commentary of the authors, or clear question wordings to gain an understanding of the situational focus the authors chose(see Figure \@ref(fig:empiricalDomainFreq)).  
+We coded which life domains the authors referred to, either as part of subscale labels, factor labels, explicit commentary of the authors, or clear question wordings to gain an understanding of the situational focus the authors chose (see Table \@ref(tab:empiricalDomainFreqTab) and Figure \@ref(fig:empiricalDomainFreq)).  
 
-```{r empiricalDomainFreq, warning=F, fig.cap="Wordcloud of the life domains studied in empirical studies."}
+```{r empiricalDomainFreqTab, warning=F}
 # unique domains were already calculated
 
 # dataframe to compile domain frequency for Review Scales
@@ -2005,6 +1985,22 @@ empiricalDomainFreq <- empiricalDomainFreq %>%
   arrange(Frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
   mutate(Domain=factor(Domain, levels=Domain)) # update factor levels
 
+empiricalDomainFreq %>%
+  arrange(desc(Frequency)) %>%
+  kbl(., 
+        #label = "",
+        caption = "Empirical Literature: <br>Live Domain Frequency",
+        format = "html", 
+        linesep = "",
+        booktabs = T,
+        align = c('l', rep('c', ncol(.)-1)))  %>%
+  kable_classic(full_width = F, 
+                lightable_options = "hover", 
+                html_font = "Cambria") %>%
+   scroll_box(height = "500px")
+```
+
+```{r empiricalDomainFreqWordCloud, warning=F, fig.cap="Wordcloud of the life domains studied in empirical studies."}
 # Word cloud frequencies
 set.seed(7) # for reproducibility 
 wordcloud(words = empiricalDomainFreq$Domain, freq = empiricalDomainFreq$Frequency, 
@@ -2368,12 +2364,6 @@ disciplines01 %>%
                 html_font = "Cambria")
 ```
 
-<br>
-<div class="alert alert-danger">
-<strong><i class="fa fa-exclamation-triangle"></i> To Do: Sankey here</strong> <br>
-This one works for Sankey diagram.
-</div>
-
 Categorization in this -- highest order -- manner led to the following subgroup frequencies (see Table \@ref(tab:Disciplines01FreqTab)):  
 
 ```{r Disciplines01FreqTab, warning=F}
@@ -2478,7 +2468,7 @@ data.frame(table(empiricalDataDisciplines$discipline02)) %>%
                 html_font = "Cambria")
 ```
 
-Given the small number of 'Business' journals we reclassified these into the 'Social Sciences (miscellaneous)' category (see Table \@ref(tab:Disciplines02FreqTabAdj)).  
+Given the small number of 'Business' journals we reclassified these into the 'Social Sciences (miscellaneous)' category (see Table \@ref(tab:Disciplines02FreqTabAdj) and Figure \@ref(fig:Disciplines02AdjSankey)).  
 
 ```{r Disciplines02FreqTabAdj, results='asis', warning=F}
 # re-code Business into Social Sciences
@@ -2494,6 +2484,32 @@ data.frame(table(empiricalDataDisciplines$discipline02)) %>%
   kable_classic(full_width = F,
                 lightable_options = "hover",
                 html_font = "Cambria")
+```
+
+```{r Disciplines02AdjSankey, warning=F, fig.cap="Sankey Graph fields to discipline re-coding."}
+# tally links from number of combinations
+links <- empiricalDataDisciplines %>%
+  dplyr::select(source = fields, target = discipline02) %>%
+  mutate(target = str_replace(target, "Psychology", "Psychology ")) %>%
+  group_by(source, target) %>%
+  summarise(value = n()) %>%
+  arrange(desc(value))
+
+# From these flows we need to create a node data frame: it lists every entities involved in the flow
+nodes <- data.frame(
+  name=c(as.character(links$source),
+  as.character(links$target)) %>% unique()
+)
+
+# With networkD3, connection must be provided using id, not using real name like in the links dataframe.. So we need to reformat it.
+links$IDsource <- match(links$source, nodes$name)-1
+links$IDtarget <- match(links$target, nodes$name)-1
+
+# Make the Network
+sankeyNetwork(Links = links, Nodes = nodes,
+              Source = "IDsource", Target = "IDtarget",
+              Value = "value", NodeID = "name",
+              sinksRight=F, height= 800)
 ```
 
 ```{r exportWrangledData}
@@ -4959,5 +4975,6 @@ empiricalDataDisciplines %>%
 
 </br>  
 
-# References
+# **References**
 
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>

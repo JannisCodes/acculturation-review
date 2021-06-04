@@ -104,15 +104,7 @@ ScaleDomainFreq <- as.data.frame(table(unlist(strsplit(dt.Scales.Included$domain
 #           min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
 ```
 
-To assess the situational focus within the validated scales, we assessed the number of domains within each scale as well as more common domains across the scales. A relatively large number of scales asked about the current state of the migrant in general manner without mentioning any context or life domain (\textit{N} = `r ScaleDomainFreq$frequency[ScaleDomainFreq$domain=="general"]`; e.g., "In general, in what language do you read and speak?"). The remaining scales referred to an average of `r round(mean(ScaleDomainN),2)` dimensions (\textit{SD} = `r round(sd(ScaleDomainN),2)`, range: `r min(ScaleDomainN)` -- `r max(ScaleDomainN)`). A total of `r nrow(ScaleDomainFreq)` unique domains was measured across the `r nrow(dt.Scales.Included)` scales. The domains of 'language‘ (\hl{XX}\%), 'food' (\hl{XX}\%), 'interactions’ (\hl{XX}\%), 'family' (\hl{XX}\%) and 'values' (\hl{XX}\%) were focused on most often (see Online Supplementary Materials \hl{X}, Figure \hl{X}). Thus, while there was large variation between the scales in the number, and diversity of domains, the most frequently mentioned domains were in line with the life domains proposed in the literature \citep[e.g.,][]{Arends-Toth2007}. Yet again, given the large variability between studies, we did not investigate differences in experience elements across the different situational domains.  
-
-\paragraph{Migration time}
-
-```{r ScaleMigrationTime, include=F}
-summarytools::freq(dt.Scales.Included$MigrationTime, order = "freq")
-```
-
-Except for a single scale that was validated for potential migrants, all scales were validated using cross-sectional data after the migrant arrived in the settlement society. This is in line with observations by previous reviews of the field \citep[e.g.,][]{Brown2011}. There was, thus, no possibility to assess the experience elements across different process approaches.  
+To assess the situational focus within the validated scales, we assessed the number of domains within each scale as well as more common domains across the scales. A relatively large number of scales asked about the current state of the migrant in general manner without mentioning any context or life domain (\textit{N} = `r ScaleDomainFreq$frequency[ScaleDomainFreq$domain=="general"]`; e.g., "In general, in what language do you read and speak?"). The remaining scales referred to an average of `r round(mean(ScaleDomainN, na.rm=TRUE),2)` dimensions (\textit{SD} = `r round(sd(ScaleDomainN, na.rm=TRUE),2)`, range: `r min(ScaleDomainN, na.rm=TRUE)` -- `r max(ScaleDomainN, na.rm=TRUE)`). A total of `r nrow(ScaleDomainFreq)` unique domains was measured across the `r nrow(dt.Scales.Included)` scales. The domains of 'language‘ (\textit{N} = `r ScaleDomainFreq$frequency[ScaleDomainFreq$domain=="language"]`), 'food' (\textit{N} = `r ScaleDomainFreq$frequency[ScaleDomainFreq$domain=="food"]`), and 'family' (\textit{N} = `r ScaleDomainFreq$frequency[ScaleDomainFreq$domain=="family"]`) were focused on most often (see Online Supplementary Materials \hl{X}, Figure \hl{X}). Thus, while there was large variation between the scales in the number, and diversity of domains, the most frequently mentioned domains were in line with the life domains proposed in the literature \citep[e.g.,][]{Arends-Toth2007}. Yet again, given the large variability between studies, we did not investigate differences in experience elements across the different situational domains.  
 
 \subsection{Empirical Literature}  
 To gain a general understanding of contextual factors within the broader empirical studies, we again assessed cross-study patterns of cultural, individual, situational, and process-related focus points.
@@ -121,20 +113,20 @@ To gain a general understanding of contextual factors within the broader empiric
 
 ```{r EmpCountryFreq, include=F}
 # Host Countries: Count number of host countries
-EmpHostCountryN <- as.data.frame(table(str_count(dt.psych.included$HostCountry, ',')+1, dnn = list("count")))
+EmpHostCountryN <- as.data.frame(table(str_count(dt.Empirical.included$HostCountry, ',')+1, dnn = list("count")))
 
 # Host Countries: Find all individual country names and count frequency of occurrence
-EmpHostCountryFreq <- as.data.frame(table(unlist(strsplit(dt.psych.included$HostCountry, ", ")), dnn = list("country")), 
+EmpHostCountryFreq <- as.data.frame(table(unlist(strsplit(dt.Empirical.included$HostCountry, ", ")), dnn = list("country")), 
                                  responseName = "frequency") %>% 
   arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
   mutate(country = factor(country, levels=country), # update factor levels
          source = "host")
 
 # Origin Countries: Count number of host countries
-EmpOriginCountryN <- as.data.frame(table(str_count(dt.psych.included$OriginCountry, ',')+1, dnn = list("count")))
+EmpOriginCountryN <- as.data.frame(table(str_count(dt.Empirical.included$OriginCountry, ',')+1, dnn = list("count")))
 
 # Origin Countries: Find all individual country names and count frequency of occurrence
-EmpOriginCountryFreq <- as.data.frame(table(unlist(strsplit(dt.psych.included$OriginCountry, ", ")), dnn = list("country")), 
+EmpOriginCountryFreq <- as.data.frame(table(unlist(strsplit(dt.Empirical.included$OriginCountry, ", ")), dnn = list("country")), 
                                    responseName = "frequency") %>% 
   arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
   mutate(country = factor(country, levels=country), # update factor levels
@@ -159,10 +151,10 @@ When it came to the migrants' country of origin, a majority of studies were indi
 
 ```{r EmpSampleFreq, include=F}
 # tally different samples
-EmpSampleFreq <- as.data.frame(table(Sample = dt.psych.included$Sample)) %>%
+EmpSampleFreq <- as.data.frame(table(Sample = dt.Empirical.included$Sample)) %>%
   arrange(Freq) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
   mutate(Sample = factor(Sample, levels=Sample),
-         Perc = Freq/nrow(dt.psych.included)*100) # update factor levels
+         Perc = Freq/nrow(dt.Empirical.included)*100) # update factor levels
 
 EmpSampleRefugee <- sum(EmpSampleFreq[grepl("refugee", EmpSampleFreq$Sample),]$Freq)
 EmpSampleRefugeePerc <- round(sum(EmpSampleFreq[grepl("refugee", EmpSampleFreq$Sample),]$Perc),2)
@@ -183,10 +175,10 @@ To assess the role different groups of individuals targeted in the empirical wor
 
 ```{r EmpDomainFrequencies, include=F, warning=F}
 # Number of domains in scale
-EmpDomainN <- str_count(dt.psych.included$domainScale, ',')+1
+EmpDomainN <- str_count(dt.Empirical.included$domainScale, ',')+1
 
 # Domain frequencies: Find all individual domains and count frequency of occurrence
-EmpDomainFreq <- as.data.frame(table(unlist(strsplit(dt.psych.included$domainScale, ", ")), dnn = list("domain")), 
+EmpDomainFreq <- as.data.frame(table(unlist(strsplit(dt.Empirical.included$domainScale, ", ")), dnn = list("domain")), 
                                  responseName = "frequency") %>% 
   arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
   mutate(domain = factor(domain, levels=domain)) # update factor levels
@@ -197,21 +189,5 @@ EmpDomainFreq <- as.data.frame(table(unlist(strsplit(dt.psych.included$domainSca
 #           min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
 ```
 
-To capture the situational focus of the authors, we coded which life domains the utilized measures referred to. A relatively large number of studies assess cultural adaption in general manner without mentioning any context or life domain (\textit{N} = `r EmpDomainFreq$frequency[EmpDomainFreq$domain=="general"]`). The remaining studies referred to an average of `r round(mean(EmpDomainN, na.rm=T),2)` dimensions (\textit{SD} = `r round(sd(EmpDomainN, na.rm=T),2)`, range: `r min(EmpDomainN, na.rm=T)` -- `r max(EmpDomainN, na.rm=T)`)). We found a total of `r nrow(EmpDomainFreq)` unique domains across the `r nrow(dt.psych.included)` studies. The dimensions of 'language‘ (\hl{XX}\%), 'food’ (\hl{XX}\%), 'social interactions’, and 'friends’ (\hl{XX}\%) were included most frequently. So, while larger proportion of studies ask about cultural adaption in general (outside of a specific domain), the number of domains included and addressed is extensive and diverse. The mentioned domains at times go beyond the life fields mentioned in previous work (also see Online Supplementary Materials \hl{X}).
-
-\paragraph{Process}
-
-```{r EmpProcess, include=F}
-empMigrationTime <- as.data.frame(summarytools::freq(dt.psych.included$MigrationTime, order = "freq"))
-names(empMigrationTime) <- gsub("% ", "Perc", names(empMigrationTime))
-
-
-empAnalysis <- as.data.frame(summarytools::freq(dt.psych.included$MainAnalysis, order = "freq"))
-names(empAnalysis) <- gsub("% ", "Perc", names(empAnalysis))
-
-EmpLong <- sum(empAnalysis[grepl("lagged|longitudinal|dynamic", rownames(empAnalysis)),]$Freq)
-EmpLongPerc <- round(sum(empAnalysis[grepl("lagged|longitudinal|dynamic", rownames(empAnalysis)),]$PercValid),2)
-```
-
-To assess the process focus of the broader empirical works, we again assessed when in the migration process the data was collected and we additionally assessed the type analysis done by the authors. We found that a `r empMigrationTime["post",]$Freq` studies (`r round(empMigrationTime["post",]$PercValid,2)`\%) collected data after the arrival of the migrant in the new society. Two studies targeted potential migrants and `r empMigrationTime["pre & post",]$Freq` studies collected data prior and following the migration event. Moreover, only `r EmpLong` studies included longitudinal data analyses concerned with cultural adaptation (`r EmpLongPerc`\%). This observation, again underscores the arguments made others, who have long pointed out that the acculturation literature has thus far failed to provide data that meaningfully captures migration as a process \citep[e.g.,][]{Brown2011, Ward2019}. This also did not allow us to assess differences in the experience measures.
+To capture the situational focus of the authors, we coded which life domains the utilized measures referred to. A relatively large number of studies assess cultural adaption in general manner without mentioning any context or life domain (\textit{N} = `r EmpDomainFreq$frequency[EmpDomainFreq$domain=="general"]`). The remaining studies referred to an average of `r round(mean(EmpDomainN, na.rm=T),2)` dimensions (\textit{SD} = `r round(sd(EmpDomainN, na.rm=T),2)`, range: `r min(EmpDomainN, na.rm=T)` -- `r max(EmpDomainN, na.rm=T)`). We found a total of `r nrow(EmpDomainFreq)-1` unique domains across the `r nrow(dt.Empirical.included)` studies. The domains of 'language‘ (\textit{N} = `r EmpDomainFreq$frequency[EmpDomainFreq$domain=="language"]`), 'food’ (\textit{N} = `r EmpDomainFreq$frequency[EmpDomainFreq$domain=="food"]`), and 'media’ (\textit{N} = `r EmpDomainFreq$frequency[EmpDomainFreq$domain=="media"]`) were included most frequently. So, while larger proportion of studies ask about cultural adaption in general (outside of a specific domain), the number of domains included and addressed is extensive and diverse. The mentioned domains at times go beyond the life fields mentioned in previous work (also see Online Supplementary Materials \hl{X}).
 
