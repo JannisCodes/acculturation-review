@@ -1,6 +1,6 @@
 ---
-title: "Integration of Migrants"
-subtitle: "Annotated Analysis"
+title: "Supplemental Information B: Full Annotated Analysis and Reproducible Code"
+subtitle: "Suppplementary Information for 'The Migration Experience: A Conceptual Framework andSystematic Review of Psychological Acculturation'"
 author:
 - Jannis Kreienkamp^1^
 - Kai Epstude^1^
