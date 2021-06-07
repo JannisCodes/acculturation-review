@@ -6,4 +6,4 @@ This repository brings together the full manuscript (syncronized from Overleaf) 
 
 The full annotated analysis code is available [here](https://www.acculturation-review.com/Supplemental%20Material%20B%20-%20Annotated%20Analysis.html).
 
-<form action="https://www.acculturation-review.com/Supplemental%20Material%20B%20-%20Annotated%20Analysis.html" method="get" target="_blank"><button type="submit">Annotated Analysis</button></form>
+<!-- <form action="https://www.acculturation-review.com/Supplemental%20Material%20B%20-%20Annotated%20Analysis.html" method="get" target="_blank"><button type="submit">Annotated Analysis</button></form> -->
