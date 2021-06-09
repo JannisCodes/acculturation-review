@@ -3,10 +3,10 @@ title: "Supplemental Information B: Full Annotated Analysis and Reproducible Cod
 subtitle: "Suppplementary Information for 'The Migration Experience: A Conceptual Framework andSystematic Review of Psychological Acculturation'"
 author:
 - Jannis Kreienkamp^1^
-- Kai Epstude^1^
 - Laura Bringmann^1^
-- Peter de Jonge^1^
 - Raili Engler^1^
+- Peter de Jonge^1^
+- Kai Epstude^1^
 - ^1^University of Groningen
 date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
 output: 
