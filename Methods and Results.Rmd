@@ -396,7 +396,7 @@ Based on the systematic review and its coding, the first empirical dataset we as
 
 \subsubsection{Methods}  
 \paragraph{Dataset}
-Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Source != "own review",])` scales. From our own review we added `r nrow(dt.Scales[dt.Scales$Source == "own review",])` additional validation studies. After removing duplicates this meant that we considered a total of `r nrow(dt.Scales)` unique scales for our coding. Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$MissingNote),])`, because they were either not accessible or did not fit the the topic of our review (see Table \ref{tab:ExclusionsCombined}). About a quarter of scales (`r round(nrow(filter(dt.Scales, IncludesMajority == 1))/nrow(dt.Scales)*100,2)`\%) included majority group members in their validation studies. The earliest included validation was from `r min(dt.Scales$year, na.rm = T)` with a majority of scales being validated around the turn of the 21\textsuperscript{st} century and the most recent included validation study was published in `r max(dt.Scales$year, na.rm = T)`.  
+Taken together and after duplicate removal, these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Source != "own review",])` scales. From our own review we added `r nrow(dt.Scales[dt.Scales$Source == "own review",])` additional validation studies (total of `r nrow(dt.Scales)` unique scales). Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$MissingNote),])`, because they were either not accessible or did not fit the the topic of our review (see Table \ref{tab:ExclusionsCombined}). About a quarter of scales (`r round(nrow(filter(dt.Scales, IncludesMajority == 1))/nrow(dt.Scales)*100,2)`\%) included majority group members in their validation studies. The earliest included validation was from `r min(dt.Scales$year, na.rm = T)` with a majority of scales being validated around the turn of the 21\textsuperscript{st} century and the most recent included validation study was published in `r max(dt.Scales$year, na.rm = T)`.  
 
 \paragraph{Experience Aspects}
 We extracted data on the experience aspects by primarily focusing on the measured concepts and their operationalizations (also see Table \ref{tab:AspectExamples}). For each article we retrieved the items used and coded whether the measure included references to affects, behaviors, cognitions, and desires. Because this concerned the most central aspect of our framework, each manuscript was double-coded and inconsistent codes were resolved after discussion (Cohen's $\varkappa$ = \hl{X.XX} (pooled and individual?)).
@@ -817,7 +817,7 @@ Contextual variables on sample, life domain, cultural groups, measurement type, 
 <!-- The Scimago database classifies each journal according to the field(s) that the journal aims to address. Importantly, (1) each journal can be be classified to address multiple fields and (2) the field include codes of fields (e.g., ‘Social Sciences’) as well as sub-fields (e.g., ‘Social Psychology’). This leads to the case that there can be substantial overlap between fields, and journals cannot readily be assessed in mutually exclusive subgroups. -->
 
 ```{r disciplines, include=F}
-empDisciplines <- as.data.frame(summarytools::freq(psychDataDisciplines$discipline02, order = "freq"))
+empDisciplines <- as.data.frame(summarytools::freq(empiricalDataDisciplines$discipline02, order = "freq"))
 names(empDisciplines) <- gsub("% ", "Perc", names(empDisciplines))
 ```
 
@@ -1103,19 +1103,19 @@ field_labs_lng <- c(
 )
 
 # Frequency of elements (within each field)
-FieldElementFreq <- psychDataDisciplines %>%
+FieldElementFreq <- empiricalDataDisciplines %>%
   dplyr::select(discipline02, Affect, Behavior, Cognition, Desire) %>%
   gather(Element, Frequency, -discipline02) %>%
   group_by(discipline02, Element) %>%
   summarise_each(funs(sum(., na.rm = TRUE))) %>%
   ungroup() 
-FieldN <- as.data.frame(table(discipline02 = psychDataDisciplines$discipline02), responseName = "n")
+FieldN <- as.data.frame(table(discipline02 = empiricalDataDisciplines$discipline02), responseName = "n")
 
 FieldElementFreq <- merge(FieldElementFreq, FieldN) %>%
   mutate(Percentage = Frequency/n*100)
   
 # frequency of unique element combinations (within each field)
-FieldElementCombFreq <- psychDataDisciplines %>%
+FieldElementCombFreq <- empiricalDataDisciplines %>%
   dplyr::select(Affect, Behavior, Cognition, Desire, discipline02) %>%
   #mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
   group_by(Affect, Behavior, Cognition, Desire, discipline02) %>%
@@ -1159,7 +1159,7 @@ FieldAvgComplexity <- FieldElementCombFreq %>%
   right_join(rownames_to_column(as.data.frame(field_labs_lng), "discipline02")) %>%
   select(Field = field_labs_lng, n, avgComplexity, sdComplexity, seComplexity)
 
-FieldComplexityAOV <- psychDataDisciplines %>%
+FieldComplexityAOV <- empiricalDataDisciplines %>%
   select(Affect, Behavior, Cognition, Desire, discipline02) %>%
   right_join(rownames_to_column(as.data.frame(field_labs_lng), "discipline02")) %>%
   mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T),
@@ -1170,7 +1170,7 @@ FieldComplexityAOV <- psychDataDisciplines %>%
   aov(data = ., complexity ~ field) %>%
   anova
 
-FieldComplexityKruska <- psychDataDisciplines %>%
+FieldComplexityKruska <- empiricalDataDisciplines %>%
   select(Affect, Behavior, Cognition, Desire, discipline02) %>%
   right_join(rownames_to_column(as.data.frame(field_labs_lng), "discipline02")) %>%
   mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T),
@@ -1180,7 +1180,7 @@ FieldComplexityKruska <- psychDataDisciplines %>%
   select(field, ExperienceCombination, complexity) %>%
   kruskal.test(complexity ~ field, data = .)
 
-FieldComplexityPearsonChiSq <- psychDataDisciplines %>%
+FieldComplexityPearsonChiSq <- empiricalDataDisciplines %>%
   select(Affect, Behavior, Cognition, Desire, discipline02) %>%
   right_join(rownames_to_column(as.data.frame(field_labs_lng), "discipline02")) %>%
   mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T),
@@ -1189,7 +1189,7 @@ FieldComplexityPearsonChiSq <- psychDataDisciplines %>%
   chisq.test
 
 library(effectsize)
-FieldComplexityEtaSq <- psychDataDisciplines %>%
+FieldComplexityEtaSq <- empiricalDataDisciplines %>%
   select(Affect, Behavior, Cognition, Desire, discipline02) %>%
   right_join(rownames_to_column(as.data.frame(field_labs_lng), "discipline02")) %>%
   mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T),
@@ -1218,7 +1218,7 @@ When looking at differences in how many different experience aspects were measur
 ```{r FieldPlotComplexityAverage, include=F, fig.width=10, fig.height=8}
 # ## ALTERNATE VERSION WITH VIOLIN PLOT
 # # Calculate Complexity for every paper
-# FieldIndividualComplexity <- psychDataDisciplines %>%
+# FieldIndividualComplexity <- empiricalDataDisciplines %>%
 #   dplyr::select(Affect, Behavior, Cognition, Desire, discipline02) %>%
 #   #mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
 #   mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T)) %>%
@@ -1290,7 +1290,7 @@ When looking at differences in how many different experience aspects were measur
 #         #panel.border = element_rect(color="grey"),
 #         legend.position="none")
 
-FieldIndividualComplexity <- psychDataDisciplines %>%
+FieldIndividualComplexity <- empiricalDataDisciplines %>%
   dplyr::select(Affect, Behavior, Cognition, Desire, discipline02) %>%
   #mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
   mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T)) %>%
@@ -1345,7 +1345,7 @@ ggstatsplot:::ggsignif_adder(
 ```{r  FieldPlotComplexityAverage1, include=F, fig.width=16, fig.height=9}
 ## ALTERNATE VERSION WITH VIOLIN PLOT
 # Calculate Complexity for every paper
-FieldIndividualComplexity <- psychDataDisciplines %>%
+FieldIndividualComplexity <- empiricalDataDisciplines %>%
   dplyr::select(Affect, Behavior, Cognition, Desire, discipline02) %>%
   #mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
   mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T)) %>%
@@ -1407,7 +1407,7 @@ ggplot(FieldIndividualComplexity, aes(y=complexity, x=reorder(field_labs_lng, co
 ```{r  FieldPlotComplexityAverage2, include=F, fig.width=16, fig.height=9}
 ## ALTERNATE VERSION WITH VIOLIN PLOT
 # Calculate Complexity for every paper
-FieldIndividualComplexity <- psychDataDisciplines %>%
+FieldIndividualComplexity <- empiricalDataDisciplines %>%
   dplyr::select(Affect, Behavior, Cognition, Desire, discipline02) %>%
   #mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
   mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T)) %>%
@@ -1634,7 +1634,7 @@ ElementFrequencyAll <- gdata::combine(Theories = TheoElementFreq,
                                       Scales = ScaleElementFreq %>% mutate(Percentage = Percentage*100), 
                                       Empirical = EmpElementFreq)
 
-ggplot(data=ElementFrequencyAll, aes(x=Element, y=Percentage, fill=Element)) +
+CombinedABCDBar <- ggplot(data=ElementFrequencyAll, aes(x=Element, y=Percentage, fill=Element)) +
   geom_bar(position="dodge", stat="identity") +
   geom_text(
     aes(label = paste0(format(round(Percentage,1), nsmall = 1), "%")),
@@ -1669,6 +1669,8 @@ ggplot(data=ElementFrequencyAll, aes(x=Element, y=Percentage, fill=Element)) +
         legend.title = element_blank(),
         legend.key.size = unit(.4, "cm"),
         legend.position="none")
+
+CombinedABCDBar
 ```
 
 ```{r CombinedComplexityBar, include=F, fig.width=16, fig.height=9}
@@ -1736,7 +1738,7 @@ ComplexityFrequencyAllLong <- ComplexityFrequencyAll %>%
   gather(., Aspect, Proportion, c(AffectProp, BehaviorProp, CognitionProp, DesireProp), factor_key=TRUE) %>%
   mutate(Aspect = gsub("Prop","",Aspect))
 
-ggplot(data=ComplexityFrequencyAllLong, aes(x=reorder(complexity, Proportion), y=Proportion, fill=as.factor(complexity))) +
+CombinedComplexityBar <- ggplot(data=ComplexityFrequencyAllLong, aes(x=reorder(complexity, Proportion), y=Proportion, fill=as.factor(complexity))) +
   geom_bar(position="stack", stat="identity") +
   labs(title = "Number of Experience Aspects Used",
        y = "Percentage across all articles",
@@ -1776,6 +1778,8 @@ ggplot(data=ComplexityFrequencyAllLong, aes(x=reorder(complexity, Proportion), y
         legend.title = element_blank(),
         legend.key.size = unit(.4, "cm"),
         legend.position="none")
+
+CombinedComplexityBar
 ```
 
 ```{r CombinedComplexityAspectBar, include=F, fig.width=16, fig.height=9}
@@ -1847,7 +1851,7 @@ ComplexityFrequencyAllLong <- ComplexityFrequencyAll %>%
   gather(., Aspect, Proportion, c(AffectProp, BehaviorProp, CognitionProp, DesireProp), factor_key=TRUE) %>%
   mutate(Aspect = gsub("Prop","",Aspect))
 
-ggplot(data=ComplexityFrequencyAllLong, aes(x=reorder(complexity, Proportion), y=Proportion, fill=reorder(Aspect, Proportion))) +
+CombinedComplexityAspectBar <- ggplot(data=ComplexityFrequencyAllLong, aes(x=reorder(complexity, Proportion), y=Proportion, fill=reorder(Aspect, Proportion))) +
   geom_bar(position="stack", stat="identity") +
   labs(title = "Relative Importance of Aspect per Complexity Level",
        y = "Percentage across all articles",
@@ -1887,6 +1891,8 @@ ggplot(data=ComplexityFrequencyAllLong, aes(x=reorder(complexity, Proportion), y
         legend.title = element_blank(),
         legend.key.size = unit(.4, "cm"),
         legend.position="bottom")
+
+CombinedComplexityAspectBar
 ```
 
 ```{r CombinedAspectComplexityBar, include=F, fig.width=16, fig.height=9}
@@ -1925,7 +1931,7 @@ ComplexityFrequencyAll <- gdata::combine(Theories, Scales, Empirical)
 #   gather(., Aspect, Proportion, c(AffectProp, BehaviorProp, CognitionProp, DesireProp), factor_key=TRUE) %>%
 #   mutate(Aspect = gsub("Prop","",Aspect))
 
-ggplot(data=ComplexityFrequencyAll, aes(x=reorder(ExperienceCombination, AspectTotal), y=Percentage, fill=forcats::fct_rev(as.factor(complexity)))) +
+CombinedAspectComplexityBar <- ggplot(data=ComplexityFrequencyAll, aes(x=reorder(ExperienceCombination, AspectTotal), y=Percentage, fill=forcats::fct_rev(as.factor(complexity)))) +
   geom_bar(position="stack", stat="identity") +
   labs(title = "Complexity Proportions for each Experience Aspect",
        y = "Percentage across all articles",
@@ -1966,6 +1972,8 @@ ggplot(data=ComplexityFrequencyAll, aes(x=reorder(ExperienceCombination, AspectT
         #legend.title = element_blank(),
         legend.key.size = unit(.4, "cm"),
         legend.position="bottom")
+
+CombinedAspectComplexityBar
 ```
 
 
@@ -1976,7 +1984,7 @@ ComplexityAverageAll <- rbind(TheoElementComplexity %>% mutate(Literature = "The
   select(Aspect = Element, Mean = avgComplexity, SD=sdComplexity, N=n, SE=seComplexity, Literature) %>%
   mutate(Mean = Mean-1)
   
-ggplot(ComplexityAverageAll, aes(y=Mean, x=reorder(Aspect, -Mean)))+
+CombinedAspectComplexityMean <- ggplot(ComplexityAverageAll, aes(y=Mean, x=reorder(Aspect, -Mean)))+
   geom_point() +
   scale_y_continuous(limits = c(0,3)) +
   geom_errorbar(aes(ymin=Mean-1.96*SE, ymax=Mean+1.96*SE), colour="black", width=.1) +
@@ -2001,26 +2009,40 @@ ggplot(ComplexityAverageAll, aes(y=Mean, x=reorder(Aspect, -Mean)))+
         #legend.key.size = unit(.4, "cm"),
         legend.position="none")
   
+CombinedAspectComplexityMean
 ```
 
-\begin{figure}[h]
-\centering
-\caption{Literature Levels: Bar graph of the experience aspect frequencies for theoretical, methodological, and broader empirical literature.}
-\includegraphics[width=\textwidth]{Figures/CombinedABCDBar-1}
-\label{fig:CombinedAspects}
-\end{figure}
+```{r LiteratureComparison, include=F, fig.width=17, fig.height=17*1.414}
+cowplot::plot_grid(CombinedABCDBar, CombinedComplexityBar, CombinedAspectComplexityMean, nrow=3, align = "v", rel_heights = c(1/3, 1/3, 1/3)) +
+  draw_plot_label(c("(A)", "(B)", "(C)"), c(0.01, 0.01, 0.01), c(1, 2/3, 1/3), size = 18)
+```
+
+<!-- \begin{figure}[h] -->
+<!-- \centering -->
+<!-- \caption{Literature Levels: Bar graph of the experience aspect frequencies for theoretical, methodological, and broader empirical literature.} -->
+<!-- \includegraphics[width=\textwidth]{Figures/CombinedABCDBar-1} -->
+<!-- \label{fig:CombinedAspects} -->
+<!-- \end{figure} -->
+
+<!-- \begin{figure}[h] -->
+<!-- \centering -->
+<!-- \caption{Literature Levels: Bar graph of the number of experience aspects used for theoretical, methodological, and broader empirical literature.} -->
+<!-- \includegraphics[width=\textwidth]{Figures/CombinedComplexityBar-1} -->
+<!-- \label{fig:CombinedComplexity} -->
+<!-- \end{figure} -->
+
+<!-- \begin{figure}[h] -->
+<!-- \centering -->
+<!-- \caption{Literature Levels: Average number of additional aspects included when the aspect was considered for theoretical, methodological, and broader empirical literature [Mean ± 95\%CI].} -->
+<!-- \includegraphics[width=\textwidth]{Figures/CombinedAspectComplexityMean-1} -->
+<!-- \caption*{Note that within each literature body the aspects are not mutually exclusive (and thus not independent) because scales can include multiple experience aspects.} -->
+<!-- \label{fig:CombinedAspectComplexity} -->
+<!-- \end{figure} -->
 
 \begin{figure}[h]
 \centering
-\caption{Literature Levels: Bar graph of the number of experience aspects used for theoretical, methodological, and broader empirical literature.}
-\includegraphics[width=\textwidth]{Figures/CombinedComplexityBar-1}
-\label{fig:CombinedComplexity}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\caption{Literature Levels: Average number of additional aspects included when the aspect was considered for theoretical, methodological, and broader empirical literature [Mean ± 95\%CI].}
-\includegraphics[width=\textwidth]{Figures/CombinedAspectComplexityMean-1}
-\caption*{Note that within each literature body the aspects are not mutually exclusive (and thus not independent) because scales can include multiple experience aspects.}
-\label{fig:CombinedAspectComplexity}
+\caption{Literature Levels: (A) Bar graph of the number of experience aspects used for theoretical, methodological, and broader empirical literature. (B) Average number of additional aspects included when the aspect was considered for theoretical, methodological, and broader empirical literature [Mean ± 95\%CI]. (C) Average number of additional aspects included when the aspect was considered for theoretical, methodological, and broader empirical literature [Mean ± 95\%CI].}
+\includegraphics[width=\textwidth]{Figures/LiteratureComparison-1}
+\caption*{Note that in (C) within each literature body the aspects are not mutually exclusive (and thus not independent) because scales can include multiple experience aspects.}
+\label{fig:LiteratureComparison}
 \end{figure}
