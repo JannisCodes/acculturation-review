@@ -141,11 +141,10 @@ prismaGr(found = nrow(dt.TheorySearch),
 The most abstract level of our review was concerned with how researchers conceptualized psychological acculturation in their theoretical work. Our theory-specific literature search produced a total of `r nrow(dt.TheorySearch)` results from which we identified `r nrow(dt.TheorySearch.included)` theories. From our review of the empirical literature we added an additional `r dt.TheorySearch.added` theories (total N = `r nrow(dt.Theories.Included)`, for exclusion reasons see Table \ref{tab:ExclusionsCombined} and for our PRISMA diagram see Figure \ref{fig:PrismaCombined} A. A full table of all theories, with references, and final coding is available in our online supplementary information as well as on our open science repository (\hl{OSF and/or GitHub citation here}). 
 
 \begin{figure}[h]
-\begin{center}
+\centering
 \caption{PRISMA Diagrams for the Theoretical, Methodological, and Empirical Literature.}
-\includegraphics[width=\paperwidth]{Figures/PrismaCombined}
+\makebox[\textwidth]{\includegraphics[width=\paperwidth]{Figures/PrismaCombined}}
 \label{fig:PrismaCombined}
-\end{center}
 \end{figure}
 
 <!-- \begin{figure}[h] -->
