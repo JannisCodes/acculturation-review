@@ -1630,8 +1630,8 @@ ggplot(FieldElementComplexity, aes(fill=field_labs_lng, y=avgComplexity, x=reord
 
 
 ```{r CombinedABCDBar, include=F, fig.width=16, fig.height=9}
-ElementFrequencyAll <- gdata::combine(Theories = TheoElementFreq,
-                                      Scales = ScaleElementFreq %>% mutate(Percentage = Percentage*100), 
+ElementFrequencyAll <- gdata::combine(Theoretical = TheoElementFreq,
+                                      Methodological = ScaleElementFreq %>% mutate(Percentage = Percentage*100), 
                                       Empirical = EmpElementFreq)
 
 CombinedABCDBar <- ggplot(data=ElementFrequencyAll, aes(x=Element, y=Percentage, fill=Element)) +
@@ -1674,7 +1674,7 @@ CombinedABCDBar
 ```
 
 ```{r CombinedComplexityBar, include=F, fig.width=16, fig.height=9}
-Theories <- TheoElementCombFreq %>%
+Theoretical <- TheoElementCombFreq %>%
   mutate(Affect = Affect*Frequency,
          Behavior = Behavior*Frequency,
          Cognition = Cognition*Frequency,
@@ -1693,7 +1693,7 @@ Theories <- TheoElementCombFreq %>%
          DesireProp = Percentage/ABCDTotal*Desire,
          sum = AffectProp + BehaviorProp + CognitionProp + DesireProp)
 
-Scales <- ScaleElementCombFreq %>%
+Methodological <- ScaleElementCombFreq %>%
   mutate(Affect = Affect*Frequency,
          Behavior = Behavior*Frequency,
          Cognition = Cognition*Frequency,
@@ -1731,7 +1731,7 @@ Empirical <- EmpElementCombFreq %>%
          DesireProp = Percentage/ABCDTotal*Desire,
          sum = AffectProp + BehaviorProp + CognitionProp + DesireProp)
 
-ComplexityFrequencyAll <- gdata::combine(Theories, Scales, Empirical)
+ComplexityFrequencyAll <- gdata::combine(Theoretical, Methodological, Empirical)
 
 ComplexityFrequencyAllLong <- ComplexityFrequencyAll %>% 
   select(source, complexity, Percentage, AffectProp, BehaviorProp, CognitionProp, DesireProp) %>%
@@ -1747,6 +1747,7 @@ CombinedComplexityBar <- ggplot(data=ComplexityFrequencyAllLong, aes(x=reorder(c
   #scale_fill_manual(values=c("#F98F45", "#12908E"))+
   #scale_fill_brewer(palette="YlGnBu")+
   facet_wrap(~source)+
+  #facet_wrap(~factor(source,levels=c("Theoretical","Methodological","Empirical"))) +
   scale_fill_manual(values = c("grey14", "grey75", "grey75", "grey14")) +
   #scale_fill_brewer(palette="Paired")+
   coord_flip()+
@@ -1991,6 +1992,9 @@ CombinedAspectComplexityMean <- ggplot(ComplexityAverageAll, aes(y=Mean, x=reord
   geom_text(aes(label=paste0(format(round(Mean,2),nsmall=2),
                              ", 95%CI[", format(round(Mean-1.96*SE,2),nsmall=2), ", ", format(round(Mean+1.96*SE,2),nsmall=2), "]"),
                 hjust=0.5, vjust=-1.5, size = 14)) +
+  labs(title = "Average Number of Other Experience Aspect Included",
+       y = "Number of other aspects",
+       x = "Focus aspect")+
   coord_flip() +
   facet_wrap(~factor(Literature,levels=c("Theoretical","Methodological","Empirical"))) +
   theme_Publication() +
