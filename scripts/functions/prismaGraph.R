@@ -1,6 +1,6 @@
 prismaGr <- function (found, found_other, no_dupes, screened, screen_exclusions, 
           full_text, full_text_exclusions, qualitative, quantitative = NULL, 
-          labels = NULL, extra_dupes_box = FALSE, ..., dpi = 72, font_size = 10) {
+          labels = NULL, extra_dupes_box = FALSE, title = "", ..., dpi = 72, font_size = 10) {
   
   dupes <- found + found_other - no_dupes
   labels <- list(found = paste("Records identified through", "database searching", sprintf("(n = %d)", found), sep = "\n"), 
@@ -19,7 +19,7 @@ prismaGr <- function (found, found_other, no_dupes, screened, screen_exclusions,
   if (extra_dupes_box) 
     dupes_box <- sprintf("nodups -> {incex; dups};\n       nodups [label=\"%s\"];\n       dups [label=\"%s\"]; {rank=same; nodups dups}", 
                          labels$no_dupes, labels$dupes)
-  dot_template <- "digraph prisma {\n    node [shape=\"box\", fontsize = %d];\n    graph [splines=ortho, nodesep=1, dpi = %d]\n    a -> nodups;\n    b -> nodups;\n    a [label=\"%s\"];\n    b [label=\"%s\"]\n    %s\n    incex -> {ex; ft}\n    incex [label=\"%s\"];\n    ex [label=\"%s\"];\n    {rank=same; incex ex}\n    ft -> {qual; ftex};\n    ft [label=\"%s\"];\n    {rank=same; ft ftex}\n    ftex [label=\"%s\"];\n    qual -> quant\n    qual [label=\"%s\"];\n    quant [label=\"%s\"];\n  }"
+  dot_template <- paste0("digraph prisma {labelloc=\"t\"; label=\"", title, "\n\n\";\n    node [shape=\"box\", fontsize = %d];\n    graph [splines=ortho, nodesep=1, dpi = %d]\n    a -> nodups;\n    b -> nodups;\n    a [label=\"%s\"];\n    b [label=\"%s\"]\n    %s\n    incex -> {ex; ft}\n    incex [label=\"%s\"];\n    ex [label=\"%s\"];\n    {rank=same; incex ex}\n    ft -> {qual; ftex};\n    ft [label=\"%s\"];\n    {rank=same; ft ftex}\n    ftex [label=\"%s\"];\n    qual -> quant\n    qual [label=\"%s\"];\n    quant [label=\"%s\"];\n  }")
   
   DiagrammeR::grViz(sprintf(dot_template, font_size, dpi, labels$found, labels$found_other, 
                             dupes_box, labels$screened, labels$screen_exclusions, 
@@ -30,7 +30,7 @@ prismaGr <- function (found, found_other, no_dupes, screened, screen_exclusions,
 prismaGrScales <- function (found, found_other, no_dupes, 
                             #screened, screen_exclusions, 
                             full_text, full_text_exclusions, qualitative, quantitative = NULL, 
-                            labels = NULL, extra_dupes_box = FALSE, ..., dpi = 72, font_size = 10) {
+                            labels = NULL, extra_dupes_box = FALSE, title = "", ..., dpi = 72, font_size = 10) {
   
   dupes <- found + found_other - no_dupes
   labels <- list(found = paste("Records identified through", "past reviews", sprintf("(n = %d)", found), sep = "\n"), 
@@ -49,7 +49,7 @@ prismaGrScales <- function (found, found_other, no_dupes,
   if (extra_dupes_box) 
     dupes_box <- sprintf("nodups -> {ft; dups};\n       nodups [label=\"%s\"];\n       dups [label=\"%s\"]; {rank=same; nodups dups}", 
                          labels$no_dupes, labels$dupes)
-  dot_template <- "digraph prisma {\n    node [shape=\"box\", fontsize = %d];\n    graph [splines=ortho, nodesep=1, dpi = %d]\n    a -> nodups;\n    b -> nodups;\n    a [label=\"%s\"];\n    b [label=\"%s\"]\n    %s\n    ft -> {qual; ftex};\n    ft [label=\"%s\"];\n    {rank=same; ft ftex}\n    ftex [label=\"%s\"];\n    qual -> quant\n    qual [label=\"%s\"];\n    quant [label=\"%s\"];\n  }"
+  dot_template <-  paste0("digraph prisma {labelloc=\"t\"; label=\"", title, "\n\n\";\n    node [shape=\"box\", fontsize = %d];\n    graph [splines=ortho, nodesep=1, dpi = %d]\n    a -> nodups;\n    b -> nodups;\n    a [label=\"%s\"];\n    b [label=\"%s\"]\n    %s\n    ft -> {qual; ftex};\n    ft [label=\"%s\"];\n    {rank=same; ft ftex}\n    ftex [label=\"%s\"];\n    qual -> quant\n    qual [label=\"%s\"];\n    quant [label=\"%s\"];\n  }")
   
   DiagrammeR::grViz(sprintf(dot_template, font_size, dpi, labels$found, labels$found_other, 
                             dupes_box, 

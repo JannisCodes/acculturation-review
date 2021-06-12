@@ -55,7 +55,7 @@ lib <- c("rmarkdown", "knitr", "citr", "remedy", "bookdown", "papaja", "rmdfiltr
          "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
          "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes", "patchwork", "cowplot",
          "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet",
-         "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg", "manipulateWidget")
+         "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg", "manipulateWidget", "htmlwidgets", "webshot2")
 invisible(lapply(lib, library, character.only = TRUE))  
 rm(lib)  
 
@@ -286,6 +286,7 @@ prismaTheory <- prismaGr(found = nrow(dt.TheorySearch),
          full_text_exclusions = nrow(dt.TheorySearch.abstract)-nrow(dt.TheorySearch.included), 
          qualitative = nrow(dt.Theories.Included), 
          #quantitative = nrow(dt.Theories.Included), 
+         title = "(A) PRISMA Diagram for the Theoretical Literature",
          extra_dupes_box = F,
          width = 800, height = 800)
 ```
@@ -348,6 +349,7 @@ prismaScales <- prismaGrScales(found = scalesPastN,
                full_text_exclusions = scalesNoDupsN-scalesAfterExclusionN, 
                qualitative = scalesAfterExclusionN, 
                quantitative = scalesAfterExclusionN, 
+               title = "(B) PRISMA Diagram for the Methodological Literature",
                extra_dupes_box = F,
                width = 800, height = 800)
 ```
@@ -431,6 +433,7 @@ prismaEmpirical <- prismaGr(found = nrow(dt.Empirical),
          full_text_exclusions = nrow(dt.Empirical.abstract)-nrow(dt.Empirical.fulltext), 
          qualitative = nrow(dt.Empirical.fulltext), 
          quantitative = nrow(dt.Empirical.included),
+         title = "(C) PRISMA Diagram for the Empirical Literature",
          extra_dupes_box = F,
          width = 800, height = 800)
 ```
@@ -465,7 +468,11 @@ exclMerged02 %>%
 ```
 
 ```{r PrismaCombined, fig.cap="Prisma diagram for three data sets on psychological acculturation."}
-manipulateWidget::combineWidgets(prismaTheory, prismaScales, prismaEmpirical, nrow=1)
+PrismaCombined <- manipulateWidget::combineWidgets(prismaTheory, prismaScales, prismaEmpirical, ncol = 1, byrow = TRUE)
+htmlwidgets::saveWidget(PrismaCombined, "PrismaCombined.html", selfcontained = TRUE)
+webshot2::webshot("PrismaCombined.html", "Figures/PrismaCombined.pdf", vwidth = 500, vheight = 1600)
+
+manipulateWidget::combineWidgets(prismaTheory, prismaScales, prismaEmpirical, ncol = 1, byrow = TRUE) 
 ```
 
 # **Full Databases**  {.tabset}
