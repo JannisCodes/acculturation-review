@@ -1,0 +1,118 @@
+% define document type (i.e., template. Here: A4 APA manuscript with 12pt font)
+\documentclass[man, 12pt, a4paper]{apa7}
+
+% add packages
+\usepackage[american]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage{hyperref}
+\usepackage[style=apa, sortcites=true, sorting=nyt, backend=biber, natbib=true, uniquename=false, uniquelist=false, useprefix=true]{biblatex}
+\usepackage{authblk}
+\usepackage{graphicx}
+\usepackage{setspace,caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{lipsum}
+\usepackage{soul}
+\usepackage{xcolor}
+\usepackage{fourier}
+\usepackage{stackengine}
+\usepackage{scalerel}
+\usepackage{fontawesome}
+\usepackage[normalem]{ulem}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{afterpage}
+\usepackage{float}
+\usepackage{titling}
+\usepackage{censor}
+
+% formatting links in the PDF file
+\hypersetup{
+pdfpagemode={UseOutlines},
+bookmarksopen=true,
+bookmarksopenlevel=0,
+hypertexnames=false,
+colorlinks   = true, %Colours links instead of ugly boxes
+urlcolor     = blue, %Colour for external hyperlinks
+linkcolor    = blue, %Colour of internal links
+citecolor   = cyan, %Colour of citations
+pdfstartview={FitV},
+unicode,
+breaklinks=true,
+}
+
+% language settings
+\DeclareLanguageMapping{american}{american-apa}
+
+% add reference library file
+\addbibresource{references.bib}
+
+% Title and header
+\title{Appendix A: Search Strategy}
+\shorttitle{Appendix A: Search Strategy}
+\author{Jannis Kreienkamp, Laura F. Bringmann, Raili F. Engler, Peter de Jonge, Kai Epstude}
+
+% set indentation size
+\setlength\parindent{1.27cm}
+
+% adapt table and figure labels
+\setcounter{equation}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\setcounter{page}{1}
+\makeatletter
+\renewcommand{\theequation}{S\arabic{equation}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+
+% Start of the main document:
+\begin{document}
+
+% add title information (incl. title page and abstract)
+\begin{titlepage}
+	{\noindent\Large Appendix for \par}
+	\vspace{0.5cm}
+	{\noindent\Large The Migration Experience: A Conceptual Framework and Systematic Review of Psychological Acculturation\par}
+	\vspace{1.5cm}
+	{\noindent\LARGE\bfseries \thetitle \par}
+	\vspace{2cm}
+	{\noindent\Large\itshape \theauthor \par}
+	\vfill
+	\noindent Corresponding Author Jannis Kreienkamp\par
+	\noindent E-mail: j.kreienkamp@rug.nl\par
+	\vfill
+
+    % Bottom of the page
+	{\noindent Last updated: \today\par}
+\end{titlepage}
+
+% add title again on page 1 (after title page)
+%\begin{center}
+%   \textbf{\thetitle} 
+%\end{center}
+
+\appendix
+
+\section{Search Strategy}
+\label{app:AppendixSearchStrategy}
+
+To assess the past empirical and theoretical literature on psychological acculturation, we performed a systematic review. We first read seminal and review works within the field \citep[including,][]{Ward2019, Berry1997b, Berry2003, Szapocznik1978, Sam2006a, Rudmin2003a}. Based on our reading of the literature, we designed a comprehensive literature search strategy in an iterative fashion. 
+
+For the empirical work on acculturation we performed a literature search on March 4\textsuperscript{th}, 2020 and February 14\textsuperscript{th}, 2021, within the ``APA PsycINFO'' bibliographic databases using the EBSCO\textit{host} provider. The databases also included the PsycARTICLES, PsycBOOKS, and PsycCRITIQUES databases as well ProQuest Dissertations with psychological relevance. The second literature search included alternate terms used less frequently to describe what we mean with psychological acculturation, including "transculturation" and "cultural transition". Additionally, the second search removed limiter terms that could have exclude interdisciplinary investigations and focused on human participants.
+
+For the theoretical literature performed an additional, more specific, search of the same databases as well as the Web of Science Core Collection using the Clarivate Analytics provider on March 3\textsuperscript{rd}, 2021.
+
+In designing our search strategy we used an adapted version of the `SPIDER' research tool \citep[e.g.,][]{Cooke2012}. We utilized the \textit{Evaluation} element mainly to exclude articles that were not relevant to the search. The exact search terms used are listed in Table \ref{tab:SearchStrategiesTab} below.
+
+\newpage
+
+\input{Tables/SearchStrategy}
+
+\newpage
+
+\subsection{References}
+
+\printbibliography[heading=none]
+
+\end{document}

@@ -17,7 +17,32 @@
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage{tcolorbox}
+\usepackage[style=apa, sortcites=true, sorting=nyt, backend=biber, natbib=true, uniquename=false, uniquelist=false, useprefix=true]{biblatex}
+\usepackage{authblk}
+\usepackage{setspace,caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
 \usepackage{lipsum}
+\usepackage{soul}
+\usepackage{xcolor}
+\usepackage{fourier}
+\usepackage{stackengine}
+\usepackage{scalerel}
+\usepackage{fontawesome}
+\usepackage[normalem]{ulem}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{afterpage}
+\usepackage{float}
+\usepackage{titling}
+\usepackage{censor}
+\usepackage{pdfpages}
+\usepackage{bashful}
+% needed for the fact box label
+\usepackage{xparse}
+% this allows for the easy resize box
+\usepackage{graphicx}
+
 \tcbuselibrary{skins,breakable}
 \usetikzlibrary{shadings,shadows}
  
@@ -32,11 +57,6 @@
         \thepage}
     }
 \renewcommand{\headrulewidth}{0pt}
-
-% needed for the fact box label
-\usepackage{xparse}
-% this allows for the easy resize box
-\usepackage{graphicx}
 
 % If using xelatex or lualatex:
 % \setmainfont{Lato}
@@ -126,7 +146,16 @@ borderline west={5pt}{0pt}{black},
 %% links.bib contains references
 \addbibresource{links.bib}
 
+% create PDF of title page
+\immediate\write18{pdflatex CodingProtocolTitlePage}
+
 \begin{document}
+
+% fix page numbering with title page
+\setcounter{page}{0}
+
+\includepdf{CodingProtocolTitlePage.pdf}
+
 \name{Documentation: \par Coding Protocol}
 \tagline{For: `The Migration Experience: A Conceptual Framework and Systematic Review of Psychological Acculturation'}
 \made{February 20 2021}
@@ -1418,7 +1447,7 @@ Analysis Type Examples:
 
 \nocite{*}
 
-\printbibliography
+\printbibliography[heading=none]
 
 
 \divider
