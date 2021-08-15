@@ -1054,7 +1054,7 @@
   \def\figure{%
       \ifappendix
           \vspace*{\intextsep}
-          \def\fps@figure{!hbt}%
+          \def\fps@figure{!ht}%
           \@noendfloatfig
       \else
            \efloat@condopen{fff}
