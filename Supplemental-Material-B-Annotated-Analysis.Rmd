@@ -2533,7 +2533,7 @@ theorySearchCleand <- dt.TheorySearch %>%
                    SearchDuplicateDOI, SearchDuplicateTitle, DuplicateAny, 
                    ID, IDDuplicate,
                    Downloaded, DownloadReason, Extracted, ExtractedReason, TheoryName, Comment)) 
-write.csv(theorySearchCleand,'data/OSF/theoretical01_SearchCleand.csv')
+write.csv(theorySearchCleand,'data/OSF/theoretical01_SearchCleaned.csv')
 
 theorySearchScreened <- dt.TheorySearch %>%
   dplyr::select(-c(AuthorFull,TitleAlphaNum))
@@ -2552,7 +2552,7 @@ empiricalSearchCleand <- dt.Empirical %>%
                    MainAnalysis,	VariableType,	Sample,	MigrationTime,	IncludesMajority,
                    `Host Country 1`,	`Host Country 2`,	`Host Country 3`,	`Host Country 4`,	HostCountry,
                    `Origin Country 1`,	`Origin Country 2`,	`Origin Country 3`,	`Origin Country 4`,	`Origin Country 5`,	`Origin Country 6`,	OriginCountry,	Comment))
-write.csv(empiricalSearchCleand,'data/OSF/empirical01_SearchCleand.csv')
+write.csv(empiricalSearchCleand,'data/OSF/empirical01_SearchCleaned.csv')
 
 empiricalSearchScreened <-dt.Empirical %>%
   dplyr::select(-c(empirical,	Method,	term,	MeasureDefinition,
