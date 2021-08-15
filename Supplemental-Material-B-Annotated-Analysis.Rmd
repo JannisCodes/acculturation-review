@@ -2525,6 +2525,46 @@ save(dt.Scales, dt.Scales.Included,
      dt.Empirical, dt.Empirical.included, psychData, 
      dt.Theories, dt.Theories.Included, dt.TheorySearch, 
      dt.Domains, empiricalDataDisciplines, file = "data/wrangled.RData")
+
+# export reduced dataset for OSF repository
+theorySearchCleand <- dt.TheorySearch %>%
+  dplyr::select(-c(AuthorFull,TitleAlphaNum, 
+                   TitleScreening, TitleNote, AbstractScreening, AbstractNote, 
+                   SearchDuplicateDOI, SearchDuplicateTitle, DuplicateAny, 
+                   ID, IDDuplicate,
+                   Downloaded, DownloadReason, Extracted, ExtractedReason, TheoryName, Comment)) 
+write.csv(theorySearchCleand,'data/OSF/theoretical01_SearchCleand.csv')
+
+theorySearchScreened <- dt.TheorySearch %>%
+  dplyr::select(-c(AuthorFull,TitleAlphaNum))
+write.csv(theorySearchScreened,'data/OSF/theoretical02_SearchScreened.csv')
+
+write.csv(dt.Theories.Included, 'data/OSF/theoretical03_DatabaseCoded.csv')
+
+write.csv(dt.Scales.Included, 'data/OSF/methodological01_DatabaseCoded.csv')
+
+
+empiricalSearchCleand <- dt.Empirical %>%
+  dplyr::select(-c(TitleScreening,	TitleNote, AbstractScreening, AbstractNote, SearchDuplicate,
+                   ID,	IDDuplicate,	CitationKey,	Downloaded,	empirical,	Method,	term,	MeasureDefinition,
+                   Affect,	Behavior,	Cognition,	Desire,	Affect2,	Behavior2,	Cognition2,	Desire2,
+                   MissingABCD,	NoteMissing,	TypeComplexity,	MeasurementLevels,	domainScale,	domainPaper,
+                   MainAnalysis,	VariableType,	Sample,	MigrationTime,	IncludesMajority,
+                   `Host Country 1`,	`Host Country 2`,	`Host Country 3`,	`Host Country 4`,	HostCountry,
+                   `Origin Country 1`,	`Origin Country 2`,	`Origin Country 3`,	`Origin Country 4`,	`Origin Country 5`,	`Origin Country 6`,	OriginCountry,	Comment))
+write.csv(empiricalSearchCleand,'data/OSF/empirical01_SearchCleand.csv')
+
+empiricalSearchScreened <-dt.Empirical %>%
+  dplyr::select(-c(empirical,	Method,	term,	MeasureDefinition,
+                   Affect,	Behavior,	Cognition,	Desire,	Affect2,	Behavior2,	Cognition2,	Desire2,
+                   TypeComplexity,	MeasurementLevels,	domainScale,	domainPaper,
+                   MainAnalysis,	VariableType,	Sample,	MigrationTime,	IncludesMajority,
+                   `Host Country 1`,	`Host Country 2`,	`Host Country 3`,	`Host Country 4`,	HostCountry,
+                   `Origin Country 1`,	`Origin Country 2`,	`Origin Country 3`,	`Origin Country 4`,	`Origin Country 5`,	`Origin Country 6`,	OriginCountry))
+write.csv(empiricalSearchScreened,'data/OSF/empirical02_SearchScreened.csv')
+
+write.csv(dt.Empirical.included, 'data/OSF/empirical03_DatabaseCoded.csv')
+
 ```
 
 This coding resulted in `r length(unique(empiricalDataDisciplines$discipline02))` relatively well-balanced categories with non of the fields having too few observations. In the following sections we use these discipline codes to assess some general differences in assessing and addressing acculturation.    
