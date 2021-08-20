@@ -1,0 +1,1049 @@
+---
+output: latex_fragment
+editor_options:
+  chunk_output_type: console
+bibliography: references.bib
+csl: apa.csl
+---
+
+```{r setup, include=FALSE}
+# R Studio Clean-Up
+  cat("\014") # clear console
+  #rm(list=ls()) # clear workspace - use restart R instead
+  gc() # garbage collector
+  
+# Install and Load Packages
+lib <- c("rmarkdown", "knitr", "citr", "remedy", "bookdown", "papaja", "rmdfiltr", "psych",
+         "ggplot2", "ggthemes", "haven", "RColorBrewer", "plotly", "forcats", "wordcloud", "visNetwork", "ggwordcloud",
+         "rworldmap", "rnaturalearth", "rnaturalearthdata", "rgeos", "sp", "ggspatial",
+         "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
+         "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes", "cowplot", "paletteer", "ggpubr",
+         "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet",
+         "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg")
+invisible(lapply(lib, library, character.only = TRUE))  
+rm(lib)  
+
+# Load Custom Packages  
+  source("./scripts/functions/fun.panel.R")
+  source("./scripts/functions/themes.R")
+  source("./scripts/functions/prismaGraph.R")
+
+# Markdown Options
+  knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file()) # set working directory
+  knitr::opts_knit$get("root.dir") # check working directory
+  options(scipen = 999, digits = 4, width = 400) #removes scientific quotation
+
+# Global Chunk Options
+  knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figures/',
+                      echo=FALSE, warning=FALSE, message=FALSE)
+```
+
+```{r import}
+load("data/wrangled.RData")
+```
+
+\subsection{Methodological Literature}  
+Based on the systematic review and its coding, the first data set we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review we found five major works that reviewed the measurement of acculturation \citep{Celenk2011, Maestas2000, Matsudaira2006, Wallace2010, Zane2004}. After the removal of duplicate scales, we added any scale validation that was present in our own systematic review but not included in the previous reviews. For each measure we extracted the full item list as well as the item scoring prior to coding. A comprehensive and interactive database of the scales, with reference- and publication information, as well as our experience elements and -context coding is available in our online supplementary information as well as on our open science repository (\hl{OSF and/or github citation here}).  
+
+\subsubsection{Methods}  
+Taken together these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Review != "own",])` scales, of which `r nrow(dt.Scales[dt.Scales$Duplicate == "Duplicate" & dt.Scales$Review != "own",])` were duplicates. From our own review we added `r nrow(dt.Scales[dt.Scales$Review == "own review",])` additional validation studies. After removing duplicates this meant that we considered a total of `r nrow(dt.Scales[dt.Scales$Duplicate == "Unique",])` unique scales for our coding. Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$Comment),])`, because they were either not accessible or did not fit the the topic of our review (see Table \ref{tab:ScalesExclusion}). The scales had an average of \hl{X.XX} items and \hl{X.XX} sub-scales. Most items were rated on a five-point (\hl{XX.XX}\%) or four-point likert-type scale (\hl{XX.XX}\%), with only \hl{X} scales including categorical ratings. About a fifth of scales (`r dt.Scales %>% filter(IncludesMajority == 1, Duplicate == "Unique") %>% nrow(.)/nrow(dt.Scales[dt.Scales$Duplicate=="Unique",])*100 %>% round(.,2)`\%) included majority group members in their validation studies. The earliest included validation was from `r min(dt.Scales$year, na.rm = T)` with a majority of scales being validated around the turn of the 21\textsuperscript{st} century and the latest included validation study in `r max(dt.Scales$year, na.rm = T)`.  
+
+```{r ScalesExclusion}
+data.frame(table(Exclusion = dt.Scales$Comment)) %>%
+  arrange(desc(Freq)) %>%
+  kbl(., 
+        #label = "",
+        caption = "Scales Exclusion Reasons",
+        format = "latex",
+        col.names = c("Exclusion Reason",
+                      "Frequency"), 
+        linesep = "",
+        booktabs = T,
+        align = c("l", "c"))  %>%
+  kable_styling(position = "left") %>%
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
+  gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
+  save_kable("Tables/ScalesExclusion.tex")
+```
+
+\input{Tables/ScalesExclusion}  
+
+\subsubsection{Results}
+For the literature on scale validations, we assessed both the role of experience elements in the measures as well as contextual differences. 
+
+\paragraph{Experience}
+```{r ABCDCalc, include=F}
+# Count the times each dimension is measured
+ScaleElementFreq <- dt.Scales.Included %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
+  mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+  colSums(., na.rm = FALSE, dims = 1) 
+
+# transform to data frame and make row names name variable
+ScaleElementFreq <- data.frame(Element = names(ScaleElementFreq), 
+                            Frequency = ScaleElementFreq, 
+                            Percentage = ScaleElementFreq/nrow(dt.Scales.Included)) %>%
+  mutate(Element = fct_reorder(Element, Frequency))
+
+# frequency of unique combinations
+ScaleElementCombFreq <- dt.Scales.Included %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
+  #mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+  group_by(Affect, Behavior, Cognition, Desire) %>%
+  summarise(Frequency = n()) %>%
+  ungroup() %>%
+  mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T))
+
+# fill replace ones with colnames to be combined
+for (i in 1:4) {
+    ScaleElementCombFreq[[i]] <- str_replace(as.character(ScaleElementCombFreq[[i]]), "1", colnames(ScaleElementCombFreq)[i])
+}
+
+# collect Elements names for each combination
+ScaleElementCombFreq <- ScaleElementCombFreq %>%
+  unite("ExperienceCombination",c("Affect", "Behavior", "Cognition", "Desire"), na.rm = TRUE, sep = ", ") %>%
+  mutate(ExperienceCombination = fct_reorder(ExperienceCombination, Frequency),
+         Percentage = Frequency/nrow(dt.Scales.Included)*100,
+         Affect = ifelse(grepl("Affect", ExperienceCombination, fixed = TRUE), 1,0),
+         Behavior = ifelse(grepl("Behavior", ExperienceCombination, fixed = TRUE), 1,0),
+         Cognition = ifelse(grepl("Cognition", ExperienceCombination, fixed = TRUE), 1,0),
+         Desire = ifelse(grepl("Desire", ExperienceCombination, fixed = TRUE), 1,0))
+
+scaleComplexity <- ScaleElementCombFreq %>%
+  select(complexity, Frequency) %>%
+  group_by(complexity) %>%
+  summarise(Frequency = sum(Frequency),
+            Percentage = sum(Frequency)/nrow(dt.Scales.Included)*100) %>%
+  ungroup() %>%
+  mutate(complexity = as.factor(complexity),
+         complexity = fct_reorder(complexity, Frequency))
+
+elementComplexity <- data.frame(Element = c("Affect", "Behavior", "Cognition", "Desire"), 
+                                avgComplexity = c(ScaleElementCombFreq %>% filter(Affect == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency), 
+                                                  ScaleElementCombFreq %>% filter(Behavior == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency), 
+                                                  ScaleElementCombFreq %>% filter(Cognition == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency), 
+                                                  ScaleElementCombFreq %>% filter(Desire == 1) %>% weighted.mean(x = .$complexity, w = .$Frequency)))
+```
+
+```{r ScaleElementCooccurrences, include=F}
+# make crossproduct matrix to condense co-occurrences (off-diagonals) and get frequencies (diagonals)
+scaleElementCooccure <- as.matrix(dt.Scales.Included %>% dplyr::select(Affect, Behavior, Cognition, Desire) %>% mutate_all(~replace(., is.na(.), 0)))
+scaleElementCooccure <- crossprod(scaleElementCooccure)  # Same as: t(X) %*% X
+#diag(scaleElementCooccure) <- 0       # remove frequencies on diagonals
+#scaleElementCooccure[upper.tri(scaleElementCooccure)] <- ""
+
+scaleElementCooccure %>%
+  kbl(., 
+        #label = "",
+        caption = "Scales: Element Co-occurrence Matrix",
+        format = "latex", 
+        linesep = "",
+        booktabs = T,
+        align = rep('c', ncol(scaleElementCooccure)))  %>%
+  kable_styling(position = "left") %>%
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
+  gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
+  save_kable("Tables/ScaleElementCooccurrences.tex")
+```
+
+With our main aim of examining the experience structure within the scales, we examined whether scales included a specific experience elements but also examined the used elements in their complex combinations. In terms of general inclusion of elements, most studies included a measure of cognition (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Cognition"]*100,2)`\%) and behavior (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Behavior"]*100,2)`\%), whereas only roughly half the studies included a measure of affect (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Affect"]*100,2)`\%) and only a fourth of the scales included a measure of motives (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Desire"]*100,2)`\%). However, only a minority of scales included only a single dimension. There were only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Cognition"]` scales that exclusively relied on cognitions (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Cognition"],2)`\%) and `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Behavior"]` scales that measured only behaviors (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior"],2)`\%). Yet, inversely, there were also only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"]` scales that measured all four dimensions (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"],2)`\%). Most studies measured two (`r ScaleElementCombFreq %>% filter(complexity == 2) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`\%) or three (`r ScaleElementCombFreq %>% filter(complexity == 3) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`\%) dimensions. A majority of scales either measured behavioral and cognitive elements (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"],2)`\%) or behavioral, cognitive, and affective elements (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`\%; also see Figure \ref{fig:ElementsScales} and Table \ref{tab:ScaleElementCooccurrences}). Looking at the number of elements measured together we also see substantial differences in what kind of scales include a certain element. Scales that included cognitions measured an average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Cognition"],2)` elements, scales measuring behavior, on average, measured a `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Behavior"],2)`, while scales that included affect measures had a complexity average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Affect"],2)` and scales measuring motivation even measured an average of `r round(elementComplexity$avgComplexity[elementComplexity$Element=="Desire"],2)` scales. Thus, most scales measure multiple dimensions, yet they focus on easily accessible dimensions (i.e., behavior and cognition), less of what is considered 'less accessible' or 'subjective' (i.e., affect and desires). This is also visible in the circumstance that there were no scales that exclusively measured motivational or emotional adaptation (while this was the case for both cognitions and behaviors). And if emotional or motivational aspects were measured they were on average measured in scales that were already more complex (i.e., included more experience elements). 
+
+```{r  ABCDFreq, include=F, fig.width=12, fig.height=12}
+# barplot of dimension frequency
+ScaleABCDBar <- ggplot(data=ScaleElementFreq, aes(x=Element, y=Frequency)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(label = paste0("N = ",Frequency)),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 2.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Element Frequency",
+       y = "Frequency across all Scales",
+       x = "Experience Element")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+# barplot of complexity frequency
+ScaleComplexityBar <- ggplot(data=scaleComplexity, aes(x=complexity, y=Frequency)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(label = paste0("N = ",Frequency)),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 2.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Scale Complexity",
+       y = "Frequency across all Scales",
+       x = "Complexity")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+
+# bar plot frequencies
+ScaleABCDComb <- ggplot(ScaleElementCombFreq, aes(x=ExperienceCombination, y=Percentage)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(y=Percentage, label = paste0(round(Percentage,2),"% [N = ", Frequency, "]")),
+    color = "grey14",
+    size = 4,
+    hjust = -.1,
+    inherit.aes = TRUE
+    ) +
+  scale_y_continuous(limits = c(0, ceiling(max(ScaleElementCombFreq$Percentage)*1.1)),
+                     breaks = seq(0, ceiling(max(ScaleElementCombFreq$Percentage)*1.1), 5))+
+  labs(y = "Proportion of all scales [in %]",
+       x = "Combination of Experience Elements")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background =element_rect(fill="grey14", color="grey14"),
+        strip.text = element_text(colour = 'white', face="bold"),
+        legend.position="none")
+
+ggdraw() +
+  draw_plot(ScaleABCDComb, x = 0, y = 0.3, width = 1, height = .7)+
+  draw_plot(ScaleABCDBar, x = 0, y = 0, width = .55, height = .3) +
+  draw_plot(ScaleComplexityBar, x = .55, y = 0, width = .45, height = .3) +
+  draw_plot_label(c("(A)", "(B)", "(C)"), c(0, 0, 0.55), c(1, 0.3, 0.3), size = 15)
+
+# ScaleABCDComb + 
+#   annotation_custom(
+#     ggplotGrob(ScaleABCDBar), 
+#     xmin = 0.5, xmax = 5, ymin = 18, ymax = 30
+#   ) +
+#   annotation_custom(
+#     ggplotGrob(ScaleComplexityBar), 
+#     xmin = 0.5, xmax = 5, ymin = 8, ymax = 18
+#   ) +
+#   geom_rect(aes(xmin=0.5,xmax=4.8,ymin=8,ymax=30), 
+#             color = alpha("grey14", .5), size = .05, fill = "transparent", alpha=0)
+```
+
+<!-- Scale  chart goes somewhere here} -->
+\begin{figure}[h]
+\centering
+\caption{Scales: Bar graph of the experience element combinations.}
+\includegraphics[width=\textwidth]{Figures/ABCDFreq-1}
+\label{fig:ElementsScales}
+\end{figure}
+
+\input{Tables/ScaleElementCooccurrences}  
+
+
+\paragraph{Context}
+To gain a general understanding of contextual factors within the validated studies, we also assessed cross-study patterns of cultural, individual, situational, and process-related focus points.
+
+\subparagraph{Country}
+
+```{r ScaleCountryFreq, include=F}
+# Host Countries: Count number of host countries
+HostCountryN <- as.data.frame(table(str_count(dt.Scales.Included$HostCountry, ',')+1, dnn = list("count")))
+
+# Host Countries: Find all individual country names and count frequency of occurrence
+HostCountryFreq <- as.data.frame(table(unlist(strsplit(dt.Scales.Included$HostCountry, ", ")), dnn = list("country")), 
+                                 responseName = "frequency") %>% 
+  arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(country = factor(country, levels=country), # update factor levels
+         source = "host")
+
+# Origin Countries: Count number of host countries
+OriginCountryN <- as.data.frame(table(str_count(dt.Scales.Included$OriginCountry, ',')+1, dnn = list("count")))
+
+# Origin Countries: Find all individual country names and count frequency of occurrence
+OriginCountryFreq <- as.data.frame(table(unlist(strsplit(dt.Scales.Included$OriginCountry, ", ")), dnn = list("country")), 
+                                   responseName = "frequency") %>% 
+  arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(country = factor(country, levels=country), # update factor levels
+         source = "origin")
+
+# combine Host and Origin list
+CountryFreq <- rbind(OriginCountryFreq, HostCountryFreq)
+```
+
+To assess the cultural contexts for which scales were validated we assessed the migrants' countries of settlement as well as the countries of origin. We found that most scales investigated a single host country (\textit{N} = `r HostCountryN$Freq[HostCountryN$count==1]-HostCountryFreq$frequency[HostCountryFreq$country=="multiple"]`) and most investigated one country of origin (\textit{N} = `r OriginCountryN$Freq[OriginCountryN$count==1]-sum(OriginCountryFreq$frequency[OriginCountryFreq$country=="any"|OriginCountryFreq$country=="multiple"])`). There was `r HostCountryN$Freq[HostCountryN$count==2]` scale that was validated in two countries and `r HostCountryN$Freq[HostCountryN$count==3]` that was validated in three countries. Additionally, there was a single scale that was validated in a larger multi-national survey context (i.e., with multiple host and origin countries). There was also one study with two scales that were validated with the origin culture as the starting point (i.e., single origin country, multiple host countries). Looking at the country patterns, we found that an overwhelming number of scales were validated within a U.S. American settlement context (\textit{N} = `r HostCountryFreq$frequency[HostCountryFreq$country=="United States of America"]`). But also the remaining receiving societies were mostly 'western' countries (e.g., Canada, The Netherlands, The United Kingdom, Israel, Australia) with only individual scales for Taiwanese, Nepalese, or Russian settlement contexts. For the migrant origin societies there was slightly more variation. There were a few migrant groups that were investigated specifically (e.g., Mexico: `r OriginCountryFreq$frequency[OriginCountryFreq$country=="Mexico"]`, China:`r OriginCountryFreq$frequency[OriginCountryFreq$country=="China"]`, South Korea: `r OriginCountryFreq$frequency[OriginCountryFreq$country=="South Korea"]`), however most validation studies targeted broader categories of migrants (any migrants: `r OriginCountryFreq$frequency[OriginCountryFreq$country=="any"]`, Asian: `r OriginCountryFreq$frequency[OriginCountryFreq$country=="Asia"]`, Hispanic: `r OriginCountryFreq$frequency[OriginCountryFreq$country=="Hispanic"]`, LatinX: `r OriginCountryFreq$frequency[OriginCountryFreq$country=="Latinx"]`). This also made it difficult to identify patterns of cultural combinations investigated (apart from Mexican and LatinX migrants in the United States).
+
+\subparagraph{Sample}
+
+```{r SampleFreq, include=F}
+# tally different samples
+SampleFreq <- as.data.frame(table(Sample = dt.Scales.Included$Sample)) %>%
+  arrange(Freq) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(Sample = factor(Sample, levels=Sample),
+         Perc = Freq/nrow(dt.Scales.Included)*100) # update factor levels
+```
+
+To assess the role different groups of individuals targeted in the scale validations, we coded the types of samples recruited for the validation studies. A majority of studies sampled any consenting adult from the migrant group of interest (\textit{N} = `r SampleFreq$Freq[SampleFreq$Sample=="general"]`). As seems common in academic research, a larger portion of the validated scales relied on young migrants or students (\textit{N} = `r sum(SampleFreq$Freq[SampleFreq$Sample=="youth"|SampleFreq$Sample=="students"])`). Interestingly, only small minority of validated scales targeted more vulnerable groups, such as clinical samples (\textit{N} = `r SampleFreq$Freq[SampleFreq$Sample=="clinical"]`) or refugees (\textit{N} = `r sum(SampleFreq$Freq[grepl("refugee", SampleFreq$Sample, fixed = TRUE)])`) -- despite a considerable focus on these groups within the broader literature.
+
+\subparagraph{Domains}
+
+```{r ScaleDomainFrequencies, include=F, warning=F, fig.cap="Wordcloud of the validation scale domains."}
+# Number of domains in scale
+ScaleDomainN <- str_count(dt.Scales.Included$domainScale, ',')+1
+
+# Domain frequencies: Find all individual domains and count frequency of occurrence
+ScaleDomainFreq <- as.data.frame(table(unlist(strsplit(dt.Scales.Included$domainScale, ", ")), dnn = list("domain")), 
+                                 responseName = "frequency") %>% 
+  arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(domain = factor(domain, levels=domain)) # update factor levels
+
+# # Word cloud frequencies
+# set.seed(7) # for reproducibility 
+# wordcloud(words = ScaleDomainFreq$domain, freq = ScaleDomainFreq$frequency, 
+#           min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
+```
+
+To assess the situational focus within the validated scales, we assessed the number of domains within each scale as well as more common domains across the scales. A relatively large number of scales asked about the current state of the migrant in general manner without mentioning any context or life domain (\textit{N} = `r ScaleDomainFreq$frequency[ScaleDomainFreq$domain=="general"]`; e.g., ''In general, in what language do you read and speak?''). The remaining scales referred to an average of `r round(mean(ScaleDomainN),2)` dimensions (\textit{SD} = `r round(sd(ScaleDomainN),2)`, range: `r min(ScaleDomainN)` -- `r max(ScaleDomainN)`). A total of `r nrow(ScaleDomainFreq)` unique domains was measured across the `r nrow(dt.Scales.Included)` scales. The domains of 'language‘ (\hl{XX}\%), 'food' (\hl{XX}\%), 'interactions’ (\hl{XX}\%), 'family' (\hl{XX}\%) and 'values' (\hl{XX}\%) were focused on most often (see Online Supplementary Materials \hl{X}, Figure \hl{X}). Thus, while there was large variation between the scales in the number, and diversity of domains, the most frequently mentioned domains were in line with the life domains proposed in the literature \citep[e.g.,][]{Arends-Toth2007}.
+
+\vspace{1em}
+\todo[inline]{Should be re-coded to test our proposed domains. Also, re-check `general' code}
+
+\subparagraph{Migration time}
+
+```{r ScaleMigrationTime, include=F}
+summarytools::freq(dt.Scales.Included$MigrationTime, order = "freq")
+```
+
+All scales were validated using cross-sectional data after the migrant arrived in the settlement society. This is in line with observations by previous reviews of the field \citep[e.g.,][]{Brown2011}.
+
+
+\subsection{Empirical Literature}
+After analysis of the scales validations, we assessed the broader empirical works we collected within the systematic review. We first looked at all available empirical publications (incl. books, chapters, and dissertations). We later also assessed differences between fields the work was published in. However, because we considered the fields on an audience level, we used only empirical journal articles -- for which journal-level audience data is available.
+
+\subsubsection{Methods}
+```{r EmpiricalExclusion, include=F}
+dt.psych.title <- dt.psych %>%
+  filter(FinalTitle == 1)
+
+# abstract screening
+dt.psych.abstract <- dt.psych %>%
+  filter(FinalTitle == 1,
+         FinalAbstract == 1)
+
+# empirical
+dt.psych.empirical <- dt.psych %>%
+  filter(FinalTitle == 1,
+         FinalAbstract == 1,
+         empirical != 0)
+
+# included
+dt.psych.included <- dt.psych %>%
+  filter(FinalTitle == 1,
+         FinalAbstract == 1,
+         empirical != 0,
+         MissingABCD == 0)
+
+# reasons for exclusion
+exclTitle <- data.frame(table(Exclusion = dt.psych$NoteTitle)) %>%
+  mutate(screening = "Title") %>%
+  arrange(desc(Freq))
+
+exclAbstract <- data.frame(table(Exclusion = dt.psych$NoteAbstract)) %>%
+  mutate(screening = "Abstract") %>%
+  arrange(desc(Freq))
+
+exclFull <- data.frame(table(Exclusion = dt.psych.empirical$NoteMissing)) %>%
+  mutate(screening = "Full Text") %>%
+  arrange(desc(Freq))
+
+rbind(exclTitle, exclAbstract, exclFull) %>%
+  reshape(., idvar = "Exclusion", timevar = "screening", direction = "wide") %>%
+  mutate_if(is.numeric, ~replace(., is.na(.), "")) %>%
+  rename_at(vars(starts_with("Freq.")),
+            funs(sub("Freq[.]", "", .))) %>%
+  rename(., "Exclusion Reason" = Exclusion) %>%
+  kbl(., 
+        #label = "",
+        caption = "Exclusion Reasons Empirical Literature",
+        format = "latex",
+        linesep = "",
+        booktabs = T,
+        align = c("l", "c", "c", "c"))  %>%
+  add_header_above(., c(" ", "Screening" = 3)) %>%
+  kable_styling(position = "left") %>%
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
+  gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
+  save_kable("Tables/EmpiricalExclusion.tex")
+```
+
+The search produced a total of \hl{XXX} results to which we added \hl{XX} articles through contacts with experts in the field. We subsequently screened out results that did not fit into our review. After duplicate removal ($N_{excluded}$ = \hl{XX}, $N_{screened}$ = `r nrow(dt.psych)`), we excluded `r nrow(dt.psych)-nrow(dt.psych.title)` results in the title screening as well as an additional `r nrow(dt.psych.title)-nrow(dt.psych.abstract)` results during the abstract screening. Of the remaining `r nrow(dt.psych.abstract)` results, `r nrow(dt.psych.empirical)` papers presented empirical work on acculturation and were coded. The `r nrow(dt.psych.abstract %>% filter(empirical==0))` non-empirical results were reviews, which were not coded because they did not fit into our coding schema. During the full text coding we excluded an additional `r length(dt.psych.empirical$MissingABCD[dt.psych.empirical$MissingABCD==1])` results because they were either not relevant or were not accessible (for exclusion reasons see Table \ref{tab:EmpiricalExclusion} and for our PRISMA diagram see Figure \ref{fig:PRISMA}). 
+
+```{r PRISMA, include=F}
+prismaGr(found = 516,
+         found_other = 18,
+         no_dupes = nrow(dt.psych), 
+         screened = nrow(dt.psych), 
+         screen_exclusions = nrow(dt.psych)-nrow(dt.psych.title), 
+         full_text = nrow(dt.psych.title),
+         full_text_exclusions = nrow(dt.psych.title)-nrow(dt.psych.abstract), 
+         qualitative = nrow(dt.psych.abstract), 
+         quantitative = nrow(dt.psych.empirical),
+         extra_dupes_box = F,
+         width = 800, height = 800) %>%
+  export_svg() %>%
+  charToRaw %>% 
+  rsvg_pdf("./Figures/PRISMA.pdf")
+```
+
+<!-- Scale  chart goes somewhere here} -->
+\begin{figure}[h]
+\centering
+\caption{PRISMA diagram. Position still undecided. Currently generated in R based on n(row) maybe make prettier. \Warning\ Re-check numbers before duplicates removed and number of papers added from other sources.}
+\includegraphics[width=\textwidth]{Figures/PRISMA}
+\label{fig:PRISMA}
+\end{figure}
+
+\input{Tables/EmpiricalExclusion}
+
+```{r EmpiricalPublicationType, include=F}
+empPubType <- as.data.frame(summarytools::freq(dt.psych.included$PublicationType, order = "freq"))
+
+empDataType <- as.data.frame(summarytools::freq(dt.psych.included$Method, order = "freq"))
+
+empTerm <- as.data.frame(summarytools::freq(tolower(dt.psych.included$term), order = "freq"))
+empTermAcc <- sum(empTerm[grepl("acculturat", rownames(empTerm), fixed = T),]$Freq)
+empTermInt <- sum(empTerm[grepl("integrat", rownames(empTerm), fixed = T),]$Freq)
+
+empMeasure <- as.data.frame(summarytools::freq(tolower(dt.psych.included$MeasureDefinition), order = "freq"))
+
+empMajority <- as.data.frame(summarytools::freq(tolower(dt.psych.included$IncludesMajority), order = "freq"))
+names(empMajority) <- gsub("% ", "Perc", names(empMajority))
+
+empVarType <- as.data.frame(summarytools::freq(tolower(dt.psych.included$VariableType), order = "freq"))
+names(empVarType) <- gsub("% ", "Perc", names(empVarType))
+
+empFocus <- as.data.frame(summarytools::freq(tolower(dt.psych.included$domainPaper), order = "freq"))
+names(empFocus) <- gsub("% ", "Perc", names(empFocus))
+empFocusAcc <- sum(empFocus[grepl("acculturation|assimilation|integration|adjustment|adaptation", rownames(empFocus)),]$Freq)
+empFocusAccPerc <- sum(empFocus[grepl("acculturation|assimilation|integration|adjustment|adaptation", rownames(empFocus)),]$PercValid)
+empFocusHealth <- sum(empFocus[grepl("helth|stress|depression|disorder", rownames(empFocus)),]$Freq)
+empFocusHealthPerc <- sum(empFocus[grepl("helth|stress|depression|disorder", rownames(empFocus)),]$PercValid)
+empFocusRelation <- sum(empFocus[grepl("relations|intergroup|multiculturalism", rownames(empFocus)),]$Freq)
+empFocusRelationPerc <- sum(empFocus[grepl("relations|intergroup|multiculturalism", rownames(empFocus)),]$PercValid)
+
+empYear <- as.data.frame(summarytools::freq(dt.psych.included$year, order = "freq"))
+names(empYear) <- gsub("% ", "Perc", names(empYear))
+```
+
+Of the final works we coded, `r empPubType["journalArticle",]$Freq` were journal articles, `r empPubType["thesis",]$Freq` theses, and `r empPubType["bookSection",]$Freq` book chapters. Most studies presented quantitative data (\textit{N} = `r empDataType["quantitative",]$Freq`), mixed methods (\textit{N} = `r empDataType["mixed method",]$Freq`), or qualitative data (\textit{N} = `r empDataType["qualitative",]$Freq`), while the remaining `r empDataType["Review",]$Freq` manuscripts were reviews of empirical data. A vast majority of the authors used the term 'acculturation' (or derivative versions, such as 'acculturation attitudes' or 'acculturation orientation'; \textit{total N} = `r empTermAcc`), or 'integration' (\textit{N} = 7) to refer to cultural adaptation. Notably, a majority of the empirical investigations did not share common measures of cultural adaptation -- `r sum(empMeasure$Freq[empMeasure$Freq<=5])` studies used measures that were reported a maximum of five times, with a considerable majority of papers using new or ad-hoc measures of cultural adaptation. Only about every tenth study included the local majority in the study (\textit{N} = `r empMajority["1",]$Freq`, `r empMajority["1",]$PercValid`\%). Cultural adaptation most frequently was a predictor variable (\textit{N} = `r empVarType["predictor",]$Freq`, `r empVarType["predictor",]$PercValid`\%), a dependent variable (\textit{N} = `r empVarType["dependent",]$Freq`, `r empVarType["dependent",]$PercValid`\%), or a correlation variable (\textit{N} = `r empVarType["correlation",]$Freq`, `r empVarType["correlation",]$PercValid`\%) in the empirical works. This pattern was mirrored when looking at the focus of the papers, where a majority of the papers had acculturation as their main focus (\textit{N} = `r empFocusAcc`, `r empFocusAccPerc`\%), with other bodies of work focusing on health outcomes (\textit{N} = `r empFocusHealth`, `r empFocusHealthPerc`\%), or inter-group relations (\textit{N} = `r empFocusRelation`, `empFocusRelationPerc`\%) as their main outcomes. The earliest included study was published in `r min(dt.psych.included$year)`, with a continuous increase of publications after the year 2000, with considerable publication peaks in 2011 and 2019. We provide full descriptions of descriptive data extractions and additional information about the data description in Online Supplementary Information X.
+
+\paragraph{Field of Publication} For the broader empirical literature, we also collected additional data on the field the studies were published in. To assess the differences between fields we merged the 'Scimago Journal Ranking Database' \citep{SCImago2020} with our empirical review. For all available journal articles we added information on key journal metrics (incl. H index, impact factor, and data on the field and audiences). This also meant that dissertations, book chapters, and books were excluded from this analysis because data on their publishers is not readily available or unreliable. Additionally, `r nrow(psychData %>% filter(PublicationType == "journalArticle", is.na(PublicationTitleDb)) %>% dplyr::select(PublicationTitle) %>% unique())` journals were not included in the Scimago database (likely because they do not have an ISSN identifier or were discontinued before 1996, see Online Appendix \hl{X}, Table \hl{X} for the missing journals). We ultimately had journal metrics for `r nrow(psychData %>% filter(!is.na(PublicationTitleDb)))` empirical articles. The Scimago database classifies each journal according to the field(s) that the journal aims to address. Importantly, (1) each journal can be be classified to address multiple fields and (2) the field include codes of fields (e.g., ‘Social Sciences’) as well as sub-fields (e.g., ‘Social Psychology’). This leads to the case that there can be substantial overlap between fields, and journals cannot easily or readily be assessed in mutually exclusive subgroups.
+
+```{r disciplines, include=F}
+empDisciplines <- as.data.frame(summarytools::freq(psychDataDisciplines$discipline02, order = "freq"))
+names(empDisciplines) <- gsub("% ", "Perc", names(empDisciplines))
+```
+
+To summarize the articles further we then classified the field combinations into super-ordinate discipline codes. These discipline codes are based in part on U.S. Department of Education’s subject classifications \citep[i.e., CIP;][]{InstituteofEducationSciences2020}, the U.K. academic coding system \citep[JACS 3.0;][]{HigherEducationStatisticsAgency2013}, the Australian and New Zealand Standard Research Classification \citep[ANZSRC 2020;][]{AustralianBureauofStatistics2020}, as well as the Fields of Knowledge project \citep{ThingsmadeThinkable2014}. We ultimately classified each journal into one of four mutually exclusive disciplines (psychology: \textit{N} = `r empDisciplines["Psychology",]$Freq`, multidisciplinary: \textit{N} = `r empDisciplines["Multidisciplinary / Crossdisciplinary",]$Freq`, Medicine, Nursing, and Health: \textit{N} = `r empDisciplines["Medicine, Nursing, & Health",]$Freq`, and Social Sciences (miscellaneous): \textit{N} = `r empDisciplines["Social Sciences (miscellaneous)",]$Freq`. For a full discussion of the classifications see Online Supplementary Materials \hl{X}).  
+
+\subsubsection{Results}
+To test the utility of our framework, we again assessed the role of experience elements in the measurement as well as contextual differences.
+
+\paragraph{Experience}
+
+```{r EmpElementCalc, include=F}
+# Count the times each dimension is measured
+EmpElementFreq <- dt.psych.included %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
+  mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+  colSums(., na.rm = FALSE, dims = 1) 
+
+# transform to data frame and make row names name variable
+EmpElementFreq <- data.frame(Element = names(EmpElementFreq), 
+                            Frequency = EmpElementFreq, 
+                            Percentage = EmpElementFreq/nrow(dt.psych.included)*100) %>%
+  mutate(Element = fct_reorder(Element, Frequency))
+
+# frequency of unique combinations
+EmpElementCombFreq <- dt.psych.included %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire) %>%
+  #mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+  group_by(Affect, Behavior, Cognition, Desire) %>%
+  summarise(Frequency = n()) %>%
+  ungroup() %>%
+  mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T))
+
+# fill replace ones with colnames to be combined
+for (i in 1:4) {
+    EmpElementCombFreq[[i]] <- str_replace(as.character(EmpElementCombFreq[[i]]), "1", colnames(EmpElementCombFreq)[i])
+}
+
+# collect Elements names for each combination
+EmpElementCombFreq <- EmpElementCombFreq %>%
+  unite("ExperienceCombination",c("Affect", "Behavior", "Cognition", "Desire"), na.rm = TRUE, sep = ", ") %>%
+  mutate(ExperienceCombination = fct_reorder(ExperienceCombination, Frequency),
+         Percentage = Frequency/nrow(dt.psych.included)*100,
+         Affect = ifelse(grepl("Affect", ExperienceCombination, fixed = TRUE), 1,0),
+         Behavior = ifelse(grepl("Behavior", ExperienceCombination, fixed = TRUE), 1,0),
+         Cognition = ifelse(grepl("Cognition", ExperienceCombination, fixed = TRUE), 1,0),
+         Desire = ifelse(grepl("Desire", ExperienceCombination, fixed = TRUE), 1,0)) %>%
+  arrange(Frequency)
+
+empComplexity <- EmpElementCombFreq %>%
+  select(complexity, Frequency) %>%
+  group_by(complexity) %>%
+  summarise(Frequency = sum(Frequency),
+            Percentage = sum(Frequency)/nrow(dt.psych.included)*100) %>%
+  ungroup() %>%
+  mutate(complexity = as.factor(complexity),
+         complexity = fct_reorder(complexity, Frequency))
+
+# Scale complexity for each element
+empElementComplexity <- EmpElementCombFreq %>%
+  gather(key = "Element", value = "ElementDum", Affect, Behavior, Cognition, Desire) %>%
+  filter(ElementDum == 1) %>%
+  group_by(Element) %>%
+  summarise(avgComplexity = weighted.mean(x = complexity, w = Frequency),
+            sdComplexity = wtd.var(x = complexity, weights = Frequency),
+            n = sum(Frequency)) %>%
+  ungroup() %>%
+  mutate(seComplexity = sdComplexity/sqrt(n))
+
+
+```
+
+```{r EmpiricalElementCooccurrences, include=F}
+# make crossproduct matrix to condense co-occurrences (off-diagonals) and get frequencies (diagonals)
+empElementCooccure <- as.matrix(dt.psych.included %>% dplyr::select(Affect, Behavior, Cognition, Desire) %>% mutate_all(~replace(., is.na(.), 0)))
+empElementCooccure <- crossprod(empElementCooccure)  # Same as: t(X) %*% X
+#diag(empElementCooccure) <- 0       # remove frequencies on diagonals
+#empElementCooccure[upper.tri(empElementCooccure)] <- ""
+
+empElementCooccure %>%
+  kbl(., 
+        #label = "",
+        caption = "Empirical Literature: Element Co-occurrence Matrix",
+        format = "latex", 
+        linesep = "",
+        booktabs = T,
+        align = rep('c', ncol(empElementCooccure)))  %>%
+  kable_styling(position = "left") %>%
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  gsub("\\begin{table}", "\\begin{table}\n\\begin{minipage}[t][\\textheight][t]{\\textwidth}", ., fixed = TRUE) %>% # fix table position
+  gsub("\\end{table}", "\\end{minipage}\n\\end{table}", ., fixed = TRUE) %>% # fix table position
+  #gsub("\\caption{\\label{tab:}", paste0("\\label{tab:", knitr::opts_current$get('label'), "}\n\\caption{"), ., fixed = TRUE) %>% # fix latex label
+  save_kable("Tables/EmpiricalElementCooccurrences.tex")
+```
+
+In terms of the overall frequencies of experience elements, the broader empirical data mirrored that of the validation studies. Most studies included a measure of cognition (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Cognition"],2)`\%) and behavior (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Behavior"],2)`\%), whereas only about half of all studies included a measure of affect (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Affect"],2)`\%) and only a fifth of the studies included a measure of motives (`r round(EmpElementFreq$Percentage[EmpElementFreq$Element=="Desire"],2)`\%). Yet, only `r empComplexity$Frequency[empComplexity$complexity=="1"]` studies focused on a single element ($N_{behavior\ only}$ = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Behavior"]`,  $N_{cognition\ only}$ = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Cognition"]`, $N_{emotion\ only}$ = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Affect"]`). Similarly, only `r empComplexity$Frequency[empComplexity$complexity=="4"]` papers included measures of all four experience elements (`r round(empComplexity$Percentage[empComplexity$complexity=="4"],2)`\%). Most studies measured three (`r round(empComplexity$Percentage[empComplexity$complexity=="3"],2)`\%) or two dimensions (`r round(empComplexity$Percentage[empComplexity$complexity=="2"],2)`\%). Different from the scale validations, within the broader empirical works most works included measures of emotions, behaviors, and cognitions (\textit{N} = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"]`, `r round(EmpElementCombFreq$Percentage[EmpElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"],2)`\%), with a further substantial number of articles measuring behaviors and cognitions (\textit{N} = `r EmpElementCombFreq$Frequency[EmpElementCombFreq$ExperienceCombination=="Behavior, Cognition"]`, `r round(EmpElementCombFreq$Percentage[EmpElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`\%. Also see Figure \ref{fig:EmpPlotFreq-1} and Table \ref{tab:EmpiricalElementCooccurrences}). Looking at the number of elements measured together we again see substantial differences in what kind of scales include the individual elements. Scales that included cognitions measured an average of `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Cognition"],2)` elements, scales measuring behavior, on average, measured a `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Behavior"],2)`, while scales that included affect measures had a complexity average of `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Affect"],2)` and scales measuring motivation even measured an average of `r round(empElementComplexity$avgComplexity[empElementComplexity$Element=="Desire"],2)` scales. Thus, interestingly, not a single study measured only motivation, and measures of motives remained mostly limited to scales that were already multidimensional. The results exacerbate the pattern found in the scale validations, complex measures and conceptions of acculturation are seen infrequently and readily accessible (i.e., less subjective) dimensions of cognition and behavior remain the focus of most studies.
+
+```{r EmpPlotFreq, include=F, fig.width=12, fig.height=12}
+# barplot of dimension frequency
+EmpABCDBar <- ggplot(data=EmpElementFreq, aes(x=Element, y=Frequency)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(label = paste0("N = ",Frequency)),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 2.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Element Frequency",
+       y = "Frequency across all Scales",
+       x = "Experience Element")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+# barplot of complexity frequency
+EmpComplexityBar <- ggplot(data=empComplexity, aes(x=complexity, y=Frequency)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(label = paste0("N = ",Frequency)),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 2.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Scale Complexity",
+       y = "Frequency across all Scales",
+       x = "Complexity")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+
+# bar plot frequencies
+EmpABCDComb <- ggplot(EmpElementCombFreq, aes(x=ExperienceCombination, y=Percentage)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(y=Percentage, label = paste0(round(Percentage,2),"% [N = ", Frequency, "]")),
+    color = "grey14",
+    size = 4,
+    hjust = -.1,
+    inherit.aes = TRUE
+    ) +
+  scale_y_continuous(limits = c(0, ceiling(max(EmpElementCombFreq$Percentage)*1.15)),
+                     breaks = seq(0, ceiling(max(EmpElementCombFreq$Percentage)*1.15), 5))+
+  labs(y = "Proportion of all scales [in %]",
+       x = "Combination of Experience Elements")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background =element_rect(fill="grey14", color="grey14"),
+        strip.text = element_text(colour = 'white', face="bold"),
+        legend.position="none")
+
+# draw combined graph
+ggdraw() +
+  draw_plot(EmpABCDComb, x = 0, y = 0.3, width = 1, height = .7)+
+  draw_plot(EmpABCDBar, x = 0, y = 0, width = .55, height = .3) +
+  draw_plot(EmpComplexityBar, x = .55, y = 0, width = .45, height = .3) +
+  draw_plot_label(c("(A)", "(B)", "(C)"), c(0, 0, 0.55), c(1, 0.3, 0.3), size = 15)
+```
+
+```{r EmpElementComplexityBar, include=F}
+# bar plot complexity for each element
+ggplot(data=empElementComplexity, aes(x=reorder(Element, avgComplexity), y=avgComplexity)) +
+  geom_bar(stat="identity", fill="grey") +
+  geom_errorbar(aes(ymin=avgComplexity-1.96*seComplexity, ymax=avgComplexity+1.96*seComplexity), width=.2,position=position_dodge(.9)) +
+  geom_text(
+    aes(label = paste0("M = ",round(avgComplexity,2))),
+    position=position_stack(vjust=0.5),
+    color = "black",
+    #size = 2.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Scale Complexity by Element [Mean ± 95%CI]",
+       y = "Number of Aspects in Scales that include Element",
+       x = "Element")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_text(face="bold"),
+        axis.title.y = element_text(face="bold"),
+        plot.title = element_text(face="bold", hjust = 0.5),
+        #legend.text = element_text(size=10),
+        #axis.text.x = element_text(size=10),
+        #axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        #panel.grid.major.y = element_blank(),
+        #strip.text = element_text(colour = 'white', face="bold"),
+        #panel.background = element_rect(fill = "transparent"),
+        #plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.title = element_blank())
+```
+
+<!-- Scale  chart goes somewhere here} -->
+\begin{figure}[h]
+\centering
+\caption{Empirical Literature: Bar graph of the experience element combinations.}
+\includegraphics[width=\textwidth]{Figures/EmpPlotFreq-1}
+\label{fig:EmpPlotFreq-1}
+\end{figure}
+
+\input{Tables/EmpiricalElementCooccurrences}  
+
+\paragraph{Context}
+To gain a general understanding of contextual factors within the broader empirical studies, we again assessed cross-study patterns of cultural, individual, situational, and process-related focus points.
+
+\subparagraph{Country}
+
+```{r EmpCountryFreq, include=F}
+# Host Countries: Count number of host countries
+EmpHostCountryN <- as.data.frame(table(str_count(dt.psych.included$HostCountry, ',')+1, dnn = list("count")))
+
+# Host Countries: Find all individual country names and count frequency of occurrence
+EmpHostCountryFreq <- as.data.frame(table(unlist(strsplit(dt.psych.included$HostCountry, ", ")), dnn = list("country")), 
+                                 responseName = "frequency") %>% 
+  arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(country = factor(country, levels=country), # update factor levels
+         source = "host")
+
+# Origin Countries: Count number of host countries
+EmpOriginCountryN <- as.data.frame(table(str_count(dt.psych.included$OriginCountry, ',')+1, dnn = list("count")))
+
+# Origin Countries: Find all individual country names and count frequency of occurrence
+EmpOriginCountryFreq <- as.data.frame(table(unlist(strsplit(dt.psych.included$OriginCountry, ", ")), dnn = list("country")), 
+                                   responseName = "frequency") %>% 
+  arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(country = factor(country, levels=country), # update factor levels
+         source = "origin")
+
+# combine Host and Origin list
+EmpCountryFreq <- rbind(EmpOriginCountryFreq, EmpHostCountryFreq)
+
+# pattern compound Ns
+EmpLatinOr <- sum(EmpOriginCountryFreq[grepl("Latin|Hispanic", EmpOriginCountryFreq$country),]$frequency)
+EmpAfricaOr <- sum(EmpOriginCountryFreq[grepl("Afri", EmpOriginCountryFreq$country),]$frequency)
+EmpAsiaOr <- sum(EmpOriginCountryFreq[grepl("Asia", EmpOriginCountryFreq$country),]$frequency)
+
+EmpOrSm5 <- nrow(EmpOriginCountryFreq[EmpOriginCountryFreq$frequency<5,])
+```
+
+To assess the cultural contexts on which the authors focused, we again assessed the migrants' countries of settlement as well as the countries of origin. Similar to the validations, an overwhelming number of scales were validated within a North American settlement context (United States: \textit{N} = `r EmpHostCountryFreq$frequency[EmpHostCountryFreq$country=="United States"]`, Canada: \textit{N} = `r EmpHostCountryFreq$frequency[EmpHostCountryFreq$country=="Canada"]`). But also the remaining receiving societies were mostly 'western' -- Western Europe (e.g., The Netherlands, United Kingdom, Germany, Italy, Spain), Australasia (Australia, New Zealand), Russia, and Israel. And only `r sum(EmpHostCountryN$Freq[as.numeric(EmpHostCountryN$count)>1])+EmpHostCountryFreq$frequency[EmpHostCountryFreq$country=="any"]` studies focused on data from multiple receiving societies. 
+
+When it came to the migrants' country of origin, a majority of studies were indifferent to migrants background and simply recruited any consenting migrant (\textit{N} = `r EmpOriginCountryFreq$frequency[EmpOriginCountryFreq$country=="any"]`), or recruited a category of migrants (e.g., LatinX or Hispanic: \textit{N} = `r EmpLatinOr`, African: \textit{N} = `r EmpAfricaOr`). Among the individual countries target there was a particular focus on the east and south-east Asian region (e.g., China: \textit{N} = `r EmpOriginCountryFreq$frequency[EmpOriginCountryFreq$country=="China"]`, South Korea: \textit{N} = `r EmpOriginCountryFreq$frequency[EmpOriginCountryFreq$country=="Korea"]`, Vietnam: \textit{N} = `r EmpOriginCountryFreq$frequency[EmpOriginCountryFreq$country=="Vietnam"]`). Yet, different from the scale validations, there was a large variety of different origin countries that were included in less than five studies (\textit{N} = `r nrow(EmpOriginCountryFreq[EmpOriginCountryFreq$frequency<5,])` regions were targeted less than five times). Thus, the receiving countries mainly mirrored those for which scales were validated, yet there was an extensive number origin countries which were investigated individually or migrants were considered irrespective of their cultural origin. Moreover, it was again not possible to identify distinct cultural adaptation clusters within the literature (that would be large enough to compare).
+
+\subparagraph{Sample}
+
+```{r EmpSampleFreq, include=F}
+# tally different samples
+EmpSampleFreq <- as.data.frame(table(Sample = dt.psych.included$Sample)) %>%
+  arrange(Freq) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(Sample = factor(Sample, levels=Sample),
+         Perc = Freq/nrow(dt.psych.included)*100) # update factor levels
+
+EmpSampleRefugee <- sum(EmpSampleFreq[grepl("refugee", EmpSampleFreq$Sample),]$Freq)
+EmpSampleRefugeePerc <- round(sum(EmpSampleFreq[grepl("refugee", EmpSampleFreq$Sample),]$Perc),2)
+
+EmpSampleYouth <- sum(EmpSampleFreq[grepl("student|youth", EmpSampleFreq$Sample),]$Freq)
+EmpSampleYouthPerc <- round(sum(EmpSampleFreq[grepl("student|youth|children", EmpSampleFreq$Sample),]$Perc),2)
+
+EmpSampleElderly <- sum(EmpSampleFreq[grepl("old|elderly", EmpSampleFreq$Sample),]$Freq)
+EmpSampleElderlyPerc <- round(sum(EmpSampleFreq[grepl("old|elderly", EmpSampleFreq$Sample),]$Perc),2)
+```
+
+To assess the role different groups of individuals targeted in the empirical work, we again coded the types of samples recruited for the studies. A majority of studies sampled any consenting adult from the migrant group of interest (\textit{N} = `r EmpSampleFreq$Freq[EmpSampleFreq$Sample=="general"]`, `r round(EmpSampleFreq$Perc[EmpSampleFreq$Sample=="general"],2)`\%). Of the targeted sampling strategies, most recruited refugees (\textit{N} = `r EmpSampleRefugee`, `r EmpSampleRefugeePerc`\%), young migrants (\textit{N} = `r EmpSampleYouth`, `r EmpSampleYouthPerc`\%), or elderly people (\textit{N} = `r EmpSampleElderly`, `r EmpSampleElderlyPerc`\%). The remaining fifth of the studies recruited other more specific samples (e.g., nurses, athletes, Muslims). Interestingly, despite the circumstance that a large portion of papers focused on mental health outcomes, only `r EmpSampleFreq$Freq[EmpSampleFreq$Sample=="clinical"]` studies (`r round(EmpSampleFreq$Perc[EmpSampleFreq$Sample=="clinical"],2)`\%) recruited clinical migrant samples. These results speak to the case that relatively few empirical studies actually take individual differences into account in their sample selection. Studies may still address individual differences within the data description and within the modeling approaches (e.g., controlling for gender), yet it seems that inter-sectional idiosyncrasies did not seem to play a major role in the targeting of samples.
+
+\subparagraph{Domains}
+
+```{r EmpDomainFrequencies, include=F, warning=F}
+# Number of domains in scale
+EmpDomainN <- str_count(dt.psych.included$domainScale, ',')+1
+
+# Domain frequencies: Find all individual domains and count frequency of occurrence
+EmpDomainFreq <- as.data.frame(table(unlist(strsplit(dt.psych.included$domainScale, ", ")), dnn = list("domain")), 
+                                 responseName = "frequency") %>% 
+  arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(domain = factor(domain, levels=domain)) # update factor levels
+
+# # Word cloud frequencies
+# set.seed(7) # for reproducibility 
+# wordcloud(words = ScaleDomainFreq$domain, freq = ScaleDomainFreq$frequency, 
+#           min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
+```
+
+To capture the situational focus of the authors, we coded which life domains the utilized measures referred to. A relatively large number of studies assess cultural adaption in general manner without mentioning any context or life domain (\textit{N} = `r EmpDomainFreq$frequency[EmpDomainFreq$domain=="general"]`). The remaining studies referred to an average of `r round(mean(EmpDomainN, na.rm=T),2)` dimensions (\textit{SD} = `r round(sd(EmpDomainN, na.rm=T),2)`, range: `r min(EmpDomainN, na.rm=T)` -- `r max(EmpDomainN, na.rm=T)`)). We found a total of `r nrow(EmpDomainFreq)` unique domains across the `r nrow(dt.psych.included)` studies. The dimensions of 'language‘ (\hl{XX}\%), 'food’ (\hl{XX}\%), 'social interactions’, and 'friends’ (\hl{XX}\%) were included most frequently. So, while larger proportion of studies ask about cultural adaption in general (outside of a specific domain), the number of domains included and addressed is extensive and diverse. The mentioned domains at times go beyond the life fields mentioned in previous work (also see Online Supplementary Materials \hl{X}).
+
+\vspace{1em}
+\todo[inline]{Should be re-coded to test our proposed domains. Also, re-check `general' code}
+
+\subparagraph{Process}
+
+```{r EmpProcess, include=F}
+empMigrationTime <- as.data.frame(summarytools::freq(dt.psych.included$MigrationTime, order = "freq"))
+names(empMigrationTime) <- gsub("% ", "Perc", names(empMigrationTime))
+
+
+empAnalysis <- as.data.frame(summarytools::freq(dt.psych.included$MainAnalysis, order = "freq"))
+names(empAnalysis) <- gsub("% ", "Perc", names(empAnalysis))
+
+EmpLong <- sum(empAnalysis[grepl("lagged|longitudinal|process", rownames(empAnalysis)),]$Freq)
+EmpLongPerc <- round(sum(empAnalysis[grepl("lagged|longitudinal|process", rownames(empAnalysis)),]$Perc),2)
+```
+
+To assess the process focus of the broader empirical works, we again assessed when in the migration process was collected and we additionally assessed the type analysis done by the authors. We found that a `r empMigrationTime["post",]$Freq` studies (`r round(empMigrationTime["post",]$PercValid,2)`\%) collected cross-sectional data after the arrival of the migrant in the new society. A single study targeted potential migrants and `r empMigrationTime["pre & post",]$Freq` studies collected data prior and following the migration event. Moreover, only `r EmpLong` studies included longitudinal data analyses concerned with cultural adaptation. This observation, again underscores the arguments made by authors, who have long pointed out that the acculturation literature has thus far failed to provide data that meaningfully captures migration as a process \citep[e.g.,][]{Brown2011, Ward2019}.
+
+\paragraph{Fields}
+To further test the utility of our framework in comparing conceptualizations, we assessed differences of experience elements across different fields. We provide more elaborate descriptions of the differences in the methods, and publication types as well as contextual differences in terms of sampling procedures, situational domains, process-focus, analyses, and cultural contexts in Supplementary Online Material \hl{X}. 
+
+```{r FieldCalc, include=F}
+field_labs_shrt <- c(
+  'Psychology'="Psych.",
+  'Medicine, Nursing, & Health'="Med.",
+  'Social Sciences (miscellaneous)'="SocSci.",
+  'Multidisciplinary / Crossdisciplinary'="Multi."
+)
+
+field_labs_lng <- c(
+  'Psychology'="Psychology",
+  'Medicine, Nursing, & Health'="Medicine",
+  'Social Sciences (miscellaneous)'="Social Sci.",
+  'Multidisciplinary / Crossdisciplinary'="Multidiscipl."
+)
+
+# Frequency of elements (within each field)
+FieldElementFreq <- psychDataDisciplines %>%
+  dplyr::select(discipline02, Affect, Behavior, Cognition, Desire) %>%
+  gather(Element, Frequency, -discipline02) %>%
+  group_by(discipline02, Element) %>%
+  summarise_each(funs(sum(., na.rm = TRUE))) %>%
+  ungroup() 
+FieldN <- as.data.frame(table(discipline02 = psychDataDisciplines$discipline02), responseName = "n")
+
+FieldElementFreq <- merge(FieldElementFreq, FieldN) %>%
+  mutate(Percentage = Frequency/n*100)
+  
+# frequency of unique element combinations (within each field)
+FieldElementCombFreq <- psychDataDisciplines %>%
+  dplyr::select(Affect, Behavior, Cognition, Desire, discipline02) %>%
+  #mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
+  group_by(Affect, Behavior, Cognition, Desire, discipline02) %>%
+  summarise(Frequency = n()) %>%
+  ungroup() %>%
+  mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T))
+
+# fill replace ones with colnames to be combined
+for (i in 1:4) {
+    FieldElementCombFreq[[i]] <- str_replace(as.character(FieldElementCombFreq[[i]]), "1", colnames(FieldElementCombFreq)[i])
+}
+
+# collect Elements names for each combination
+FieldElementCombFreq <- FieldElementCombFreq %>%
+  unite("ExperienceCombination",c("Affect", "Behavior", "Cognition", "Desire"), na.rm = TRUE, sep = ", ") %>%
+  group_by(discipline02) %>%
+  mutate(ExperienceCombination = fct_reorder(ExperienceCombination, Frequency),
+         Percentage = Frequency/sum(Frequency)*100,
+         Affect = ifelse(grepl("Affect", ExperienceCombination, fixed = TRUE), 1,0),
+         Behavior = ifelse(grepl("Behavior", ExperienceCombination, fixed = TRUE), 1,0),
+         Cognition = ifelse(grepl("Cognition", ExperienceCombination, fixed = TRUE), 1,0),
+         Desire = ifelse(grepl("Desire", ExperienceCombination, fixed = TRUE), 1,0)) %>%
+  arrange(Frequency)
+
+# overall scale complexity (within each field)
+FieldComplexity <- FieldElementCombFreq %>%
+  select(discipline02, complexity, Frequency, Percentage) %>%
+  group_by(discipline02, complexity) %>%
+  summarise(Frequency = sum(Frequency),
+            Percentage = sum(Percentage)) %>%
+  ungroup() %>%
+  right_join(rownames_to_column(as.data.frame(field_labs_lng), "discipline02"))
+
+FieldAvgComplexity <- FieldElementCombFreq %>%
+  group_by(discipline02) %>%
+  summarise(n = sum(Frequency),
+            avgComplexity = weighted.mean(x = complexity, w = Frequency),
+            sdComplexity = wtd.var(x = complexity, weights = Frequency),) %>%
+  ungroup() %>%
+  mutate(seComplexity = sdComplexity/sqrt(n)) %>%
+  right_join(rownames_to_column(as.data.frame(field_labs_lng), "discipline02")) %>%
+  select(Field = field_labs_lng, n, avgComplexity, sdComplexity, seComplexity)
+
+FieldComplexityAOV <- psychDataDisciplines %>%
+  select(Affect, Behavior, Cognition, Desire, discipline02) %>%
+  right_join(rownames_to_column(as.data.frame(field_labs_lng), "discipline02")) %>%
+  mutate(complexity = rowSums(select(., Affect, Behavior, Cognition, Desire), na.rm = T),
+         field = field_labs_lng) %>%
+  mutate_at(vars(Affect, Behavior, Cognition, Desire), funs(ifelse(. == 1, deparse(substitute(.)), "")))  %>%
+  unite("ExperienceCombination",c("Affect", "Behavior", "Cognition", "Desire"), na.rm = TRUE, sep = ", ") %>%
+  select(field, ExperienceCombination, complexity) %>%
+  aov(data = ., complexity ~ field) %>%
+  anova
+
+# Scale complexity for each element (within each field)
+FieldElementComplexity <- FieldElementCombFreq %>%
+  gather(key = "Element", value = "ElementDum", Affect, Behavior, Cognition, Desire) %>%
+  filter(ElementDum == 1) %>%
+  group_by(discipline02, Element) %>%
+  summarise(avgComplexity = weighted.mean(x = complexity, w = Frequency),
+            sdComplexity = wtd.var(x = complexity, weights = Frequency),
+            n = sum(Frequency)) %>%
+  ungroup() %>%
+  mutate(seComplexity = sdComplexity/sqrt(n)) %>%
+  right_join(rownames_to_column(as.data.frame(field_labs_lng), "discipline02"))
+
+```
+
+We again first, assessed the references to affect, behavior, cognition, and desires separately, within each of the disciplines. We find that for all fields motivations (`r FieldElementFreq %>% filter(Element == "Desire") %>% select(Percentage) %>% min %>% round(.,2)`-`r FieldElementFreq %>% filter(Element == "Desire") %>% select(Percentage) %>% max %>% round(.,2)`\% of all measures in the field) and emotions (`r FieldElementFreq %>% filter(Element == "Affect") %>% select(Percentage) %>% min %>% round(.,2)`-`r FieldElementFreq %>% filter(Element == "Affect") %>% select(Percentage) %>% max %>% round(.,2)`\%) are the least frequently measured elements and each of the fields measures similarly often (in proportional terms). However, for the cognitive and behavioral elements the proportions diverge between the fields. While the multidisciplinary field measured behaviors (`r FieldElementFreq %>% filter(Element=="Behavior", discipline02=="Multidisciplinary / Crossdisciplinary") %>% select(Percentage) %>% round(.,2)`\%) and cognition (`r FieldElementFreq %>% filter(Element=="Cognition", discipline02=="Multidisciplinary / Crossdisciplinary") %>% select(Percentage) %>% round(.,2)`\%) almost equally often, in the medical and general social science journals behaviors were measured considerably more often than cognitions ($Behavior_{SoSci}$ = `r  FieldElementFreq %>% filter(Element=="Behavior", discipline02=="Social Sciences (miscellaneous)") %>% select(Percentage) %>% round(.,2)`\% > $Cognition_{SoSci}$ = `r  FieldElementFreq %>% filter(Element=="Cognition", discipline02=="Social Sciences (miscellaneous)") %>% select(Percentage) %>% round(.,2)`\%; $Behavior_{Med}$ = `r  FieldElementFreq %>% filter(Element=="Behavior", discipline02=="Medicine, Nursing, & Health") %>% select(Percentage) %>% round(.,2)`\% > $Cognition_{Med}$ = `r  FieldElementFreq %>% filter(Element=="Cognition", discipline02=="Medicine, Nursing, & Health") %>% select(Percentage) %>% round(.,2)`\%). While the psychological journals cognitions (`r  FieldElementFreq %>% filter(Element=="Cognition", discipline02=="Psychology") %>% select(Percentage) %>% round(.,2)`\%) were measured more often than behaviors (`r  FieldElementFreq %>% filter(Element=="Behavior", discipline02=="Psychology") %>% select(Percentage) %>% round(.,2)`\%; also see Figure \ref{fig:FieldPlotFreq} B and A)). 
+
+When looking at differences in how many different elements were measured (i.e., element complexity) and patterns within these element-combinations, differences between the fields become increasingly evident (also see Figure \ref{fig:FieldPlotFreq} A and C). While 'affect, behavior, and cognition' and 'behavior, and cognition' measures are the most common combinations across all fields (also at similar proportional importance), there is less dimension complexity and variation for medical and social science fields. In the psychological `r FieldComplexity %>% filter(discipline02=="Psychology", complexity>=2) %>% select(Percentage) %>% sum %>% round(.,2)`\% of all studies measures at least two experience elements (\textit{M} = `r FieldAvgComplexity %>% filter(Field=="Psychology") %>% select(avgComplexity) %>% round(.,2)`, \textit{SD} = `r FieldAvgComplexity %>% filter(Field=="Psychology") %>% select(sdComplexity) %>% round(.,2)`). Although mean complexity differences were not significantly different between the fields (\textit{F}(`r FieldComplexityAOV$Df[1]`, `r FieldComplexityAOV$Df[2]`) = `r round(FieldComplexityAOV[,names(FieldComplexityAOV)=="F value"][1],2)`, \textit{p} = `r round(FieldComplexityAOV[,names(FieldComplexityAOV)=="Pr(>F)"][1],3)`), looking at the qualitative differences of element combinations can be informative. For example, there was not a single study published in a psychological journal that conceptualized cultural adaptation by behavior alone (eventhough this is the third most common measures in the other three fields, also see Figure \ref{fig:FieldPlotFreq} A). Similarly, in the broader social scientific journal desires are always measured together with behaviors, which is very uncommon in the other fields\footnote{Although it should be noted that the social science field was smaller and more heterogeneous than the other fields. \Warning\ Maybe drop this argument -- based on only two studies.}. There are also interesting pattern when one considers how many other elements an aspect is measured with within each of the fields. For example, while for all fields motivations are found in the most complex scales \footnote{except for the broader social science journals that do not have many motivational measures to begin with.}, medical journal have a substantially higher average scale complexity when measuring motivations. Inversely, psychological journal on average report behavioral measures of cultural adaptation in more complex scales. This hints to a pattern, where complexity might indicate relative importance of an aspect within the field -- where only scales that already have a broad and diverse measure also include the elements that are usually measured less within a field (also see Figure \ref{fig:FieldElementComp}). There are like other and more nuanced differences in the conceptualizations highlighted within this analysis (e.g., patterns relevant to a single field). Yet, the immediately visible pattern differences clearly speak the utility of the framework. 
+
+```{r FieldPlotFreq, include=F, fig.width=12, fig.height=16}
+# barplot of dimension frequency
+FieldElementBar <- ggplot(data=FieldElementFreq, aes(x=reorder(Element, Percentage), y=Percentage)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    #aes(label = paste0("N = ",Frequency)),
+    aes(label = paste0(round(Percentage,1),"%")),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 2.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Element Frequency",
+       y = "Frequency across all Scales",
+       x = "Experience Element")+
+  coord_flip()+
+  facet_wrap(~discipline02, labeller = as_labeller(field_labs_lng))+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+# barplot of complexity frequency
+FieldComplexityBar <- ggplot(data=FieldComplexity, aes(x=reorder(complexity, -complexity), y=Frequency)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(label = paste0("N = ",Frequency)),
+    position=position_stack(vjust=0.5),
+    color = "white",
+    size = 2.5,
+    vjust = 0.5
+    ) +
+  labs(title = "Scale Complexity",
+       y = "Frequency across all Scales",
+       x = "Complexity")+
+  coord_flip()+
+  facet_wrap(~discipline02, labeller = as_labeller(field_labs_lng))+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        plot.title = element_text(size=10, face="bold", hjust = 0.5),
+        axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_blank(),
+        strip.text = element_text(colour = 'white', face="bold"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.position="none")
+
+# FieldComplexityBar <- ggstatsplot::ggbarstats(
+#   data = FieldComplexity,
+#   x = complexity,
+#   y = field_labs_lng,
+#   counts = Frequency,
+#   #sampling.plan = "jointMulti",
+#   title = "Scale Complexity",
+#   sample.size.label = F,
+#   #label = "both",
+#   xlab = "Discipline",
+#   results.subtitle = FALSE,
+#   package = "ggsci",
+#   palette = "blue_grey_material",
+#   ggtheme = ggthemes::theme_tufte(base_size = 12),
+#   ggplot.component = list(scale_x_discrete(guide = guide_axis(n.dodge = 2))),
+#   ggstatsplot.layer = F,
+#   label.args = list(check_overlap = TRUE, alpha = 1, fill = "white"),
+#   messages = FALSE
+# )+
+#   theme_Publication()+
+#   theme(legend.position = "right", 
+#         legend.direction = "vertical", 
+#         legend.title = element_blank(),
+#         axis.title.x = element_blank(),
+#         plot.title = element_text(size=10, face="bold", hjust = 0.5))
+
+# bar plot frequencies
+FieldElementComb <- ggplot(FieldElementCombFreq, aes(x=reorder(ExperienceCombination, Percentage), y=Percentage)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(y=Percentage, label = paste0(round(Percentage,2),"% [N = ", Frequency, "]")),
+    color = "grey14",
+    size = 4,
+    hjust = -.1,
+    inherit.aes = TRUE
+    ) +
+  scale_y_continuous(limits = c(0, ceiling(max(EmpElementCombFreq$Percentage)*1.5)),
+                     breaks = seq(0, ceiling(max(EmpElementCombFreq$Percentage)*1.5), 5))+
+  labs(y = "Proportion of all scales [in %]",
+       x = "Combination of Experience Elements")+
+  coord_flip()+
+  facet_wrap(~discipline02, labeller = as_labeller(field_labs_lng))+
+  theme_Publication()+
+  theme(strip.background =element_rect(fill="grey14", color="grey14"),
+        strip.text = element_text(colour = 'white', face="bold"),
+        legend.position="none")
+
+ggdraw() +
+  draw_plot(FieldElementComb, x = 0, y = 0.3, width = 1, height = .7)+
+  draw_plot(FieldElementBar, x = 0, y = 0, width = .5, height = .3) +
+  draw_plot(FieldComplexityBar, x = .5, y = 0, width = .5, height = .3) +
+  draw_plot_label(c("(A)", "(B)", "(C)"), c(0, 0, 0.5), c(1, 0.3, 0.3), size = 15)
+```
+
+```{r FieldElementComp, include=F, fig.width=12, fig.height=12}
+ggplot(FieldElementComplexity, aes(fill=field_labs_lng, y=avgComplexity, x=reorder(Element, avgComplexity))) + 
+  geom_bar(position="dodge", stat="identity") +
+  geom_errorbar(aes(ymin=avgComplexity-1.96*seComplexity, ymax=avgComplexity+1.96*seComplexity), width=.2,position=position_dodge(.9)) +
+  scale_fill_grey(start = 0.8, end = 0.2) +
+  #paletteer::scale_fill_paletteer_d("ggsci::blue_grey_material") +
+  labs(x = "Element",
+       y = "Number of Aspects",
+       title = "Average Number of Elements \nMeasured Together with Element  [Mean ± 95%CI]") +
+  #coord_flip()+
+  theme_Publication() +
+  theme(strip.background = element_rect(fill="grey14", color="grey14", ),
+        axis.title.x = element_text(face="bold"),
+        axis.title.y = element_text(face="bold"),
+        plot.title = element_text(face="bold", hjust = 0.5),
+        #legend.text = element_text(size=10),
+        #axis.text.x = element_text(size=10),
+        #axis.text.y = element_text(size=10),
+        panel.grid.major.x = element_blank(),
+        #panel.grid.major.y = element_blank(),
+        #strip.text = element_text(colour = 'white', face="bold"),
+        #panel.background = element_rect(fill = "transparent"),
+        #plot.background = element_rect(fill = alpha('white', 0.5)), 
+        legend.title = element_blank())
+```
+
+\begin{figure}[h]
+\centering
+\caption{Combinations of measured experience element and their frequencies per field.}
+\includegraphics[width=\textwidth]{Figures/FieldPlotFreq-1}
+\label{fig:FieldPlotFreq}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\caption{Average complexity (number of experience elements measured) for all scales that include a given experience aspect.}
+\includegraphics[width=\textwidth]{Figures/FieldElementComp-1}
+\caption*{Note that these categories are not mutually exclusive (and thus not independent) because scales can include multiple experience aspects (i.e., higher complexity).}
+\label{fig:FieldElementComp}
+\end{figure}
+<!-- END SECTION -->
+
+
+
+
