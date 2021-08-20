@@ -4,4 +4,4 @@ description: "Author Information:<br>██████████████�
 # description: "Jannis Kreienkamp<br>Laura Bringmann<br>Raili Engler<br>Peter de Jonge<br>Kai Epstude<br>(University of Groningen)"
 github: false
 show_downloads: true
-is_project_page: true
+is_project_page: false
