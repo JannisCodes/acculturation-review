@@ -6,6 +6,6 @@ This repository brings together the full manuscript (syncronized from Overleaf) 
 
 The full annotated analysis code is available [here](https://janniscodes.github.io/acculturation-review/Supplemental-Material-B-Annotated-Analysis).
 
-Please note that the full repository will remain 'private' until after the manuscript has been accepted for publication (to allow for blind peer review).
+Please note that the full repository will remain 'private' until after the manuscript has been accepted for publication (to allow for blind peer review). Test.
 
 <!-- <form action="https://janniscodes.github.io/acculturation-review/Supplemental%20Material%20B%20-%20Annotated%20Analysis.html" method="get" target="_blank"><button type="submit">Annotated Analysis</button></form> -->
