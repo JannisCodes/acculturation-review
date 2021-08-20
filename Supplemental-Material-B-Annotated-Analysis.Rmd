@@ -483,10 +483,10 @@ The `r nrow(dt.Theories.Included)` theoretical works are listed in Table \@ref(t
 ```{r theoreticalTbl}
 dt.Theories.Included %>%
   dplyr::select(Theory, Reference = CitationKey,
-                Affect, 	Behavior,	Cognition,	Desire,
+                Affect, Behavior,	Cognition, Desire,
                 #Affect = AffectFinal, Behavior = BehaviorFinal,	Cognition = CognitionFinal,	Desire = DesireFinal,
                 `Type of Theoretical Work` = FrameworkTheoryModel, Focus = GeneralAspect, `Migration Time` = Time, `Source Type` = SourceType) %>%
-  mutate_at(vars(Affect, 	Behavior,	Cognition, Desire), ~replace_na(., 0)) %>%
+  mutate_at(vars(Affect, Behavior, Cognition, Desire), ~replace_na(., 0)) %>%
   mutate(Reference = paste0("@",Reference)) %>%
   kbl(., caption = "Empirical Literature",
       format = "html") %>%
@@ -2816,7 +2816,7 @@ Again, a major focus of our coding was the role of affect, behavior, cognition, 
 ```{r PsychDisciplineABCDFreq, message=F, warning=F, fig.cap="Bar graph of the counts for each of the dimensions across all included empirical works."}
 # Plot aspect frequencies by field
 empiricalDataDisciplines %>%
-  dplyr::select(discipline02, Affect, Behavior, Cognition, Desire) %>%
+  dplyr::select(discipline02, Affect=AffectFinal, Behavior=BehaviorFinal, Cognition=CognitionFinal, Desire=DesireFinal) %>%
   gather(ABCD, Frequency, -discipline02) %>%
   group_by(discipline02, ABCD) %>%
   summarise_each(funs(sum(., na.rm = TRUE))) %>%
@@ -2841,12 +2841,12 @@ empiricalDataDisciplines %>%
         legend.position="none")
 ```
 
-Again, we also plot how often each of the dimensions were measured together. A bar graph of the compound frequencies in each discipline is shown Figure \@ref(fig:PsychDisciplineABCDCombFreq). Interestingly, there are certain dimensions and dimension combinations that are missing in some of the disciplines. There was, for example, not a single article in the psychological discipline that only measured behavioral acculturation a dimension that was important in all other disciplines.    
+Again, we also plot how often each of the dimensions were measured together. A bar graph of the compound frequencies in each discipline is shown Figure \@ref(fig:PsychDisciplineABCDCombFreq). Interestingly, there are certain dimensions and dimension combinations that are missing in some of the disciplines. There were, for example, only two articles in the psychological discipline that only measured behavioral acculturation a dimension that was important in all other disciplines.    
 
 ```{r PsychDisciplineABCDCombFreq, message=F, warning=F, fig.cap="Bar graph of the counts for each of the dimension combinations."}
 # plot frequencies of aspect combinations by field
 empiricalDataDisciplines %>%
-  dplyr::select(discipline02, Affect, Behavior, Cognition, Desire) %>%
+  dplyr::select(discipline02, Affect=AffectFinal, Behavior=BehaviorFinal, Cognition=CognitionFinal, Desire=DesireFinal) %>%
   group_by(discipline02, Affect, Behavior, Cognition, Desire) %>%
   summarise(Frequency = n()) %>%
   ungroup() %>%
