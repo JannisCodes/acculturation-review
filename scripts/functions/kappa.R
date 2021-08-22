@@ -15,6 +15,13 @@ kappa.full <- function(x, name, ...){
   data.frame(name,Po,Pe,k,se,lwr,upr)
 }
 
+# # Minimally reproducible dataset
+# coders <- data.table(Affect1 = rbinom(250, 1,.62), Affect2 = rbinom(250, 1,.58))
+# name <- "affect"
+# kappa.full(coders, name)
+
+# --------------------------------------------------------------------------------
+
 kappa.full.multiple <- function(x, names, ...){
   kComb <- list()
   for (i in 1:length(names)) {
@@ -22,6 +29,16 @@ kappa.full.multiple <- function(x, names, ...){
   }
   do.call(rbind.data.frame, kComb)  
 }
+
+# # Minimally reproducible dataset
+# coders <- data.table(Affect1 = rbinom(250, 1,.62), Affect2 = rbinom(250, 1,.58),
+#                      Behavior1 = rbinom(250, 1,.32), Behavior2 = rbinom(250, 1,.40),
+#                      Cognition1 = rbinom(250, 1,.52), Cognition2 = rbinom(250, 1,.55),
+#                      Desire1 = rbinom(250, 1,.78), Desire2 = rbinom(250, 1,.82))
+# names <- c("affect", "behavior", "cognition", "desire")
+# kappa.full.multiple(coders, names)
+
+# --------------------------------------------------------------------------------
 
 kappa.pooled <- function(ktab, ...){
   (mean(ktab$Po, na.rm = TRUE) - mean(ktab$Pe, na.rm = TRUE))/(1 - mean(ktab$Pe, na.rm = TRUE))
@@ -39,3 +56,12 @@ kappa.pooled2 <- function(ktab, ...){
   
   data.frame(k.pooled=k, se, lwr, upr)
 }
+
+# # Minimally reproducible dataset
+# coders <- data.table(Affect1 = rbinom(250, 1,.62), Affect2 = rbinom(250, 1,.58),
+#                      Behavior1 = rbinom(250, 1,.32), Behavior2 = rbinom(250, 1,.40),
+#                      Cognition1 = rbinom(250, 1,.52), Cognition2 = rbinom(250, 1,.55),
+#                      Desire1 = rbinom(250, 1,.78), Desire2 = rbinom(250, 1,.82))
+# names <- c("affect", "behavior", "cognition", "desire")
+# dt.kappa <- kappa.full.multiple(coders, names)
+# kappa.pooled2(dt.kappa, names)
