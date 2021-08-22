@@ -1458,8 +1458,8 @@ scalesDomainCombFreq <- scalesDomains %>%
   mutate(Percentage = Frequency/nrow(scalesDomains)*100) %>%
   arrange(desc(Frequency))
 
-scalesDomainUniqueComb <- sum(scalesDomainCombFreq$Percentage[scalesDomainCombFreq$Frequency==1])
-scalesDomainLess5 <- sum(scalesDomainCombFreq$Percentage[scalesDomainCombFreq$Percentage<5])
+scalesDomainUniqueComb <- format(round(sum(scalesDomainCombFreq$Percentage[scalesDomainCombFreq$Frequency==1]), 2), nsmall=2)
+scalesDomainLess5 <- format(round(sum(scalesDomainCombFreq$Percentage[scalesDomainCombFreq$Percentage<5]), 2), nsmall=2)
 ```
 
 ```{r scalesDomainsBar, fig.cap="Empirical Literature: Bar Graph Situational Domains"}
