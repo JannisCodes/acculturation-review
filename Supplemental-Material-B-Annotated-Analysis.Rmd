@@ -689,7 +689,7 @@ We then look at the use of experience aspects within the theoretical works in mo
 <br>
 <div class="alert alert-warning">
 <strong><i class="fa fa-exclamation-triangle"></i> To Do!</strong> <br>
-KAPPA CODE NEEDS TO BE ENABLED ONCE DOUBLE CODING IS DONE!
+Kappa code needs to be enabled once double coding is done!
 </div>
 
 ```{r TheoreticalKappaTbl}
