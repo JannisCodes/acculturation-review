@@ -19,7 +19,7 @@ lib <- c("rmarkdown", "knitr", "citr", "remedy", "bookdown", "papaja", "rmdfiltr
          "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
          "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes", "cowplot", "paletteer", "ggpubr",
          "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet",
-         "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg")
+         "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg", "irr")
 invisible(lapply(lib, library, character.only = TRUE))  
 rm(lib)  
 
@@ -138,7 +138,7 @@ prismaGr(found = nrow(dt.TheorySearch),
   rsvg_pdf("./Figures/PRISMA_Theories.pdf")
 ```
 
-The most abstract level of our review was concerned with how researchers conceptualized psychological acculturation in their theoretical work. Our theory-specific literature search produced a total of `r nrow(dt.TheorySearch)` results from which we identified `r nrow(dt.TheorySearch.included)` theories. From our review of the empirical literature we added an additional `r dt.TheorySearch.added` theories (total N = `r nrow(dt.Theories.Included)`, for exclusion reasons see Table \ref{tab:ExclusionsCombined} and for our PRISMA diagram see Figure \ref{fig:PrismaCombined} A. A full table of all theories, with references, and final coding is available in our online supplementary information as well as on our open science repository \citep[see][]{Kreienkamp2021a, Kreienkamp2021b}. 
+The most abstract level of our review was concerned with how researchers conceptualized psychological acculturation in their theoretical work. Our theory-specific literature search produced a total of `r nrow(dt.TheorySearch)` results from which we identified `r nrow(dt.TheorySearch.included)` theories. From our review of the empirical literature we added an additional `r dt.TheorySearch.added` theories (total N = `r nrow(dt.Theories.Included)`, for exclusion reasons see Table \ref{tab:ExclusionsCombined} and for our PRISMA diagram see Figure \ref{fig:PrismaCombined} A. A full table of all theories, with references, and final coding is available in our Supplemental Materials as well as on our open science repository \citep[see][]{Kreienkamp2021a, Kreienkamp2021b}. 
 
 \begin{figure}[h]
 \centering
@@ -162,6 +162,9 @@ The most abstract level of our review was concerned with how researchers concept
 The authors of the `r nrow(dt.Theories.Included)` included theoretical works self-categorized their contributions as a theoretical conceptualization (\textit{N} = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Conceptualization"))`), theoretical framework (\textit{N} = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Framework"))`), theory (\textit{N} = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Theory"))`), or theoretical model (\textit{N} = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Model"))`). And while `r nrow(dt.Theories.Included %>% filter(GeneralAspect=="Aspect"))` authors explicitly targeted a specific part of acculturation (e.g., `r nrow(dt.Theories.Included %>% filter(Target=="Identity"))` identity acculturation theories and `r nrow(dt.Theories.Included %>% filter(Target=="Work"))` labor market acculturation theories), a majority of theoretical works offered commentary on the overall construct of acculturation (N = `r nrow(dt.Theories.Included %>% filter(GeneralAspect=="General"))`). Looking at the types of theory building, a majority of proposal were purely theoretical (N = `r nrow(dt.Theories.Included %>% filter(SourceType=="theoretical"))`) with the remaining theoretical works growing out of qualitative investigations (such as grounded theory approaches; N = `r nrow(dt.Theories.Included %>% filter(SourceType=="empirical"))`).
 
 \paragraph{Experience Aspects}
+```{r TheoriesKappa, include=F}
+
+```
 To assess the experience aspects that were considered as part of the theoretical works, two independent coders coded the authors' axioms, theorems, and model elements for self-identified inclusions of affects, behaviors, and cognitions (Cohen's $\varkappa$ = \hl{X.XX} (pooled and individual?)). We only coded explicit mentions by the authors and we did so on three different levels. An example of these three levels for affect would be phrases of "mood" or "emotions" (construct level), "anxiety" or "pride" (concept level), and "the migrant feels ..." (operationalization level). A list with further examples can be found in Table \ref{tab:AspectExamples}.
 
 \paragraph{Process}
@@ -399,13 +402,64 @@ Looking at the number of aspects considered together we also see substantial dif
 <!-- \input{Tables/CombinedElementComplexity} -->
 
 \subsection{Methodological Literature}  
-Based on the systematic review and its coding, the first empirical dataset we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review we found five major works that reviewed the measurement of acculturation \citep{Celenk2011, Maestas2000, Matsudaira2006, Wallace2010, Zane2004}. After removal of duplicate scales, we added any scale validation that was present in our own systematic review but not included in the previous reviews. For each measure we extracted the full item list as well as the item scoring prior to coding. A comprehensive and interactive database of the scales, with reference- and publication information, as well as our experience elements and -context coding is available in our online supplementary information as well as on our open science repository \citep[see][]{Kreienkamp2021a, Kreienkamp2021b}.  
+Based on the systematic review and its coding, the first empirical dataset we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review we found five major works that reviewed the measurement of acculturation \citep{Celenk2011, Maestas2000, Matsudaira2006, Wallace2010, Zane2004}. After removal of duplicate scales, we added any scale validation that was present in our own systematic review but not included in the previous reviews. For each measure we extracted the full item list as well as the item scoring prior to coding. A comprehensive and interactive database of the scales, with reference- and publication information, as well as our experience elements and -context coding is available in our Supplemental Materials as well as on our open science repository \citep[see][]{Kreienkamp2021a, Kreienkamp2021b}.  
 
 \subsubsection{Methods}  
 \paragraph{Dataset}
 Taken together and after duplicate removal, these five reviews collected a total of `r nrow(dt.Scales[dt.Scales$Source != "own review",])` scales. From our own review we added `r nrow(dt.Scales[dt.Scales$Source == "own review",])` additional validation studies (total of `r nrow(dt.Scales)` unique scales). Of these scales we ultimately had to exclude `r nrow(dt.Scales[!is.na(dt.Scales$MissingNote),])`, because they were either not accessible or did not fit the the topic of our review (see Table \ref{tab:ExclusionsCombined}). About a quarter of scales (`r round(nrow(filter(dt.Scales, IncludesMajority == 1))/nrow(dt.Scales)*100,2)`\%) included majority group members in their validation studies. The earliest included validation was from `r min(dt.Scales$year, na.rm = T)` with a majority of scales being validated around the turn of the 21\textsuperscript{st} century and the most recent included validation study was published in `r max(dt.Scales$year, na.rm = T)`.  
 
 \paragraph{Experience Aspects}
+```{r MethodologicalKappa, include=FALSE}
+kappa.full <- function(x, name, ...){
+  xtab <- table(x)
+  diagonal.counts <- diag(xtab)
+  N <- sum(xtab)
+  row.marginal.props <- rowSums(xtab)/N
+  col.marginal.props <- colSums(xtab)/N
+  # Compute kappa (k)
+  Po <- sum(diagonal.counts)/N
+  Pe <- sum(row.marginal.props*col.marginal.props)
+  k <- (Po - Pe)/(1 - Pe)
+  se <- sqrt((Po*(1-Po))/(N*(1-Pe)^2)) # according to PMID: 23092060
+  
+  data.frame(name=name,Po=Po,Pe=Pe,k, se=se)
+}
+
+kappa.full.multiple <- function(x, names, ...){
+  kComb <- list()
+  for (i in 1:length(names)) {
+  kComb[[i]] <- kappa.full(x %>% select(contains(names[i])), names[i])
+  }
+  do.call(rbind.data.frame, kComb)  
+}
+
+names <- c("Affect", "Behavior", "Cognition", "Desire")
+kMeth <- dt.Scales.Included %>%
+  select(Affect, Affect2, Behavior, Behavior2, Cognition, Cognition2, Desire, Desire2) %>%
+  mutate_all(~replace_na(., 0)) %>%
+  kappa.full.multiple(., names)
+
+dt.Scales.Included %>%
+  select(Affect, Affect2) %>%
+  mutate_at(vars(Affect, Affect2), ~replace_na(., 0)) %>%
+  irr::kappa2(., "unweighted")
+
+dt.Scales.Included %>%
+  select(Behavior, Behavior2) %>%
+  mutate_at(vars(Behavior, Behavior2), ~replace_na(., 0)) %>%
+  irr::kappa2(., "unweighted")
+
+dt.Scales.Included %>%
+  select(Cognition, Cognition2) %>%
+  mutate_at(vars(Cognition, Cognition2), ~replace_na(., 0)) %>%
+  irr::kappa2(., "unweighted")
+
+dt.Scales.Included %>%
+  select(Desire, Desire2) %>%
+  mutate_at(vars(Desire, Desire2), ~replace_na(., 0)) %>%
+  irr::kappa2(., "unweighted")
+
+```
 We extracted data on the experience aspects by primarily focusing on the measured concepts and their operationalizations (also see Table \ref{tab:AspectExamples}). For each article we retrieved the items used and coded whether the measure included references to affects, behaviors, cognitions, and desires. Because this concerned the most central aspect of our framework, each manuscript was double-coded and inconsistent codes were resolved after discussion (Cohen's $\varkappa$ = \hl{X.XX} (pooled and individual?)).
 
 At this stage we also noted if items measured concepts that relate to multiple experience aspects. As an example, a single item asking about `satisfaction with the new life' might include emotional and cognitive elements. In this case, we code the manuscript as measuring both emotions and cognitions, but note that these elements are not measured independently. We also noted if the measures do not consider an individual's experiences, such as reporting migration status or length of residency.

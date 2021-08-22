@@ -64,6 +64,7 @@ rm(lib)
   source("./scripts/functions/themes.R")
   source("./scripts/functions/prismaGraph.R")
   source("./scripts/functions/binaryCor.R")
+  source("./scripts/functions/kappa.R")
 
 # Markdown Options
   knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file()) # set working directory
@@ -354,7 +355,7 @@ prismaScales <- prismaGrScales(found = scalesPastN,
                width = 800, height = 800)
 ```
 
-### Applied Empirical
+### Empirical
 ```{r EmpiricalExclusion}
 # duplicate
 dt.Empirical.unique <- dt.Empirical %>%
@@ -673,7 +674,39 @@ cowplot::plot_grid(theoryYearHist, theoryYearCum, nrow=2, align = "v", rel_heigh
 ```
 
 ## Experience  
-We then look at the use of experience aspects within the theoretical works in more detail. We were particularly interested in the overall use of each experience aspect (see Table \@ref(tab:TheoriesElementFreq) and Figure \@ref(fig:TheoriesElementFreqBar)), the combined uses of experience aspects (see Table \@ref(tab:TheoriesElementCombinations) and Figure \@ref(fig:TheoriesElementCombinationsBar)), the resulting distribution of the number of aspects considered (see Table \@ref(tab:TheoriesElementComplexity) and Figure \@ref(fig:TheoriesElementComplexityBar)), as well as the number of other aspects that were considered with each of the aspects (see Table \@ref(tab:TheoriesElementAspectComplexity)).  
+```{r TheoreticalKappa}
+names <- c("Affect", "Behavior", "Cognition", "Desire")
+kTheo <- dt.Theories.Included %>%
+  select(Affect, Affect2, Behavior, Behavior2, Cognition, Cognition2, Desire, Desire2) %>%
+  mutate_all(~replace_na(., 0)) %>%
+  kappa.full.multiple(., names)
+kTheoPooled <- kappa.pooled2(kTheo)
+
+names <- c("Affect", "Behavior", "Cognition", "Desire")
+kMeth <- dt.Scales.Included %>%
+  select(Affect, Affect2, Behavior, Behavior2, Cognition, Cognition2, Desire, Desire2) %>%
+  mutate_all(~replace_na(., 0)) %>%
+  kappa.full.multiple(., names)
+kMethPooled <- kappa.pooled2(kMeth)
+```
+We then look at the use of experience aspects within the theoretical works in more detail. Before we inspect the aspect inclusion patterns in more detail we assessed the inter-rater reliability. Because the affect, behavior, cognition, and desire codings were integral to the framework two independent raters coded all included manuscripts. All four experience aspects were coded as either being included [1] or not included [0]. We, thus, used Cohen's $\kappa$ to assess the chance-corrected agreement between the raters. Confidence intervals were calculated using the standard error formula provided in \citet{McHugh2012}. Pooled Cohen's $\kappa$s were calculated using the methods developed by \citet{DeVries2008}. Note that for the pooled $\kappa$ we provide basic bootstrapped confidence intervals, which should be treated as preliminary because thus far no validated calculation for associated standard errors have been established (to the best of our knowledge). All inter-rater agreements were `r format(round(min(kTheo$Po, na.rm = TRUE)*100, 2), nsmall=2)`% or above and all $\kappa$s were above `r format(round(min(kTheo$k, na.rm = TRUE), 2), nsmall=2)` (full inter-rater reliability is available in Table \@ref(tab:TheoreticalKappaTbl)).
+
+```{r TheoreticalKappaTbl}
+kTheo %>%
+  kbl(., 
+        #label = "",
+        caption = "Theoretical Literature: <br>Cohen's $\\kappa$",
+        format = "html", 
+        #linesep = "",
+        #booktabs = T,
+        align = c('l', rep('c', length(.)-1)))  %>%
+  footnote(general = paste0("$\\kappa_{pooled}$ = ",format(round(kTheoPooled$k.pooled, 2), nsmall=2), ", $95\\%CI_{boot}$(", format(round(kTheoPooled$lwr, 2), nsmall=2), ", ", format(round(kTheoPooled$upr, 2), nsmall=2), ")")) %>%
+  kable_classic(full_width = F, 
+                lightable_options = "hover", 
+                html_font = "Cambria")
+```
+
+We were particularly interested in the overall use of each experience aspect (see Table \@ref(tab:TheoriesElementFreq) and Figure \@ref(fig:TheoriesElementFreqBar)), the combined uses of experience aspects (see Table \@ref(tab:TheoriesElementCombinations) and Figure \@ref(fig:TheoriesElementCombinationsBar)), the resulting distribution of the number of aspects considered (see Table \@ref(tab:TheoriesElementComplexity) and Figure \@ref(fig:TheoriesElementComplexityBar)), as well as the number of other aspects that were considered with each of the aspects (see Table \@ref(tab:TheoriesElementAspectComplexity)).  
 
 ```{r TheoriesElementFreq}
 # Count the times each dimension is measured
