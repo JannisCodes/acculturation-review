@@ -88,23 +88,53 @@ To assess the role different groups of individuals targeted in the scale validat
 
 \paragraph{Domains}
 
-```{r ScaleDomainFrequencies, include=F, warning=F, fig.cap="Wordcloud of the validation scale domains."}
-# Number of domains in scale
-ScaleDomainN <- str_count(dt.Scales.Included$domainScale, ',')+1
+```{r scalesDomains}
+## prepare life domain data
+# make vector with of unique life Domains
+uniqueDomains <- purrr::discard(dt.Input$DomainTheory, is.na)
+# make new dataframe withe only the life domain data from all scales
+scalesDomains <- data.frame(lifeDomain = dt.Scales.Included$lifeDomain)
+# add unique list of life domains as NA columns to the data frame
+scalesDomains[,uniqueDomains] <- NA
+# for each unique life domain [j] check whether it was included within the scale [i]
+for (i in 1:nrow(scalesDomains)) {
+  for (j in 1:length(uniqueDomains)) {
+    scalesDomains[i,j+1] <- grepl(uniqueDomains[j], scalesDomains$lifeDomain[i], fixed = TRUE)*1
+  }
+}
+# count how many life domains were coded for each scale
+scalesDomains <- scalesDomains %>%
+  mutate(nDomain = rowSums(across(contains(uniqueDomains))))
+#make a frequency table for all the individual life domains
+scalesDomainFreq <- colSums(scalesDomains %>% select(contains(uniqueDomains))) %>%
+  data.frame(Domain=names(.), Frequency=., row.names=NULL) %>%
+  mutate(Percentage = Frequency/nrow(scalesDomains)*100) %>%
+  arrange(desc(Frequency))
+# count frequencies of combinations
+scalesDomainCombFreq <- scalesDomains %>%
+  group_by(lifeDomain) %>%
+  summarise(Frequency = n()) %>%
+  mutate(Percentage = Frequency/nrow(scalesDomains)*100) %>%
+  arrange(desc(Frequency))
 
-# Domain frequencies: Find all individual domains and count frequency of occurrence
-ScaleDomainFreq <- as.data.frame(table(unlist(strsplit(dt.Scales.Included$domainScale, ", ")), dnn = list("domain")), 
-                                 responseName = "frequency") %>% 
-  arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
-  mutate(domain = factor(domain, levels=domain)) # update factor levels
+scalesDomainUniqueComb <- sum(scalesDomainCombFreq$Percentage[scalesDomainCombFreq$Frequency==1])
+scalesDomainLess5 <- sum(scalesDomainCombFreq$Percentage[scalesDomainCombFreq$Percentage<5])
 
-# # Word cloud frequencies
-# set.seed(7) # for reproducibility 
-# wordcloud(words = ScaleDomainFreq$domain, freq = ScaleDomainFreq$frequency, 
-#           min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
+corFriendMedia <- scalesDomains %>%
+  select(`friends/aquaintances`, `entertainment/media/news`) %>%
+  as.matrix %>%
+  rcorr(., type="pearson")
+corFriendMedia <- format(round(corFriendMedia$r[2], 2), nsmall=2)
+
+corFriendRec <- scalesDomains %>%
+  select(`friends/aquaintances`, `recreation/sport/art`) %>%
+  as.matrix %>%
+  rcorr(., type="pearson")
+corFriendRec <- format(round(corFriendRec$r[2],2),nsmall=2)
+
 ```
 
-To assess the situational focus within the validated scales, we assessed the number of domains within each scale as well as more common domains across the scales. A relatively large number of scales asked about the current state of the migrant in general manner without mentioning any context or life domain (\textit{N} = `r ScaleDomainFreq$frequency[ScaleDomainFreq$domain=="general"]`; e.g., "In general, in what language do you read and speak?"). The remaining scales referred to an average of `r round(mean(ScaleDomainN, na.rm=TRUE),2)` dimensions (\textit{SD} = `r round(sd(ScaleDomainN, na.rm=TRUE),2)`, range: `r min(ScaleDomainN, na.rm=TRUE)` -- `r max(ScaleDomainN, na.rm=TRUE)`). A total of `r nrow(ScaleDomainFreq)` unique domains was measured across the `r nrow(dt.Scales.Included)` scales. The domains of 'language‘ (\textit{N} = `r ScaleDomainFreq$frequency[ScaleDomainFreq$domain=="language"]`), 'food' (\textit{N} = `r ScaleDomainFreq$frequency[ScaleDomainFreq$domain=="food"]`), and 'family' (\textit{N} = `r ScaleDomainFreq$frequency[ScaleDomainFreq$domain=="family"]`) were focused on most often (see Supplementary Information A). Thus, while there was large variation between the scales in the number, and diversity of domains, the most frequently mentioned domains were in line with the life domains proposed in the literature \citep[e.g.,][]{Arends-Toth2007}. Yet again, given the large variability between studies, we did not investigate differences in experience elements across the different situational domains.  
+To assess the situational focus within the validated scales, we assessed the number of domains within each scale as well as more common domains across the scales. The scales included an average of `r format(round(mean(scalesDomains$nDomain, na.rm = TRUE), 2), nsmall = 2)`  life domains (\textit{SD} = `r format(round(sd(scalesDomains$nDomain, na.rm = TRUE), 2), nsmall = 2)`). The most common domains to be included were 'friends/aquaintances' ('\textit{N} = `r scalesDomainFreq$Frequency[scalesDomainFreq$Domain=="friends/aquaintances"]`, `r format(round(scalesDomainFreq$Percentage[scalesDomainFreq$Domain=="friends/aquaintances"], 2), nsmall = 2)`\%), 'home/family' ('\textit{N} = `r scalesDomainFreq$Frequency[scalesDomainFreq$Domain=="home/family"]`, `r format(round(scalesDomainFreq$Percentage[scalesDomainFreq$Domain=="home/family"], 2), nsmall = 2)`\%), and 'entertainment/media/news' ('\textit{N} = `r scalesDomainFreq$Frequency[scalesDomainFreq$Domain=="entertainment/media/news"]`, `r format(round(scalesDomainFreq$Percentage[scalesDomainFreq$Domain=="entertainment/media/news"], 2), nsmall = 2)`\%). Looking at combinations of domains that were commonly assessed together, a number of patterns emerged within the bi-variate relationships. One cluster was, for example around the common domain 'friends/aquaintances', which had a high proportion of co-occurences with 'entertainment/media/news' (\textit{r} = `r corFriendMedia`, \textit{p} < .001) and with 'recreation/sport/art' (\textit{r} = `r corFriendRec`, \textit{p} < .001). However, when look at unique combinations of domains we obsered an essentially scattered field. Within the `r nrow(scalesDomains)` scales we coded, we found a total of `r nrow(scalesDomainCombFreq)` different domain combinations. A considerable proportion of scales focused on a unique combination of life domains (`r scalesDomainUniqueComb`%) and a large majority of domain combinations was used by less then five percent of the scales (`r scalesDomainLess5`%; also see Supplemental Material B). Thus, while there was large variation between the scales in the number, and diversity of domains, the most frequently mentioned domains were in line with the life domains proposed in the literature \citep[e.g.,][]{Arends-Toth2007}. Yet again, given the large variability between studies, we did not investigate differences in experience elements across the different situational domains.  
 
 \subsection{Empirical Literature}  
 To gain a general understanding of contextual factors within the broader empirical studies, we again assessed cross-study patterns of cultural, individual, situational, and process-related focus points.
@@ -173,21 +203,5 @@ To assess the role different groups of individuals targeted in the empirical wor
 
 \paragraph{Domains}
 
-```{r EmpDomainFrequencies, include=F, warning=F}
-# Number of domains in scale
-EmpDomainN <- str_count(dt.Empirical.included$domainScale, ',')+1
-
-# Domain frequencies: Find all individual domains and count frequency of occurrence
-EmpDomainFreq <- as.data.frame(table(unlist(strsplit(dt.Empirical.included$domainScale, ", ")), dnn = list("domain")), 
-                                 responseName = "frequency") %>% 
-  arrange(frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
-  mutate(domain = factor(domain, levels=domain)) # update factor levels
-
-# # Word cloud frequencies
-# set.seed(7) # for reproducibility 
-# wordcloud(words = ScaleDomainFreq$domain, freq = ScaleDomainFreq$frequency, 
-#           min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
-```
-
-To capture the situational focus of the authors, we coded which life domains the utilized measures referred to. A relatively large number of studies assess cultural adaption in general manner without mentioning any context or life domain (\textit{N} = `r EmpDomainFreq$frequency[EmpDomainFreq$domain=="general"]`). The remaining studies referred to an average of `r round(mean(EmpDomainN, na.rm=T),2)` dimensions (\textit{SD} = `r round(sd(EmpDomainN, na.rm=T),2)`, range: `r min(EmpDomainN, na.rm=T)` -- `r max(EmpDomainN, na.rm=T)`). We found a total of `r nrow(EmpDomainFreq)-1` unique domains across the `r nrow(dt.Empirical.included)` studies. The domains of 'language‘ (\textit{N} = `r EmpDomainFreq$frequency[EmpDomainFreq$domain=="language"]`), 'food’ (\textit{N} = `r EmpDomainFreq$frequency[EmpDomainFreq$domain=="food"]`), and 'media’ (\textit{N} = `r EmpDomainFreq$frequency[EmpDomainFreq$domain=="media"]`) were included most frequently. So, while larger proportion of studies ask about cultural adaption in general (outside of a specific domain), the number of domains included and addressed is extensive and diverse. The mentioned domains at times go beyond the life fields mentioned in previous work (also see Supplementary Information A).
+To capture the situational focus of the authors, we coded which life domains the utilized measures referred to. We coded which life domains the authors referred to, either as part of subscale labels, factor labels, explicit commentary of the authors, or clear question wordings to gain an understanding of the situational focus the authors chose. However, we did not code the theoretical situational life domains because such an undertaking would be beyond the scope of this paper. And the conceptual utility of such a coding was already explored for the methodological literature.
 
