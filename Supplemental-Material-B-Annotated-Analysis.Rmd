@@ -685,7 +685,12 @@ cowplot::plot_grid(theoryYearHist, theoryYearCum, nrow=2, align = "v", rel_heigh
 #   kappa.full.multiple(., names)
 # kTheoPooled <- kappa.pooled2(kTheo)
 ```
-We then look at the use of experience aspects within the theoretical works in more detail. Before we inspect the aspect inclusion patterns in more detail we assessed the inter-rater reliability. Because the affect, behavior, cognition, and desire codings were integral to the framework two independent raters coded all included manuscripts. All four experience aspects were coded as either being included [1] or not included [0]. We, thus, used Cohen's $\kappa$ to assess the chance-corrected agreement between the raters. Confidence intervals were calculated using the standard error formula provided in \citet{McHugh2012}. Pooled Cohen's $\kappa$s were calculated using the methods developed by \citet{DeVries2008}. Note that for the pooled $\kappa$ we provide basic bootstrapped confidence intervals, which should be treated as preliminary because thus far no validated calculation for associated standard errors have been established (to the best of our knowledge). All inter-rater agreements were `r #format(round(min(kTheo$Po, na.rm = TRUE)*100, 2), nsmall=2)`% or above and all $\kappa$s were above `r #format(round(min(kTheo$k, na.rm = TRUE), 2), nsmall=2)` (full inter-rater reliability is available in Table \@ref(tab:TheoreticalKappaTbl)).
+We then look at the use of experience aspects within the theoretical works in more detail. Before we inspect the aspect inclusion patterns in more detail we assessed the inter-rater reliability. Because the affect, behavior, cognition, and desire codings were integral to the framework two independent raters coded all included manuscripts. All four experience aspects were coded as either being included [1] or not included [0]. We, thus, used Cohen's $\kappa$ to assess the chance-corrected agreement between the raters. Confidence intervals were calculated using the standard error formula provided in @McHugh2012. Pooled Cohen's $\kappa$s were calculated using the methods developed by @DeVries2008. Note that for the pooled $\kappa$ we provide basic bootstrapped confidence intervals, which should be treated as preliminary because thus far no validated calculation for associated standard errors have been established (to the best of our knowledge). <mark>All inter-rater agreements were `r #format(round(min(kTheo$Po, na.rm = TRUE)*100, 2), nsmall=2)`% or above and all $\kappa$s were above `r #format(round(min(kTheo$k, na.rm = TRUE), 2), nsmall=2)` (full inter-rater reliability is available in Table \@ref(tab:TheoreticalKappaTbl)).</mark>   
+<br>
+<div class="alert alert-warning">
+<strong><i class="fa fa-exclamation-triangle"></i> To Do!</strong> <br>
+KAPPA CODE NEEDS TO BE ENABLED ONCE DOUBLE CODING IS DONE!
+</div>
 
 ```{r TheoreticalKappaTbl}
 # kTheo %>%
@@ -1485,18 +1490,19 @@ We then assessed domain clusters (i.e., combinations of domains that were assess
 
 ```{r scalesDomainCombTbl}
 scalesDomainCombFreq %>%
+  mutate(lifeDomain=str_replace_all(lifeDomain, ",", ", ")) %>%
   kbl(., 
-        #label = "",
+        label = c("Life Domain Combination", "Frequency", "Percentage"),
         caption = "Empirical Literature: <br>Domain Combinations",
         format = "html", 
         linesep = "",
         booktabs = T,
         align = c('l', rep('c', ncol(.)-1)))  %>%
+  kableExtra::column_spec(1, width="50em") %>%
   kable_classic(full_width = F, 
                 lightable_options = "hover", 
                 html_font = "Cambria") %>%
-  kableExtra::column_spec(1, width = "20em") %>%
-  scroll_box(width = "110%", height = "500px")
+  scroll_box(width = "100%", height = "500px")
 ```
 
 We additionally inspected bi-variate relations between the individual life domains. We calculate the phi coefficient (for binary variables) together with the raw number of co-occurrences (see Table \@ref(tab:methodologicalDomainCooccurrences) and Figure \@ref(fig:methodologicalDomainNetwork)).  
