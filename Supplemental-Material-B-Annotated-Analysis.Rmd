@@ -55,7 +55,7 @@ lib <- c("rmarkdown", "knitr", "citr", "remedy", "bookdown", "papaja", "rmdfiltr
          "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
          "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes", "patchwork", "cowplot",
          "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet",
-         "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg", "manipulateWidget", "htmlwidgets", "webshot2")
+         "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg", "manipulateWidget", "htmlwidgets", "webshot2", "boot")
 invisible(lapply(lib, library, character.only = TRUE))  
 rm(lib)  
 
@@ -275,7 +275,7 @@ theoryExclCombined <- rbind(theoryExclTitle, theoryExclAbstract, theoryExclFull)
   rename(., "Exclusion Reason" = Exclusion)
 ```
 
-At the more abstract level, the theory-specific literature search produced a total of `r nrow(dt.TheorySearch)` results from which we identified `r nrow(dt.TheorySearch.included)` theories. From our review of the empirical literature we added an additional `r dt.TheorySearch.added` theories (total N = `r nrow(dt.Theories.Included)`, for exclusion reasons see Table \@ref(tab:ExclusionsCombined) and for a PRISMA diagram see Figure \@ref(fig:PrismaCombined)).
+At the more abstract level, the theory-specific literature search produced a total of `r nrow(dt.TheorySearch)` results from which we identified `r nrow(dt.TheorySearch.included)` theories. From our review of the empirical literature we added an additional `r dt.TheorySearch.added` theories (total *N* = `r nrow(dt.Theories.Included)`, for exclusion reasons see Table \@ref(tab:ExclusionsCombined) and for a PRISMA diagram see Figure \@ref(fig:PrismaCombined)).
 
 ```{r PrismaTheories}
 prismaTheory <- prismaGr(found = nrow(dt.TheorySearch),
@@ -548,7 +548,7 @@ dt.Empirical.included %>%
 ## Descriptives  
 
 ### Theory type
-The authors of the `r nrow(dt.Theories.Included)` included theoretical works self-categorized their contributions as a theoretical conceptualization (\textit{N} = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Conceptualization"))`), theoretical framework (\textit{N} = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Framework"))`), theory (\textit{N} = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Theory"))`), or theoretical model (\textit{N} = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Model"))`; also see Table \@ref(tab:theoryType)).  
+The authors of the `r nrow(dt.Theories.Included)` included theoretical works self-categorized their contributions as a theoretical conceptualization (*N* = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Conceptualization"))`), theoretical framework (*N* = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Framework"))`), theory (*N* = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Theory"))`), or theoretical model (*N* = `r nrow(dt.Theories.Included %>% filter(FrameworkTheoryModel=="Model"))`; also see Table \@ref(tab:theoryType)).  
 
 ```{r theoryType}
 data.frame(table(Type = dt.Theories.Included$FrameworkTheoryModel)) %>%
@@ -590,7 +590,7 @@ data.frame(table(Aspect = dt.Theories.Included$Target)) %>%
 ```
 
 ### Source  
-Looking at the types of theory building, a majority of proposal were purely theoretical (N = `r nrow(dt.Theories.Included %>% filter(SourceType=="theoretical"))`) with the remaining theoretical works growing out of qualitative investigations (such as grounded theory approaches; N = `r nrow(dt.Theories.Included %>% filter(SourceType=="empirical"))`; also see Table \@ref(tab:theorySource)).  
+Looking at the types of theory building, a majority of proposal were purely theoretical (N = `r nrow(dt.Theories.Included %>% filter(SourceType=="theoretical"))`) with the remaining theoretical works growing out of qualitative investigations (such as grounded theory approaches; *N* = `r nrow(dt.Theories.Included %>% filter(SourceType=="empirical"))`; also see Table \@ref(tab:theorySource)).  
 
 ```{r theorySource}
 data.frame(table(Focus = dt.Theories.Included$GeneralAspect)) %>%
@@ -675,35 +675,28 @@ cowplot::plot_grid(theoryYearHist, theoryYearCum, nrow=2, align = "v", rel_heigh
 
 ## Experience  
 ```{r TheoreticalKappa}
-names <- c("Affect", "Behavior", "Cognition", "Desire")
-kTheo <- dt.Theories.Included %>%
-  select(Affect, Affect2, Behavior, Behavior2, Cognition, Cognition2, Desire, Desire2) %>%
-  mutate_all(~replace_na(., 0)) %>%
-  kappa.full.multiple(., names)
-kTheoPooled <- kappa.pooled2(kTheo)
-
-names <- c("Affect", "Behavior", "Cognition", "Desire")
-kMeth <- dt.Scales.Included %>%
-  select(Affect, Affect2, Behavior, Behavior2, Cognition, Cognition2, Desire, Desire2) %>%
-  mutate_all(~replace_na(., 0)) %>%
-  kappa.full.multiple(., names)
-kMethPooled <- kappa.pooled2(kMeth)
+# names <- c("Affect", "Behavior", "Cognition", "Desire")
+# kTheo <- dt.Theories.Included %>%
+#   select(Affect, Affect2, Behavior, Behavior2, Cognition, Cognition2, Desire, Desire2) %>%
+#   mutate_all(~replace_na(., 0)) %>%
+#   kappa.full.multiple(., names)
+# kTheoPooled <- kappa.pooled2(kTheo)
 ```
-We then look at the use of experience aspects within the theoretical works in more detail. Before we inspect the aspect inclusion patterns in more detail we assessed the inter-rater reliability. Because the affect, behavior, cognition, and desire codings were integral to the framework two independent raters coded all included manuscripts. All four experience aspects were coded as either being included [1] or not included [0]. We, thus, used Cohen's $\kappa$ to assess the chance-corrected agreement between the raters. Confidence intervals were calculated using the standard error formula provided in \citet{McHugh2012}. Pooled Cohen's $\kappa$s were calculated using the methods developed by \citet{DeVries2008}. Note that for the pooled $\kappa$ we provide basic bootstrapped confidence intervals, which should be treated as preliminary because thus far no validated calculation for associated standard errors have been established (to the best of our knowledge). All inter-rater agreements were `r format(round(min(kTheo$Po, na.rm = TRUE)*100, 2), nsmall=2)`% or above and all $\kappa$s were above `r format(round(min(kTheo$k, na.rm = TRUE), 2), nsmall=2)` (full inter-rater reliability is available in Table \@ref(tab:TheoreticalKappaTbl)).
+We then look at the use of experience aspects within the theoretical works in more detail. Before we inspect the aspect inclusion patterns in more detail we assessed the inter-rater reliability. Because the affect, behavior, cognition, and desire codings were integral to the framework two independent raters coded all included manuscripts. All four experience aspects were coded as either being included [1] or not included [0]. We, thus, used Cohen's $\kappa$ to assess the chance-corrected agreement between the raters. Confidence intervals were calculated using the standard error formula provided in \citet{McHugh2012}. Pooled Cohen's $\kappa$s were calculated using the methods developed by \citet{DeVries2008}. Note that for the pooled $\kappa$ we provide basic bootstrapped confidence intervals, which should be treated as preliminary because thus far no validated calculation for associated standard errors have been established (to the best of our knowledge). All inter-rater agreements were `r #format(round(min(kTheo$Po, na.rm = TRUE)*100, 2), nsmall=2)`% or above and all $\kappa$s were above `r #format(round(min(kTheo$k, na.rm = TRUE), 2), nsmall=2)` (full inter-rater reliability is available in Table \@ref(tab:TheoreticalKappaTbl)).
 
 ```{r TheoreticalKappaTbl}
-kTheo %>%
-  kbl(., 
-        #label = "",
-        caption = "Theoretical Literature: <br>Cohen's $\\kappa$",
-        format = "html", 
-        #linesep = "",
-        #booktabs = T,
-        align = c('l', rep('c', length(.)-1)))  %>%
-  footnote(general = paste0("$\\kappa_{pooled}$ = ",format(round(kTheoPooled$k.pooled, 2), nsmall=2), ", $95\\%CI_{boot}$(", format(round(kTheoPooled$lwr, 2), nsmall=2), ", ", format(round(kTheoPooled$upr, 2), nsmall=2), ")")) %>%
-  kable_classic(full_width = F, 
-                lightable_options = "hover", 
-                html_font = "Cambria")
+# kTheo %>%
+#   kbl(., 
+#         #label = "",
+#         caption = "Theoretical Literature: <br>Cohen's $\\kappa$",
+#         format = "html", 
+#         #linesep = "",
+#         #booktabs = T,
+#         align = c('l', rep('c', length(.)-1)))  %>%
+#   footnote(general = paste0("$\\kappa_{pooled}$ = ",format(round(kTheoPooled$k.pooled, 2), nsmall=2), ", $95\\%CI_{boot}$(", format(round(kTheoPooled$lwr, 2), nsmall=2), ", ", format(round(kTheoPooled$upr, 2), nsmall=2), ")")) %>%
+#   kable_classic(full_width = F, 
+#                 lightable_options = "hover", 
+#                 html_font = "Cambria")
 ```
 
 We were particularly interested in the overall use of each experience aspect (see Table \@ref(tab:TheoriesElementFreq) and Figure \@ref(fig:TheoriesElementFreqBar)), the combined uses of experience aspects (see Table \@ref(tab:TheoriesElementCombinations) and Figure \@ref(fig:TheoriesElementCombinationsBar)), the resulting distribution of the number of aspects considered (see Table \@ref(tab:TheoriesElementComplexity) and Figure \@ref(fig:TheoriesElementComplexityBar)), as well as the number of other aspects that were considered with each of the aspects (see Table \@ref(tab:TheoriesElementAspectComplexity)).  
@@ -1082,7 +1075,34 @@ cowplot::plot_grid(scaleHist, scalesYearCum, nrow=2, align = "v", rel_heights = 
 ```
 
 ## Experience  
-We then look at the use of experience aspects within the theoretical works in more detail. We were particularly interested in the overall use of each experience aspect (see Table \@ref(tab:scalesElementFreq) and Figure \@ref(fig:TheoriesElementFreqBar)), the combined uses of experience aspects (see Table \@ref(tab:scalesElementCombinations) and Figure \@ref(fig:scalesElementCombinationsBar)), the resulting distribution of the number of aspects considered (see Table \@ref(tab:scalesElementComplexity) and Figure \@ref(fig:scalesElementComplexityBar)), as well as the number of other aspects that were considered with each of the aspects (see Table \@ref(tab:scalesElementAspectComplexity)).  
+```{r MethodologicalKappa}
+names <- c("Affect", "Behavior", "Cognition", "Desire")
+kMeth <- dt.Scales.Included %>%
+  select(Affect, Affect2, Behavior, Behavior2, Cognition, Cognition2, Desire, Desire2) %>%
+  mutate_all(~replace_na(., 0)) %>%
+  kappa.full.multiple(., names)
+kMethPooled <- kappa.pooled2(kMeth)
+```
+
+We then look at the use of experience aspects within the theoretical works in more detail. All inter-rater agreements were `r format(round(min(kMeth$Po, na.rm = TRUE)*100, 2), nsmall=2)`% or above and all $\kappa$s were above `r format(round(min(kMeth$k, na.rm = TRUE), 2), nsmall=2)` ($\kappa_{pooled}$ = `r format(round(kMethPooled$k.pooled, 2), nsmall=2)`, $95\%CI_{boot}$[`r  format(round(kMethPooled$lwr, 2), nsmall=2)`, `r format(round(kMethPooled$upr, 2), nsmall=2)`]; for full inter-rater reliability see Table \@ref(tab:MethodologicalKappaTbl)).  
+
+```{r MethodologicalKappaTbl}
+kMeth %>%
+  kbl(., 
+      #label = "",
+      caption = "Methodological Literature: <br>Cohen's $\\kappa$",
+      format = "html", 
+      #linesep = "",
+      #booktabs = T,
+      align = c('l', rep('c', length(.)-1)),
+      digits=3)  %>%
+  footnote(general = paste0("$\\kappa_{pooled}$ = ",format(round(kMethPooled$k.pooled, 2), nsmall=2), ", $95\\%CI_{boot}$[", format(round(kMethPooled$lwr, 2), nsmall=2), ", ", format(round(kMethPooled$upr, 2), nsmall=2), "]")) %>%
+  kable_classic(full_width = F, 
+                lightable_options = "hover", 
+                html_font = "Cambria")
+```
+
+We were particularly interested in the overall use of each experience aspect (see Table \@ref(tab:scalesElementFreq) and Figure \@ref(fig:TheoriesElementFreqBar)), the combined uses of experience aspects (see Table \@ref(tab:scalesElementCombinations) and Figure \@ref(fig:scalesElementCombinationsBar)), the resulting distribution of the number of aspects considered (see Table \@ref(tab:scalesElementComplexity) and Figure \@ref(fig:scalesElementComplexityBar)), as well as the number of other aspects that were considered with each of the aspects (see Table \@ref(tab:scalesElementAspectComplexity)).  
 
 ```{r scalesElementFreq}
 # Count the times each dimension is measured
@@ -1399,39 +1419,75 @@ ggplot(data=scalesSampleFreq, aes(x=Sample, y=Freq)) +
 The category *general* refers to a sampling strategy in which any consenting adult could participate in the study.  
 
 ### Situation  
-Acculturation can happen in different life domains [e.g., @Arends-Toth2007; @Zane2004]. We coded which life domains the scales referred to, either as part of subscale labels, factor labels, explicit commentary of the authors, or clear question wordings (see Figure \@ref(fig:ScaleDomainFreq)).  
+Acculturation can happen in different life domains [e.g., @Arends-Toth2007; @Zane2004]. We coded which life domains the scales referred to within the scale items.  (see Figure \@ref(fig:ScaleDomainFreq)).  
 
-```{r ScaleDomainFreq, warning=F, fig.cap="Wordcloud of the validation scale domains."}
-# remove duplicate domains
-UniqueDomains <- dt.Domains %>% 
-  filter(Duplicate == "Unique")
-
-# dataframe to compile domain frequency for Review Scales
-scalesDomainFreq <- data.frame(UniqueDomains, Frequency = NA)
-
-# count domain frequency in dt.Scales.Included
-for (i in 1:nrow(UniqueDomains)) {
-  scalesDomainFreq$Frequency[i] <- length(grep(UniqueDomains$Domain[i], dt.Scales.Included$domainScale, value = T))
+```{r scalesDomains}
+## prepare life domain data
+# make vector with of unique life Domains
+uniqueDomains <- purrr::discard(dt.Input$DomainTheory, is.na)
+# make new dataframe withe only the life domain data from all scales
+scalesDomains <- data.frame(lifeDomain = dt.Scales.Included$lifeDomain)
+# add unique list of life domains as NA columns to the data frame
+scalesDomains[,uniqueDomains] <- NA
+# for each unique life domain [j] check whether it was included within the scale [i]
+for (i in 1:nrow(scalesDomains)) {
+  for (j in 1:length(uniqueDomains)) {
+    scalesDomains[i,j+1] <- grepl(uniqueDomains[j], scalesDomains$lifeDomain[i], fixed = TRUE)*1
+  }
 }
-
-# prepare for ggplot
-scalesDomainFreq <- scalesDomainFreq %>%
-  dplyr::select(Domain, Frequency) %>%
-  filter(Frequency > 0) %>%
-  arrange(Frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
-  mutate(Domain=factor(Domain, levels=Domain)) # update factor levels
-
-# Word cloud frequencies
-set.seed(7) # for reproducibility 
-wordcloud(words = scalesDomainFreq$Domain, freq = scalesDomainFreq$Frequency, 
-          min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
+# count how many life domains were coded for each scale
+scalesDomains <- scalesDomains %>%
+  mutate(nDomain = rowSums(across(contains(uniqueDomains))))
+#make a frequency table for all the individual life domains
+scalesDomainFreq <- colSums(scalesDomains %>% select(contains(uniqueDomains))) %>%
+  data.frame(Domain=names(.), Frequency=., row.names=NULL) %>%
+  mutate(Percentage = Frequency/nrow(scalesDomains)*100) %>%
+  arrange(desc(Frequency))
 ```
 
-<br>
-<div class="alert alert-warning">
-<strong><i class="fa fa-exclamation-triangle"></i> To Do!</strong> <br>
-Life Domains should still be coded thematically.
-</div>
+```{r scalesDomainsBar, fig.cap="Empirical Literature: Bar Graph Situational Domains"}
+# bar plot frequencies
+scalesDomainsBar <- ggplot(scalesDomainFreq, aes(x=reorder(Domain, Frequency), y=Percentage)) +
+  geom_bar(stat="identity", fill="grey14") +
+  geom_text(
+    aes(y=Percentage, label = paste0(format(round(Percentage,2), nsmall=2),"% [N = ", Frequency, "]")),
+    color = "grey14",
+    size = 4,
+    hjust = -.1,
+    inherit.aes = TRUE
+    ) +
+  scale_y_continuous(limits = c(0, ceiling(max(scalesDomainFreq$Percentage)*1.15)),
+                     breaks = seq(0, ceiling(max(scalesDomainFreq$Percentage)*1.15), 5))+
+  labs(y = "Proportion of all theories [in %]",
+       x = "Combination of Experience Aspects")+
+  coord_flip()+
+  theme_Publication()+
+  theme(strip.background = element_rect(fill="grey14", color="grey14"),
+        strip.text = element_text(colour = 'white', face="bold"),
+        legend.position="none")
+
+scalesDomainsBar
+```
+
+We additionally inspected bi-variate relations between the individual life domains. We calculate the phi coefficient (for binary variables) together with the raw number of co-occurrences (see Table \@ref(tab:methodologicalDomainCooccurrences)).  
+
+```{r methodologicalDomainCooccurrences}
+# make crossproduct matrix to condense co-occurrences (off-diagonals) and get frequencies (diagonals)
+as.matrix(scalesDomains %>% dplyr::select(contains(uniqueDomains), -"N/A") %>%
+            mutate_all(~replace(., is.na(.), 0))) %>%
+  BinaryCor(., "pearson") %>%
+  tibble::rownames_to_column(., var = "Domain") %>%
+  kbl(., 
+        #label = "",
+        caption = "Empirical Literature: <br>Domains Bi-Variate Relations",
+        format = "html", 
+        linesep = "",
+        booktabs = T,
+        align = c('l', rep('c', ncol(.)-1)))  %>%
+  kable_classic(full_width = F, 
+                lightable_options = "hover", 
+                html_font = "Cambria")
+```
 
 ### Process  
 To assess the temporal focus of the validated scales we also checked whether scales were validated for samples prior to migration, post-migration, or both (see Table \@ref(tab:scalesMigrationTimeFreq)).  
@@ -1645,7 +1701,9 @@ dt.Empirical.included %>%
 For the empirical works we also coded the main focus of the papers. The wordcloud of the topics illustrates that although a majority of articles also have acculturation as their main focus, health and adjustment are also fields that measured acculturation in their empirical works (see Figure \@ref(fig:empiricalTopicFrequencies)).  
 
 ```{r empiricalTopicFrequencies, warning=F, fig.cap="Wordcloud of the article foci in the empirical results."}
-# unique domains already calculated
+# remove duplicate domains
+UniqueDomains <- dt.Domains %>% 
+  filter(Duplicate == "Unique")
 
 # dataframe to compile domain frequency for Review Topics
 empiricalTopicFreq <- data.frame(UniqueDomains, Frequency = NA)
@@ -1690,7 +1748,34 @@ dt.Empirical.included %>%
 ```
 
 ## Experience  
-We then look at the use of experience aspects within the empirical works in more detail. We were particularly interested in the overall use of each experience aspect (see Table \@ref(tab:empiricalElementFreq) and Figure \@ref(fig:TheoriesElementFreqBar)), the combined uses of experience aspects (see Table \@ref(tab:empiricalElementCombinations) and Figure \@ref(fig:empiricalElementCombinationsBar)), the resulting distribution of the number of aspects considered (see Table \@ref(tab:empiricalElementComplexity) and Figure \@ref(fig:empiricalElementComplexityBar)), as well as the number of other aspects that were considered with each of the aspects (see Table \@ref(tab:empiricalElementAspectComplexity)).  
+```{r EmpiricalKappa}
+names <- c("Affect", "Behavior", "Cognition", "Desire")
+kEmp <- dt.Empirical.included %>%
+  select(Affect, Affect2, Behavior, Behavior2, Cognition, Cognition2, Desire, Desire2) %>%
+  mutate_all(~replace_na(., 0)) %>%
+  kappa.full.multiple(., names)
+kEmpPooled <- kappa.pooled2(kEmp)
+```
+
+We then look at the use of experience aspects within the empirical works in more detail. All inter-rater agreements were `r format(round(min(kEmp$Po, na.rm = TRUE)*100, 2), nsmall=2)`% or above and all $\kappa$s were above `r format(round(min(kEmp$k, na.rm = TRUE), 2), nsmall=2)` ($\kappa_{pooled}$ = `r format(round(kEmpPooled$k.pooled, 2), nsmall=2)`, $95\%CI_{boot}$[`r  format(round(kEmpPooled$lwr, 2), nsmall=2)`, `r format(round(kEmpPooled$upr, 2), nsmall=2)`]; for full inter-rater reliability see Table \@ref(tab:EmpiricalKappaTbl)).  
+
+```{r EmpiricalKappaTbl}
+kEmp %>%
+  kbl(., 
+      #label = "",
+      caption = "Empirical Literature: <br>Cohen's $\\kappa$",
+      format = "html", 
+      #linesep = "",
+      #booktabs = T,
+      align = c('l', rep('c', length(.)-1)),
+      digits=3)  %>%
+  footnote(general = paste0("$\\kappa_{pooled}$ = ",format(round(kEmpPooled$k.pooled, 2), nsmall=2), ", $95\\%CI_{boot}$[", format(round(kEmpPooled$lwr, 2), nsmall=2), ", ", format(round(kEmpPooled$upr, 2), nsmall=2), "]")) %>%
+  kable_classic(full_width = F, 
+                lightable_options = "hover", 
+                html_font = "Cambria")
+```
+
+We were particularly interested in the overall use of each experience aspect (see Table \@ref(tab:empiricalElementFreq) and Figure \@ref(fig:TheoriesElementFreqBar)), the combined uses of experience aspects (see Table \@ref(tab:empiricalElementCombinations) and Figure \@ref(fig:empiricalElementCombinationsBar)), the resulting distribution of the number of aspects considered (see Table \@ref(tab:empiricalElementComplexity) and Figure \@ref(fig:empiricalElementComplexityBar)), as well as the number of other aspects that were considered with each of the aspects (see Table \@ref(tab:empiricalElementAspectComplexity)).  
 
 ```{r empiricalElementFreq}
 # Count the times each dimension is measured
@@ -2008,54 +2093,7 @@ ggplot(data=empiricalSampleFreq, aes(x=Sample, y=Freq)) +
 The category *general* refers to a sampling strategy in which any consenting adult could participate in the study.  
 
 ### Situation  
-We coded which life domains the authors referred to, either as part of subscale labels, factor labels, explicit commentary of the authors, or clear question wordings to gain an understanding of the situational focus the authors chose (see Table \@ref(tab:empiricalDomainFreqTab) and Figure \@ref(fig:empiricalDomainFreq)).  
-
-```{r empiricalDomainFreqTab, warning=F}
-# unique domains were already calculated
-
-# dataframe to compile domain frequency for Review Scales
-empiricalDomainFreq <- data.frame(UniqueDomains, Frequency = NA)
-
-# count domain frequency in dt.Scales.Included
-for (i in 1:nrow(UniqueDomains)) {
-  empiricalDomainFreq$Frequency[i] <- length(grep(UniqueDomains$Domain[i], dt.Empirical.included$domainScale, value = T))
-}
-
-# prepare for ggplot
-empiricalDomainFreq <- empiricalDomainFreq %>%
-  dplyr::select(Domain, Frequency) %>%
-  filter(Domain != "N/A") %>%
-  filter(Frequency > 0) %>%
-  arrange(Frequency) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
-  mutate(Domain=factor(Domain, levels=Domain)) # update factor levels
-
-empiricalDomainFreq %>%
-  arrange(desc(Frequency)) %>%
-  kbl(., 
-        #label = "",
-        caption = "Empirical Literature: <br>Live Domain Frequency",
-        format = "html", 
-        linesep = "",
-        booktabs = T,
-        align = c('l', rep('c', ncol(.)-1)))  %>%
-  kable_classic(full_width = F, 
-                lightable_options = "hover", 
-                html_font = "Cambria") %>%
-   scroll_box(height = "500px")
-```
-
-```{r empiricalDomainFreqWordCloud, warning=F, fig.cap="Wordcloud of the life domains studied in empirical studies."}
-# Word cloud frequencies
-set.seed(7) # for reproducibility 
-wordcloud(words = empiricalDomainFreq$Domain, freq = empiricalDomainFreq$Frequency, 
-          min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors=brewer.pal(8, "Dark2"))
-```
-
-<br>
-<div class="alert alert-warning">
-<strong><i class="fa fa-exclamation-triangle"></i> To Do!</strong> <br>
-Life Domains should still be coded thematically.
-</div>
+We coded which life domains the authors referred to, either as part of subscale labels, factor labels, explicit commentary of the authors, or clear question wordings to gain an understanding of the situational focus the authors chose. However, we did not code the theoretical situational life domains because such an undertaking would be beyond the scope of this paper. 
 
 ### Process  
 To assess the temporal focus of the empirical studies, we also checked whether studies sampled migrants prior to migration, post-migration, or both (see Table \@ref(tab:empiricalMigrationTimeFreq)).  
@@ -2989,70 +3027,7 @@ empiricalDataDisciplines %>%
 Again the category *general* refers to a sampling strategy in which any consenting adult would be able to participate in the study.  
 
 #### Situation  
-We also, again, coded which life domains the acculturation measures referred to within each of the disciplines. Again, these were life domains referred to either as part of subscale labels, factor labels, explicit commentary of the authors, or clear question wordings (see Table \@ref(tab:empiricalDisciplineDomainTab) and Figure \@ref(fig:empiricalDisciplineDomainFrequencies)).  
-
-```{r empiricalDisciplineDomainTab, warning=F, message=F}
-empiricalDataDisciplines %>%
-  dplyr::select(discipline02, domainScale) %>%
-  filter(domainScale != "N/A") %>%
-  group_by(discipline02, domainScale) %>%
-  summarise(Frequency = n()) %>%
-  arrange(desc(Frequency)) %>%
-  filter(!is.na(domainScale)) %>%
-  spread(discipline02, Frequency) %>%
-  arrange(desc(Psychology)) %>%
-  mutate_if(is.numeric, funs(replace_na(., ""))) %>%
-  dplyr::select(Domain = domainScale, Psychology, 
-                `Medicine, Nursing, & Health`,
-                `Social Sciences (miscellaneous)`,
-                `Multidisciplinary / Crossdisciplinary`) %>%
-  kbl(., caption = "Scale Domains used per discipline",
-      format = "html") %>%
-  kable_classic(full_width = F, 
-                lightable_options = "hover", 
-                html_font = "Cambria") %>%
-   scroll_box(width = "100%", height = "500px")
-```
-
-```{r empiricalDisciplineDomainFrequencies, warning=F, fig.cap="Wordcloud of the scale domains in empirical results.", fig.height=13}
-# unique domain already calculated
-
-# dataframe to compile domain frequency for Review Scales
-PsychDomainFreq <- data.frame(UniqueDomains)
-
-# count domain frequency in dt.Scales.Included
-for (i in 1:nrow(UniqueDomains)) {
-  PsychDomainFreq$Psychology[i] <- length(grep(UniqueDomains$Domain[i], 
-                                               empiricalDataDisciplines$domainScale[empiricalDataDisciplines$discipline02=="Psychology"], 
-                                               value = T))
-  PsychDomainFreq$`Medicine, Nursing, & Health`[i] <- length(grep(UniqueDomains$Domain[i], 
-                                               empiricalDataDisciplines$domainScale[empiricalDataDisciplines$discipline02=="Medicine, Nursing, & Health"], 
-                                               value = T))
-  PsychDomainFreq$`Social Sciences (miscellaneous)`[i] <- length(grep(UniqueDomains$Domain[i], 
-                                               empiricalDataDisciplines$domainScale[empiricalDataDisciplines$discipline02=="Social Sciences (miscellaneous)"], 
-                                               value = T))
-  PsychDomainFreq$`Multidisciplinary / Crossdisciplinary`[i] <- length(grep(UniqueDomains$Domain[i], 
-                                               empiricalDataDisciplines$domainScale[empiricalDataDisciplines$discipline02=="Multidisciplinary / Crossdisciplinary"], 
-                                               value = T))
-}
-
-library(ggwordcloud)
-set.seed(7) # for reproducibility 
-PsychDomainFreq %>%
-  dplyr::select(Domain,
-                Psychology, 
-                `Medicine, Nursing, & Health`,
-                `Social Sciences (miscellaneous)`,
-                `Multidisciplinary / Crossdisciplinary`) %>%
-  filter(Domain != "N/A") %>%
-  gather(discipline02, Frequency, -Domain) %>%
-  filter(Frequency>0) %>%
-ggplot( ., aes(label = Domain, size = Frequency, color = Frequency)) +
-  geom_text_wordcloud_area(shape = 'circle', rm_outside = TRUE, eccentricity = 1) +
-  scale_size(range = c(2,8)) +
-  theme_minimal() +
-  facet_wrap(~discipline02, ncol = 1)
-```
+We again coded which life domains the authors referred to, either as part of subscale labels, factor labels, explicit commentary of the authors, or clear question wordings to gain an understanding of the situational focus the authors chose. However, we did not code the theoretical situational life domains because such an undertaking would be beyond the scope of this paper. 
 
 #### Process  
 We also assessed which time point in the migration process was targeted within each discipline. Table \@ref(tab:PsychDisciplineMigrationTimeFreq) showcases that an overwhelming majority of studies targets migrants only after they had left their country of origin.  
