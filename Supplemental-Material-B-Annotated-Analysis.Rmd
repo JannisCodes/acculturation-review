@@ -1446,6 +1446,15 @@ scalesDomainFreq <- colSums(scalesDomains %>% select(contains(uniqueDomains))) %
   data.frame(Domain=names(.), Frequency=., row.names=NULL) %>%
   mutate(Percentage = Frequency/nrow(scalesDomains)*100) %>%
   arrange(desc(Frequency))
+# count frequencies of combinations
+scalesDomainCombFreq <- scalesDomains %>%
+  group_by(lifeDomain) %>%
+  summarise(Frequency = n()) %>%
+  mutate(Percentage = Frequency/nrow(scalesDomains)*100) %>%
+  arrange(desc(Frequency))
+
+scalesDomainUniqueComb <- sum(scalesDomainCombFreq$Percentage[scalesDomainCombFreq$Frequency==1])
+scalesDomainLess5 <- sum(scalesDomainCombFreq$Percentage[scalesDomainCombFreq$Percentage<5])
 ```
 
 ```{r scalesDomainsBar, fig.cap="Empirical Literature: Bar Graph Situational Domains"}
@@ -1472,7 +1481,25 @@ scalesDomainsBar <- ggplot(scalesDomainFreq, aes(x=reorder(Domain, Frequency), y
 scalesDomainsBar
 ```
 
-We additionally inspected bi-variate relations between the individual life domains. We calculate the phi coefficient (for binary variables) together with the raw number of co-occurrences (see Table \@ref(tab:methodologicalDomainCooccurrences)).  
+We then assessed domain clusters (i.e., combinations of domains that were assessed jointly). Unfortunately, a large number of scales focused on a unique combination of life domains (`r scalesDomainUniqueComb`%) and a large majority of domain combinations was used by less then five percent of the scales (`r scalesDomainLess5`%, also see \@ref(tab:scalesDomainCombTbl)).
+
+```{r scalesDomainCombTbl}
+scalesDomainCombFreq %>%
+  kbl(., 
+        #label = "",
+        caption = "Empirical Literature: <br>Domain Combinations",
+        format = "html", 
+        linesep = "",
+        booktabs = T,
+        align = c('l', rep('c', ncol(.)-1)))  %>%
+  kable_classic(full_width = F, 
+                lightable_options = "hover", 
+                html_font = "Cambria") %>%
+  kableExtra::column_spec(1, width = "20em") %>%
+  scroll_box(width = "110%", height = "500px")
+```
+
+We additionally inspected bi-variate relations between the individual life domains. We calculate the phi coefficient (for binary variables) together with the raw number of co-occurrences (see Table \@ref(tab:methodologicalDomainCooccurrences) and Figure \@ref(fig:methodologicalDomainNetwork)).  
 
 ```{r methodologicalDomainCooccurrences}
 # make crossproduct matrix to condense co-occurrences (off-diagonals) and get frequencies (diagonals)
@@ -1490,6 +1517,56 @@ as.matrix(scalesDomains %>% dplyr::select(contains(uniqueDomains), -"N/A") %>%
   kable_classic(full_width = F, 
                 lightable_options = "hover", 
                 html_font = "Cambria")
+```
+
+```{r methodologicalDomainNetwork, fig.cap="Network graph of the domain frequencies and co-occurences. The nodes (i.e., circles) represent the life domains so that the size of the circle indicates the number of times the domain was coded and the edges (i.e., connections) represent the co-occurences so that the width of the line indicates how often the domains were measured together in one scale."}
+# make crossproduct matrix to condense co-occurrences (off-diagonals) and get frequencies (diagonals)
+X <- as.matrix(scalesDomains %>% dplyr::select(-c("lifeDomain", "N/A", "nDomain")))
+ out <- crossprod(X)  # Same as: t(X) %*% X
+ #diag(out) <- 0       # remove frequencies on diagonals
+
+ # information on the concepts themselves
+ nodes <- data.frame(id    = colnames(out), 
+                     title = paste0(colnames(out), "<br>Frequency: ", diag(out)), 
+                     value = diag(out),
+                     size  = diag(out),
+                     shape = "dot")
+
+ # information on the co-occurrences
+ edges           <- as.data.frame(t(combn(colnames(out),2)))
+ colnames(edges) <- c('from','to')
+ edges$width     <- NA
+ for (i in 1:nrow(edges)) {
+     edges$width[i] <- out %>%
+      as.data.frame(.) %>%
+      rownames_to_column('dim') %>%
+      filter(dim == edges$to[i]) %>%
+      dplyr::select(any_of(edges$from[i])) %>%
+      as.numeric(.)
+}
+edges$label <- edges$width
+edges$title <- paste0(edges$from, " - ", edges$to, "<br>Co-occurences: ", edges$width)
+
+# plot network graph
+visNetwork(nodes, edges %>% mutate(width = scales::rescale(edges$width, to=c(1,20))), 
+           heigth = "100%", width = "100%", main = "Co-occurences of Life Domains as Network") %>%
+            visIgraphLayout(layout = "layout_in_circle") %>%
+            visNodes(
+                shape = "dot",
+                color = list(
+                    background = "#0085AF",
+                    border = "#013848",
+                    highlight = "#FF8000"
+                )
+            ) %>%
+            visEdges(
+                shadow = FALSE,
+                color = list(color = "#0085AF", highlight = "#C62F4B")
+            ) %>%
+            visOptions(highlightNearest = list(enabled = T, degree = 1, hover = T), 
+                       nodesIdSelection = list(main = "Select variable")) %>% 
+            visInteraction(keyboard = TRUE, tooltipDelay = 0) %>%
+            visLayout(randomSeed = 11)
 ```
 
 ### Process  
@@ -2599,7 +2676,8 @@ sankeyNetwork(Links = links, Nodes = nodes,
 
 ```{r exportWrangledData}
 # export cleaned datasets for methods and results section
-save(dt.Scales, dt.Scales.Included, 
+save(dt.Input, 
+     dt.Scales, dt.Scales.Included, 
      dt.Empirical, dt.Empirical.included, psychData, 
      dt.Theories, dt.Theories.Included, dt.TheorySearch, 
      dt.Domains, empiricalDataDisciplines, file = "data/wrangled.RData")
