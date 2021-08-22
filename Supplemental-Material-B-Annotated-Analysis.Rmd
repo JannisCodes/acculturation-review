@@ -2,12 +2,15 @@
 title: "Supplemental Information B: Full Annotated Analysis and Reproducible Code"
 subtitle: "Suppplemental Material for 'The Migration Experience: A Conceptual Framework and Systematic Review of Psychological Acculturation'"
 author:
+- "Author Information:"
 - █████████████████^1^ #Jannis Kreienkamp^1^
 - ███████████████^1^ #Laura Bringmann^1^
 - ████████████^1^ #Raili Engler^1^
 - ██████████████^1^ #Peter de Jonge^1^
 - ███████████^1^ #Kai Epstude^1^
 - ^1^████████████████████ #University of Groningen
+- "Correspondence concerning this supplemental material should be addressed to ██████ ██████████, ██████████ ██ ██████████, █████████ ██ ██████████, █████ ██████████ ███, ████ ██ █████████ ████████████████. E-mail: █████████████████"
+- 'The main manuscript is available at <a href="https://www.doi.org/ToBePublished" target="_blank">doi.org/ToBePublished</a>'
 date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
 output: 
   bookdown::html_document2:
@@ -563,7 +566,7 @@ data.frame(table(Type = dt.Theories.Included$FrameworkTheoryModel)) %>%
 ```
 
 ### Focus
-And while `r nrow(dt.Theories.Included %>% filter(GeneralAspect=="Aspect"))` authors explicitly targeted a specific part of acculturation (e.g., `r nrow(dt.Theories.Included %>% filter(Target=="Identity"))` identity acculturation theories and `r nrow(dt.Theories.Included %>% filter(Target=="Work"))` labor market acculturation theories; also see Table \@ref(tab:focusAspect)), a majority of theoretical works offered commentary on the overall construct of acculturation (N = `r nrow(dt.Theories.Included %>% filter(GeneralAspect=="General"))`; also see Table \@ref(tab:focusType)).  
+And while `r nrow(dt.Theories.Included %>% filter(GeneralAspect=="Aspect"))` authors explicitly targeted a specific part of acculturation (e.g., `r nrow(dt.Theories.Included %>% filter(Target=="Identity"))` identity acculturation theories and `r nrow(dt.Theories.Included %>% filter(Target=="Work"))` labor market acculturation theories; also see Table \@ref(tab:focusAspect)), a majority of theoretical works offered commentary on the overall construct of acculturation (*N* = `r nrow(dt.Theories.Included %>% filter(GeneralAspect=="General"))`; also see Table \@ref(tab:focusType)).  
 
 ```{r focusType}
 data.frame(table(Focus = dt.Theories.Included$GeneralAspect)) %>%
@@ -590,7 +593,7 @@ data.frame(table(Aspect = dt.Theories.Included$Target)) %>%
 ```
 
 ### Source  
-Looking at the types of theory building, a majority of proposal were purely theoretical (N = `r nrow(dt.Theories.Included %>% filter(SourceType=="theoretical"))`) with the remaining theoretical works growing out of qualitative investigations (such as grounded theory approaches; *N* = `r nrow(dt.Theories.Included %>% filter(SourceType=="empirical"))`; also see Table \@ref(tab:theorySource)).  
+Looking at the types of theory building, a majority of proposal were purely theoretical (*N* = `r nrow(dt.Theories.Included %>% filter(SourceType=="theoretical"))`) with the remaining theoretical works growing out of qualitative investigations (such as grounded theory approaches; *N* = `r nrow(dt.Theories.Included %>% filter(SourceType=="empirical"))`; also see Table \@ref(tab:theorySource)).  
 
 ```{r theorySource}
 data.frame(table(Focus = dt.Theories.Included$GeneralAspect)) %>%
@@ -1419,7 +1422,7 @@ ggplot(data=scalesSampleFreq, aes(x=Sample, y=Freq)) +
 The category *general* refers to a sampling strategy in which any consenting adult could participate in the study.  
 
 ### Situation  
-Acculturation can happen in different life domains [e.g., @Arends-Toth2007; @Zane2004]. We coded which life domains the scales referred to within the scale items.  (see Figure \@ref(fig:ScaleDomainFreq)).  
+Acculturation can happen in different life domains [e.g., @Arends-Toth2007; @Zane2004]. We coded which life domains the scales referred to within the scale items.  (see Figure \@ref(fig:scalesDomainsBar)).  
 
 ```{r scalesDomains}
 ## prepare life domain data
