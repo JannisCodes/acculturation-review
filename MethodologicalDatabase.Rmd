@@ -1,0 +1,79 @@
+---
+title: "Filter Data"
+output: flexdashboard::flex_dashboard
+runtime: shiny
+---
+
+```{r global, include=FALSE}
+# load data in 'global' chunk so it can be shared by all users of the dashboard
+library(shiny)
+library(dplyr)
+# Random Data Frame
+df <- data.frame(Country = paste("Country", 1:100, sep = "_"), 
+                 Revenue = rnorm(n = 100, mean = 5000, sd = 2000))
+```
+
+To learn more, see [Interactive Documents](http://rmarkdown.rstudio.com/authoring_shiny.html).
+
+## Inputs and Outputs
+
+You can embed Shiny inputs and outputs in your document. Outputs are automatically updated whenever inputs change.  This demonstrates how a standard R plot can be made interactive by wrapping it in the Shiny `renderPlot` function. The `selectInput` and `sliderInput` functions create the input widgets used to drive the plot.
+
+```{r eruptions, echo=FALSE}
+ui <- fluidPage(
+  
+  # App title ----
+  titlePanel("Downloading Data"),
+  
+  # Sidebar layout with input and output definitions ----
+  sidebarLayout(
+    
+    # Sidebar panel for inputs ----
+    sidebarPanel(
+      
+      # Input: Choose dataset ----
+      selectInput("dataset", "Choose a Country",
+                  choices = as.character(unique(df$Country))),
+      
+      # Button
+      downloadButton("downloadData", "Download")
+      
+    ),
+    
+    # Main panel for displaying outputs ----
+    mainPanel(
+      
+      tableOutput("table")
+      
+    )
+    
+  )
+)
+
+# Define server logic to display and download selected file ----
+server <- function(input, output) {
+  
+  # Reactive value for selected dataset ----
+  datasetInput <- reactive({
+      df %>% filter(Country ==input$dataset)
+  })
+  
+  # Table of selected dataset ----
+  output$table <- renderTable({
+    datasetInput()
+  })
+  
+  # Downloadable csv of selected dataset ----
+  output$downloadData <- downloadHandler(
+    filename = function() {
+      paste(as.character(input$dataset), ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(datasetInput(), file, row.names = FALSE)
+    }
+  )
+  
+}
+# Create Shiny app ----
+shinyApp(ui, server)
+```
