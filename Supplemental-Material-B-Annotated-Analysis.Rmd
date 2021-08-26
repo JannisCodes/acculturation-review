@@ -27,6 +27,9 @@ editor_options:
   chunk_output_type: console
 bibliography: references.bib
 csl: apa.csl
+apple-touch-icon: "touch-icon.png"
+apple-touch-icon-size: 180
+favicon: "favicon.ico"
 ---
 
 <style type="text/css">
