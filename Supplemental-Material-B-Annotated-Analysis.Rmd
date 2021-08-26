@@ -54,16 +54,22 @@ favicon: "favicon.ico"
 # Install and Load Packages
 # !IMPORTANT!
 # BEFORE FIRST RENDER:
-# To install all relevant packages please run "renv::restore()" in the console before the first use to ensure that all packages are using the correct version.
-lib <- c("rmarkdown", "knitr", "citr", "remedy", "bookdown", "papaja", "rmdfiltr", "psych",
+# To install all relevant packages please run "renv::restore()" (or renv::init() and then initiate from lockfile) in the console before the first use to ensure that all packages are using the correct version.
+# to store the packages in a contained library within the project folder: renv::settings$use.cache(FALSE)
+# , "papaja", "citr"
+# remotes::install_github("rstudio/webshot2")
+lib <- c("rmarkdown", "knitr", "remedy", "bookdown", "rmdfiltr", "psych",
          "ggplot2", "ggthemes", "haven", "RColorBrewer", "plotly", "forcats", "wordcloud", "visNetwork", "ggwordcloud", "gridExtra",
-         "rworldmap", "rnaturalearth", "rnaturalearthdata", "rgeos", "sp", "ggspatial",
+         "rworldmap", "rnaturalearth", "rnaturalearthdata", "rgeos", "sp", "ggspatial", "webshot2",
          "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
          "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes", "patchwork", "cowplot",
          "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet",
-         "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg", "manipulateWidget", "htmlwidgets", "webshot2", "boot")
+         "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg", "manipulateWidget", "htmlwidgets", "boot")
+# install.packages(lib)
 invisible(lapply(lib, library, character.only = TRUE))  
 rm(lib)  
+
+# render("Supplemental-Material-B-Annotated-Analysis.Rmd")
 
 # Load Custom Packages  
   source("./scripts/functions/fun.panel.R")
@@ -976,7 +982,8 @@ scaleDescrCont %>%
          na = nrow(dt.Scales.Included)-n,
          win.mean = sapply(scaleDescrCont,psych::winsor.mean,simplify=T),
          win.sd = sapply(scaleDescrCont,psych::winsor.sd,simplify=T)) %>%
-  dplyr::select(characteristic = vars, n, na, mean, `mean win` = win.mean, `mean trim` = trimmed, median,
+  dplyr::select(characteristic = vars, n, na, 
+                mean, `mean win` = win.mean, `mean trim` = trimmed, median,
                 sd, `sd win` = win.sd, MAD = mad, min, max,
                 skew, kurtosis) %>%
   kbl(., 
@@ -985,6 +992,7 @@ scaleDescrCont %>%
       format = "html", 
       #linesep = "",
       #booktabs = T,
+      row.names = F,
       digits = 2,
       align = c('l', rep('c', ncol(.)-1)))  %>%
   add_header_above(., c(" " = 3,"Centrality" = 4, "Dispersion" = 5, "Distribution" = 2)) %>%
@@ -1497,7 +1505,7 @@ scalesDomainCombFreq %>%
   kbl(., 
         label = c("Life Domain Combination", "Frequency", "Percentage"),
         caption = "Empirical Literature: <br>Domain Combinations",
-        format = "html", 
+        #format = "html", 
         linesep = "",
         booktabs = T,
         align = c('l', rep('c', ncol(.)-1)))  %>%
