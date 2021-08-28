@@ -23,13 +23,12 @@ output:
     toc_float: yes
     number_sections: false
     css: style.css
+    includes:
+      in_header: "_includes/head-custom-rmd.html" 
 editor_options:
   chunk_output_type: console
 bibliography: references.bib
 csl: apa.csl
-apple-touch-icon: "apple-touch-icon.png"
-apple-touch-icon-size: 180
-favicon: "favicon.ico"
 ---
 
 <style type="text/css">
@@ -56,21 +55,16 @@ favicon: "favicon.ico"
 # BEFORE FIRST RENDER:
 # To install all relevant packages please run "renv::restore()" (or renv::init() and then initiate from lockfile) in the console before the first use to ensure that all packages are using the correct version.
 # to store the packages in a contained library within the project folder: renv::settings$use.cache(FALSE)
-# , "papaja", "citr"
 # remotes::install_github("rstudio/webshot2")
 lib <- c("rmarkdown", "knitr", "remedy", "bookdown", "rmdfiltr", "psych",
          "ggplot2", "ggthemes", "haven", "RColorBrewer", "plotly", "forcats", "wordcloud", "visNetwork", "ggwordcloud", "gridExtra",
-         #"rworldmap", "rnaturalearth", "rnaturalearthdata", "rgeos", "sp", "ggspatial", 
          "webshot2",
          "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
          "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes", "patchwork", "cowplot",
          "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet",
          "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg", "manipulateWidget", "htmlwidgets", "boot")
-# install.packages(lib)
 invisible(lapply(lib, library, character.only = TRUE))  
 rm(lib)  
-
-# render("Supplemental-Material-B-Annotated-Analysis.Rmd")
 
 # Load Custom Packages  
   source("./scripts/functions/fun.panel.R")
@@ -482,9 +476,9 @@ exclMerged02 %>%
 ```
 
 ```{r PrismaCombined, fig.cap="Prisma diagram for three data sets on psychological acculturation."}
-PrismaCombined <- manipulateWidget::combineWidgets(prismaTheory, prismaScales, prismaEmpirical, ncol = 1, byrow = TRUE)
-htmlwidgets::saveWidget(PrismaCombined, "PrismaCombined.html", selfcontained = TRUE)
-webshot2::webshot("PrismaCombined.html", "Figures/PrismaCombined.pdf", vwidth = 500, vheight = 1600)
+# PrismaCombined <- manipulateWidget::combineWidgets(prismaTheory, prismaScales, prismaEmpirical, ncol = 1, byrow = TRUE)
+# htmlwidgets::saveWidget(PrismaCombined, "PrismaCombined.html", selfcontained = TRUE)
+# webshot2::webshot("PrismaCombined.html", "Figures/PrismaCombined.pdf", vwidth = 500, vheight = 1600)
 
 manipulateWidget::combineWidgets(prismaTheory, prismaScales, prismaEmpirical, ncol = 1, byrow = TRUE) 
 ```
@@ -1503,13 +1497,15 @@ We then assessed domain clusters (i.e., combinations of domains that were assess
 ```{r scalesDomainCombTbl}
 scalesDomainCombFreq %>%
   mutate(lifeDomain=str_replace_all(lifeDomain, ",", ", ")) %>%
+  as.data.frame %>%
   kbl(., 
-        label = c("Life Domain Combination", "Frequency", "Percentage"),
-        caption = "Empirical Literature: <br>Domain Combinations",
-        #format = "html", 
-        linesep = "",
-        booktabs = T,
-        align = c('l', rep('c', ncol(.)-1)))  %>%
+      #label = ,
+      col.names = c("Life Domain Combination", "Frequency", "Percentage"),
+      caption = "Empirical Literature: <br>Domain Combinations",
+      #format = "html", 
+      linesep = "",
+      booktabs = T,
+      align = c('l', rep('c', ncol(.)-1)))  %>%
   kableExtra::column_spec(1, width="50em") %>%
   kable_classic(full_width = F, 
                 lightable_options = "hover", 
