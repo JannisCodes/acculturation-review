@@ -27,7 +27,7 @@ editor_options:
   chunk_output_type: console
 bibliography: references.bib
 csl: apa.csl
-apple-touch-icon: "touch-icon.png"
+apple-touch-icon: "apple-touch-icon.png"
 apple-touch-icon-size: 180
 favicon: "favicon.ico"
 ---
@@ -60,7 +60,8 @@ favicon: "favicon.ico"
 # remotes::install_github("rstudio/webshot2")
 lib <- c("rmarkdown", "knitr", "remedy", "bookdown", "rmdfiltr", "psych",
          "ggplot2", "ggthemes", "haven", "RColorBrewer", "plotly", "forcats", "wordcloud", "visNetwork", "ggwordcloud", "gridExtra",
-         "rworldmap", "rnaturalearth", "rnaturalearthdata", "rgeos", "sp", "ggspatial", "webshot2",
+         #"rworldmap", "rnaturalearth", "rnaturalearthdata", "rgeos", "sp", "ggspatial", 
+         "webshot2",
          "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
          "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes", "patchwork", "cowplot",
          "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet",

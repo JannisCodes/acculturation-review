@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.0.3",
+    "Version": "4.1.1",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -938,6 +938,13 @@
       "Repository": "CRAN",
       "Hash": "76c9e04c712a05848ae7a23d2f170a40"
     },
+    "renv": {
+      "Package": "renv",
+      "Version": "0.14.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "30e5eba91b67f7f4d75d31de14bbfbdc"
+    },
     "reshape": {
       "Package": "reshape",
       "Version": "0.8.8",
@@ -1173,8 +1180,8 @@
       "Package": "webshot2",
       "Version": "0.0.0.9000",
       "Source": "GitHub",
-      "Remotes": "rstudio/chromote",
       "RemoteType": "github",
+      "Remotes": "rstudio/chromote",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "webshot2",
       "RemoteUsername": "rstudio",
