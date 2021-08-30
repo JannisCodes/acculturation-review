@@ -269,8 +269,7 @@ Assimilation,
 Integration,
 Separation,
 Marginalisation",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0,"items not accessible",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"items not accessible","1989"
-"17","Acculturation Attitudes Scale - Korean Canadians (Berry et al., 1989)","@Matsudaira2006","Berry1989","Berry, J. W., Kim, U., Power, S., Young, M., & Bujaki, M. (1989). Acculturation Attitudes in Plural Societies. Applied Psychology, 38(2), 185–206. https://doi.org/10.1111/j.1464-0597.1989.tb01208.x","10.1111/j.1464-0597.1989.tb01208.x","?
-Examples:
+"17","Acculturation Attitudes Scale - Korean Canadians (Berry et al., 1989)","@Matsudaira2006","Berry1989","Berry, J. W., Kim, U., Power, S., Young, M., & Bujaki, M. (1989). Acculturation Attitudes in Plural Societies. Applied Psychology, 38(2), 185–206. https://doi.org/10.1111/j.1464-0597.1989.tb01208.x","10.1111/j.1464-0597.1989.tb01208.x","Examples:
 Friendship 
 S. Most of my friends are Koreans because I feel very comfortable around them, but I don’t feel as comfortable around Canadians. 
 I. The kind of relationships that I have with Koreans are valuable while the kind of relationships with Canadians are also worthwhile. 
@@ -293,8 +292,13 @@ Assimilation,
 Integration,
 Separation,
 Marginalisation",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0,"items not accessible",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"items not accessible","1989"
-"19","Acculturation Attitudes Scale - Revised (Ataca & Berry, 2002) (AAS-R)","own review","Ataca2002","Ataca, B., & Berry, J. W. (2002). Psychological, sociocultural, and marital adaptation of Turkish immigrant couples in Canada. International Journal of Psychology, 37(1), 13–26. https://doi.org/10.1080/00207590143000135","10.1080/00207590143000135","four items for each domain were generated, one for each acculturation attitude of integration (e.g., “I prefer to socialize with both Canadians and Turks”), separation (e.g., “I prefer to socialize with Turks more than with Canadians”), assimilation (e.g., “I prefer to socialize with Canadians more than with Turks”), and marginalization (e.g., “I don’t really care who I socialize with”):
-friendship, lifestyle, social activity, food, holiday celebration, language use, decoration, newspaper readership, child-rearing style, children’s values, children’s mov- ing out.","44","4","4",NA,"exact items unclear",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0,"items not accessible",NA,NA,"home/family,consumption/shopping,entertainment/media/news,recreation/sport/art,friends/aquaintances",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"2002"
+"19","Acculturation Attitudes Scale - Revised (Ataca & Berry, 2002) (AAS-R)","own review","Ataca2002","Ataca, B., & Berry, J. W. (2002). Psychological, sociocultural, and marital adaptation of Turkish immigrant couples in Canada. International Journal of Psychology, 37(1), 13–26. https://doi.org/10.1080/00207590143000135","10.1080/00207590143000135","four items for each domain were generated, one for each acculturation attitude:
+integration (e.g., “I prefer to socialize with both Canadians and Turks”), 
+separation (e.g., “I prefer to socialize with Turks more than with Canadians”), 
+assimilation (e.g., “I prefer to socialize with Canadians more than with Turks”), 
+marginalization (e.g., “I don’t really care who I socialize with”)
+for the following domains:
+friendship, lifestyle, social activity, food, holiday celebration, language use, decoration, newspaper readership, child-rearing style, children’s values, children’s moving out.","44","4","4",NA,"exact items unclear",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0,"items not accessible",NA,NA,"home/family,consumption/shopping,entertainment/media/news,recreation/sport/art,friends/aquaintances",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"2002"
 "20","Acculturation Attitudes Scale (Kim, 1988)","own review","Kim2010a","Kim, U. (2010). Acculturation Attitudes Scale: Development and Validation of the Scale with Korean. Indonesian Psychological Association Conference.","https://www.researchgate.net/publication/309722447_Acculturation_Attitudes_Scale_Development_and_Validation_of_the_Scale_with_Korean_and_Korean-Canadian_Samples
 ","Friendship
 1.        Assimilation: I value having Canadian friends, but I do not value having Korean friends.
@@ -4999,14 +5003,14 @@ Ethnic identification:
 19. I have spent a good deal of time reading and talking to others about the values and rules of the country in which I live. 
 20. I have spent a great deal of time thinking seriously about what I should do with my life in this country. 
 21. I have spent a lot of time and talked to a lot of people trying to develop a set of values that makes sense to me.","21","5","5","1 = not like me at all
-5 = very much like me","Factors: EI = exploratory informational; AI = analytical informational; NHS = normative to the host society; NCO = normative to the country of origin; DA = diffuse- avoidant",NA,1,1,1,NA,1,1,1,NA,NA,NA,NA,NA,1,1,1,NA,NA,NA,NA,"continous","home/family,friends/aquaintances",NA,NA,NA,NA,"general","post",NA,NA,NA,NA,NA,"New Zealand",NA,NA,NA,NA,NA,NA,"any",NA,"2016"
+5 = very much like me","Factors: EI = exploratory informational; AI = analytical informational; NHS = normative to the host society; NCO = normative to the country of origin; DA = diffuse- avoidant",NA,1,1,1,NA,1,1,1,NA,NA,NA,NA,NA,1,1,1,NA,1,NA,NA,"continous","home/family,friends/aquaintances",NA,NA,NA,NA,"general","post",NA,NA,NA,NA,NA,"New Zealand",NA,NA,NA,NA,NA,NA,"any",NA,"2016"
 "150","Immigrant Identity Commitment Scale","own review","Szabo2016","Szabo, A., Ward, C., & Fletcher, G. J. O. (2016). Identity Processing Styles During Cultural Transition. Journal of Cross-Cultural Psychology, 47(4), 483–507. https://doi.org/10.1177/0022022116631825","10.1177/0022022116631825","1. I know what I want to do with my future in this country.
 2. I am not sure what I want to do in the future in this country.
 3. I am not sure whether I should stay here ( or move to another country).
 4. I am not sure what I want out of life. 
 5. I really like this country; it was the right decision to move here.
 6. I am not sure any more which values I really hold.","6","1","5","1 = not like me at all
-5 = very much like me",NA,NA,NA,1,1,NA,NA,1,1,NA,NA,NA,NA,NA,NA,1,1,NA,NA,NA,NA,"continous","general",NA,NA,NA,NA,"general","post",NA,NA,NA,NA,NA,"New Zealand",NA,NA,NA,NA,NA,NA,"any",NA,"2016"
+5 = very much like me",NA,NA,NA,1,1,NA,NA,1,1,NA,NA,NA,NA,NA,NA,1,1,NA,1,NA,NA,"continous","general",NA,NA,NA,NA,"general","post",NA,NA,NA,NA,NA,"New Zealand",NA,NA,NA,NA,NA,NA,"any",NA,"2016"
 "151","Immigrant Identity Questionnaire (IIQ)","own review","Orr2003","Orr, E., Mana, A., & Mana, Y. (2003). Immigrant identity of Israeli adolescents from Ethiopia and the former USSR: culture-specific principles of organization. European Journal of Social Psychology, 33(1), 71–92. https://doi.org/10.1002/ejsp.132","10.1002/ejsp.132","Facet 1: Extended Identity
 Temporal Comparison (SCT):
 1. Once I used to make a lot of mistakes while speaking Hebrew. Today my Hebrew is much better. [6, Language]
@@ -6987,7 +6991,7 @@ Please indicate the degree to which you would like to adopt the host culture in 
 3: some’
 4: quite a lot
 5: very much",NA,NA,1,1,1,NA,1,1,1,NA,NA,NA,NA,NA,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","spirituality/religion,home/family,work/money/finances,friends/aquaintances","work, economic, social relations, family relations, religion, ways of thinking",NA,NA,NA,"general","post","1","Spain",NA,NA,NA,"Spain","Morocco","Sub-Saharan Africa",NA,NA,NA,NA,"Morocco, Sub-Saharan Africa",NA,"2007"
-"217","revised Haitian Acculturation Scale","own review","Cruz2004","Cruz, G. D., Shore, R., Le Geros, R. Z., & Tavares, M. (2004). Effect of acculturation on objective measures of oral health in Haitian immigrants in New York City. Journal of Dental Research, 83(2), 180–184. https://doi.org/10.1177/154405910408300219","10.1177/154405910408300219","ITEMS NOT ACCESSIBLE",NA,NA,NA,NA,"refers to: Cruz GD, Shore R, Le Geros RZ, Tavares M. Effect of acculturation on objective measures of oral health in Haitian immigrants in New York City. JDent Res. 2004; 83(2):180---184.",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0,"items not accessible",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"2004"
+"217","revised Haitian Acculturation Scale","own review","Cruz2004","Cruz, G. D., Shore, R., Le Geros, R. Z., & Tavares, M. (2004). Effect of acculturation on objective measures of oral health in Haitian immigrants in New York City. Journal of Dental Research, 83(2), 180–184. https://doi.org/10.1177/154405910408300219","10.1177/154405910408300219","?",NA,NA,NA,NA,"refers to: Cruz GD, Shore R, Le Geros RZ, Tavares M. Effect of acculturation on objective measures of oral health in Haitian immigrants in New York City. JDent Res. 2004; 83(2):180---184.",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0,"items not accessible",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"2004"
 "218","Revised Multidimensional Inventory of Black Identity","own review","Pawar2014","Sellers, R. M., Rowley, S. A. J., Chavous, T. M., Shelton, J. N., & Smith, M. A. (1997). Multidimensional Inventory of Black Identity: A preliminary investigation of reliability and constuct validity. Journal of Personality and Social Psychology, 73(4), 805–815. https://doi.org/10.1037/0022-3514.73.4.805","10.1037/0022-3514.73.4.805","Centrality Scale 
 1. Overall, being Black has very little to do with how I feel about myself. (reverse scored) 
 4. In general, being Black is an important part of my self-image. 
