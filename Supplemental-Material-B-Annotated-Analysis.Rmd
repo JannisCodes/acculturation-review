@@ -58,7 +58,7 @@ csl: apa.csl
 # remotes::install_github("rstudio/webshot2")
 lib <- c("rmarkdown", "knitr", "remedy", "bookdown", "rmdfiltr", "psych",
          "ggplot2", "ggthemes", "haven", "RColorBrewer", "plotly", "forcats", "wordcloud", "visNetwork", "ggwordcloud", "gridExtra",
-         "webshot2",
+         "webshot2", "sessioninfo", 
          "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
          "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes", "patchwork", "cowplot",
          "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet",
@@ -3170,10 +3170,73 @@ empiricalDataDisciplines %>%
                 html_font = "Cambria")
 ```
 
+# **Software Information**  
+The full session information with all relevant system information and all loaded and installed packages is available in the collapsible section below.  
+
+<details>
+  <summary>System Info</summary>
+  
+  \renewcommand{\arraystretch}{0.8} <!-- decrease line spacing for the table -->
+```{r Reproducibility-SessionInfo-R-environment, echo=FALSE, message=FALSE, warning=FALSE, fig.align="center", out.width='100%', results='asis'}
+  library("devtools")
+  # library("knitr")
+  
+  df_session_platform <- devtools::session_info()$platform %>% 
+    unlist(.) %>% 
+    as.data.frame(.) %>% 
+    rownames_to_column(.)
+  
+  colnames(df_session_platform) <- c("Setting", "Value")
+  
+  kbl(
+    df_session_platform, 
+    booktabs = T, 
+    align = "l",
+    caption = "R environment session info for reproducibility of results" # complete caption for main document
+  ) %>% 
+    kable_classic(full_width = F, 
+                  lightable_options = "hover", 
+                  html_font = "Cambria") 
+```
+  \renewcommand{\arraystretch}{1} <!-- reset row height/line spacing -->
+ </details>
+ <br>
+ <details>
+  <summary>Package Info</summary>
+
+\renewcommand{\arraystretch}{0.6} <!-- decrease line spacing for the table -->
+```{r Reproducibility-SessionInfo-R-packages, echo=FALSE, message=FALSE, warning=FALSE, fig.align="center", out.width='100%', results='asis'}
+df_session_packages <- devtools::session_info()$packages %>% 
+  as.data.frame(.) %>% 
+  filter(attached == TRUE) %>% 
+  dplyr::select(loadedversion, date, source) %>% 
+  rownames_to_column
+
+colnames(df_session_packages) <- c("Package", "Loaded version", "Date", "Source")
+
+kbl(
+  df_session_packages, 
+  booktabs = T, 
+  align = "l",
+  caption = "Package info for reproducibility of results" # complete caption for main document
+) %>% 
+  kable_classic(full_width = F, 
+                  lightable_options = "hover", 
+                  html_font = "Cambria") 
+```
+\renewcommand{\arraystretch}{1} <!-- reset row height/line spacing -->
+</details>
+<br>
+<details>
+  <summary>Full Session Info (including loaded but unattached packages --- for troubleshooting only)</summary>
+    `r pander(sessionInfo(), compact = FALSE)`
+</details>
+
+
 --------------------------------------------------------------------
 
 </br>  
 
-# **References**
+# **References**  
 
 <div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
