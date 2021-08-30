@@ -2711,6 +2711,7 @@ write.csv(theorySearchScreened,'data/OSF/theoretical02_SearchScreened.csv')
 
 write.csv(dt.Theories.Included, 'data/OSF/theoretical03_DatabaseCoded.csv')
 
+write.csv(dt.Scales, 'data/OSF/methodological00_DatabaseAll.csv')
 write.csv(dt.Scales.Included, 'data/OSF/methodological01_DatabaseCoded.csv')
 
 
