@@ -1377,14 +1377,14 @@ df_pair <-
   pairwiseComparisons::pairwise_comparisons(
     y = Percentage, 
     x = field_labs_lng,
-    data = FieldIndividualComplexity %>% mutate(Percentage = complexity), 
+    data = FieldIndividualComplexity %>% mutate(Percentage = complexity/4), 
     type = "nonparametric",
     p.adjust.method = "holm"
   )
 
 ggstatsplot:::ggsignif_adder(
   plot = p,
-  data = FieldIndividualComplexity %>% mutate(Percentage = complexity/4),
+  data = FieldIndividualComplexity %>% mutate(Percentage = complexity/4-2),
   x = field_labs_lng,
   y = Percentage,
   df_pairwise = df_pair,
