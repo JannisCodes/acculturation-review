@@ -2794,7 +2794,7 @@ cat("\\def \\nScales {",nScales,"}
 
 ## Empirical:
 nEmp <- nrow(dt.Empirical.included)
-nAllEmp <- nrow(dt.Empirical)
+nAllEmp <- nrow(dt.Empirical.unique)
 nEmpInaccess <- empiricalExclFull %>% 
   filter(grepl("accessible", Exclusion)) %>%
   select(Freq) %>%
