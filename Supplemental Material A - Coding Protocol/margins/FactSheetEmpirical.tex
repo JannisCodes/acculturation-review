@@ -1,3 +1,5 @@
+\input{Supplemental Material A - Coding Protocol/margins/empNums}
+
 \sffamily
 {
 \fbox{%
@@ -7,7 +9,7 @@
 \NFtitle\\
 \NFrule
 \NFtext{\textbf{Dataset} Empirical Acculturation Literature}\\
-\NFtext{\textbf{Instances Per Dataset} 526 empirical studies from 1329 unique manuscripts}\\
+\NFtext{\textbf{Instances Per Dataset} \nEmp\ empirical studies from \nAllEmp\ unique manuscripts}\\
 
 
 % Motivation Section
@@ -26,7 +28,7 @@
 \NFline{Composition}\\
 \NFrule
 \NFelement{Sample or Complete}{}{Sample}\\
-\NFelement{Missing Data}{}{13\% not accessible \\\hfill(6\% items \& 5\% theses not accessible)\\\hfill+ see search strategy}\\
+\NFelement{Missing Data}{}{\percEmpInaccess\% not accessible \\\hfill(\percEmpItemInaccess\% items \& \percEmpThesisInaccess\% theses not accessible)\\\hfill+ see Screening}\\
 \NFelement{Sensitive Information }{}{author information}\\
 %\NFelement{Additional Field}{}{Info}\\
 
@@ -74,15 +76,15 @@
 \NFRULE
 \NFline{Types of publications \hfill\% of manuscripts*}\\
 \NFrule
-\NFelement{journal articles}{452\,manuscripts}{85.9\%}\\
+\NFelement{journal articles}{\nJournal\,manuscripts}{\percJournal\%}\\
 \NFrule
-\NFelement{theses}{68\,manuscripts}{12.9\%}\\
+\NFelement{theses}{\nThesis\,manuscripts}{\percThesis\%}\\
 \NFrule
 %\NFelement{book chapters}{6\,manuscripts}{1.1\%}\\
 %\NFrule
 %\NFelement{Another}{count}{XX\%}\\
 %\NFrule
-\NFentry{book chapters 1.1\%} \\
+\NFentry{book chapters \percChapter\%} \\
 %\NFentry*{framework 2.9\%}\\
 %\NFentry{Red 1.5\%}\\
 %\NFrule
