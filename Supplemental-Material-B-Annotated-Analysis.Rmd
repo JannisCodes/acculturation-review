@@ -2736,7 +2736,117 @@ write.csv(empiricalSearchScreened,'data/OSF/empirical02_SearchScreened.csv')
 
 write.csv(dt.Empirical.included, 'data/OSF/empirical03_DatabaseCoded.csv')
 
+# export numbers for Coding Protocol Fact Sheets
+## Theoretical:
+nTheo <- nrow(dt.Theories.Included)
+percTheoMissing <- ((nrow(dt.Theories) - nrow(dt.Theories.Included)) / nrow(dt.Theories) * 100) %>%
+  round(.,2)
+nTheories <- dt.Theories.Included %>%
+  filter(FrameworkTheoryModel == "Theory") %>%
+  nrow
+percTheories <- ((nTheories/nTheo) * 100) %>%
+  round(.,1)
+nFrameworks <- dt.Theories.Included %>%
+  filter(FrameworkTheoryModel == "Framework") %>%
+  nrow
+percFrameworks <- ((nFrameworks/nTheo) * 100) %>%
+  round(.,1)
+nModels <- dt.Theories.Included %>%
+  filter(FrameworkTheoryModel == "Model") %>%
+  nrow
+percModels <- ((nModels/nTheo) * 100) %>%
+  round(.,1)
+nConceptualizations <- dt.Theories.Included %>%
+  filter(FrameworkTheoryModel == "Conceptualization") %>%
+  nrow
+percConceptualizations <- ((nConceptualizations/nTheo) * 100) %>%
+  round(.,1)
+
+cat("\\def \\nTheo {",nTheo,"}
+\\def \\percTheoMissing {", percTheoMissing, "}
+\\def \\nTheories {", nTheories, "}
+\\def \\percTheories {", percTheories, "}
+\\def \\nFrameworks {", nFrameworks, "}
+\\def \\percFrameworks {", percFrameworks, "}
+\\def \\nModels {", nModels, "}
+\\def \\percModels {", percModels, "}
+\\def \\nConceptualizations {", percTheoMissing, "}
+\\def \\percTheoMissing {", percConceptualizations, "}",
+    sep = "", 
+    file = "Supplemental Material A - Coding Protocol/margins/theoNums.tex")
+    
+## Methodological:
+nScales <- nrow(dt.Scales.Included)
+nAllScales <- nrow(dt.Scales)
+nMethInaccess <- scalesExcl %>%
+  filter(grepl("accessible", `Exclusion Reason`)) %>%
+  select(`Full Text`) %>%
+  sum
+percMethInaccess <- (nMethInaccess / (nMethInaccess + nScales) * 100) %>%
+  round(.,2)
+
+cat("\\def \\nScales {",nScales,"}
+\\def \\nAllScales {", nAllScales, "}
+\\def \\nMethInaccess {", nMethInaccess, "}
+\\def \\percMethInaccess {", percMethInaccess, "}",
+    sep = "", 
+    file = "Supplemental Material A - Coding Protocol/margins/methNums.tex")
+
+## Empirical:
+nEmp <- nrow(dt.Empirical.included)
+nAllEmp <- nrow(dt.Empirical)
+nEmpInaccess <- empiricalExclFull %>% 
+  filter(grepl("accessible", Exclusion)) %>%
+  select(Freq) %>%
+  sum
+percEmpInaccess <- (nEmpInaccess / (nEmpInaccess + nEmp) * 100) %>%
+  round(., 0)
+nEmpItemInaccess <- empiricalExclFull %>% 
+  filter(grepl("items not accessible", Exclusion)) %>%
+  select(Freq) %>%
+  as.numeric
+percEmpItemInaccess <- (nEmpItemInaccess / (nEmpInaccess + nEmp) * 100) %>%
+  round(., 0)
+nEmpThesisInaccess <- empiricalExclFull %>% 
+  filter(grepl("thesis not accessible", Exclusion)) %>%
+  select(Freq) %>%
+  as.numeric
+percEmpThesisInaccess <- (nEmpThesisInaccess / (nEmpInaccess + nEmp) * 100) %>%
+  round(., 0)
+nJournal <- dt.Empirical.included %>%
+  filter(PublicationType == "journalArticle") %>%
+  nrow
+percJournal <- ((nJournal/nEmp) * 100) %>%
+  round(.,1)
+nThesis <- dt.Empirical.included %>%
+  filter(PublicationType == "thesis") %>%
+  nrow
+percThesis <- ((nThesis/nEmp) * 100) %>%
+  round(.,1)
+nChapter <- dt.Empirical.included %>%
+  filter(PublicationType == "bookSection") %>%
+  nrow
+percChapter <- ((nChapter/nEmp) * 100) %>%
+  round(.,1)
+
+cat("\\def \\nEmp {",nEmp,"}
+\\def \\nAllEmp {",nAllEmp,"}
+\\def \\nEmpInaccess {", nEmpInaccess, "}
+\\def \\percEmpInaccess {", percEmpInaccess, "}
+\\def \\nEmpItemInaccess {", nEmpItemInaccess, "}
+\\def \\percEmpItemInaccess {", percEmpItemInaccess, "}
+\\def \\nEmpThesisInaccess {", nEmpThesisInaccess, "}
+\\def \\percEmpThesisInaccess {", percEmpThesisInaccess, "}
+\\def \\nJournal {", nJournal, "}
+\\def \\percJournal {", percJournal, "}
+\\def \\nThesis {", nThesis, "}
+\\def \\percThesis {", percThesis, "}
+\\def \\nChapter {", nChapter, "}
+\\def \\percChapter {", percChapter, "}",
+    sep = "", 
+    file = "Supplemental Material A - Coding Protocol/margins/empNums.tex")
 ```
+
 
 This coding resulted in `r length(unique(empiricalDataDisciplines$discipline02))` relatively well-balanced categories with non of the fields having too few observations. In the following sections we use these discipline codes to assess some general differences in assessing and addressing acculturation.    
 
