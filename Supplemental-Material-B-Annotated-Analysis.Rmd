@@ -2845,6 +2845,12 @@ cat("\\def \\nEmp {",nEmp,"}
 \\def \\percChapter {", percChapter, "}",
     sep = "", 
     file = "Supplemental Material A - Coding Protocol/margins/empNums.tex")
+
+cat("\\def \\nTheo {",nTheo,"}
+\\def \\nScales {",nScales,"}
+\\def \\nEmp {", nEmp, "}",
+    sep = "", 
+    file = "Supplemental Material A - Coding Protocol/margins/nNums.tex")
 ```
 
 
