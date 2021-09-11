@@ -2,15 +2,16 @@
 title: "Supplemental Information B: Full Annotated Analysis and Reproducible Code"
 subtitle: "Suppplemental Material for 'The Migration Experience: A Conceptual Framework and Systematic Review of Psychological Acculturation'"
 author:
-- "Author Information:"
 - █████████████████^1^ #Jannis Kreienkamp^1^
 - ███████████████^1^ #Laura Bringmann^1^
 - ████████████^1^ #Raili Engler^1^
 - ██████████████^1^ #Peter de Jonge^1^
 - ███████████^1^ #Kai Epstude^1^
 - ^1^████████████████████ #University of Groningen
+- "Author Information:"
 - "Correspondence concerning this supplemental material should be addressed to ██████ ██████████, ██████████ ██ ██████████, █████████ ██ ██████████, █████ ██████████ ███, ████ ██ █████████ ████████████████. E-mail: █████████████████"
 - 'The main manuscript is available at <a href="https://www.doi.org/ToBePublished" target="_blank">doi.org/ToBePublished</a>'
+- 'The data repository for this manuscript is available at <a href="https://www.doi.org/ToBeUpdated" target="_blank">doi.org/ToBePublished</a>'
 date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
 output: 
   bookdown::html_document2:
@@ -111,7 +112,7 @@ Note. Boxplots display the interquartile range (IQR, center box), and the whiske
 # **Data Preparation**  
 
 ## Data Import 
-In a first step we import the raw data of the systematic review from the shared coding [Google Sheet](https://docs.google.com/spreadsheets/d/1j3j7q15lhNqPxp3qGnRtc2zuaE7plxWYR7tWKltkdU8/edit?usp=sharing). We, import the databases of theories and scale validations as well as the database of the empirical papers. Beyond that we also import parts of the codebook for list creations.  
+In a first step we import the raw data of the systematic review from the shared coding Google Sheet. We, import the databases of theories and scale validations as well as the database of the empirical papers. Beyond that we also import parts of the codebook for list creations.  
 
 ```{r importCoding, warning=F, message=F}
 # Import theory database (and theory search for PRISMA)
@@ -2696,6 +2697,8 @@ save(dt.Input,
      dt.Theories, dt.Theories.Included, dt.TheorySearch, 
      dt.Domains, empiricalDataDisciplines, file = "data/wrangled.RData")
 
+save(dt.Scales, dt.Scales.Included, file = "data/AcculturationScales.RData")
+
 # export reduced dataset for OSF repository
 theorySearchCleand <- dt.TheorySearch %>%
   dplyr::select(-c(AuthorFull,TitleAlphaNum, 
@@ -2711,8 +2714,8 @@ write.csv(theorySearchScreened,'data/OSF/theoretical02_SearchScreened.csv')
 
 write.csv(dt.Theories.Included, 'data/OSF/theoretical03_DatabaseCoded.csv')
 
-write.csv(dt.Scales, 'data/OSF/methodological00_DatabaseAll.csv')
-write.csv(dt.Scales.Included, 'data/OSF/methodological01_DatabaseCoded.csv')
+write.csv(dt.Scales, 'data/OSF/methodological01_SearchCleaned.csv')
+write.csv(dt.Scales.Included, 'data/OSF/methodological03_DatabaseCoded.csv')
 
 
 empiricalSearchCleand <- dt.Empirical %>%
