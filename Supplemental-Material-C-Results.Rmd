@@ -13,13 +13,13 @@ csl: apa.csl
   gc() # garbage collector
   
 # Install and Load Packages
-lib <- c("rmarkdown", "knitr", "citr", "remedy", "bookdown", "papaja", "rmdfiltr", "psych",
-         "ggplot2", "ggthemes", "haven", "RColorBrewer", "plotly", "forcats", "wordcloud", "visNetwork", "ggwordcloud",
-         "rworldmap", "rnaturalearth", "rnaturalearthdata", "rgeos", "sp", "ggspatial",
+lib <- c("rmarkdown", "knitr", "remedy", "bookdown", "rmdfiltr", "psych",
+         "ggplot2", "ggthemes", "haven", "RColorBrewer", "plotly", "forcats", "wordcloud", "visNetwork", "ggwordcloud", "gridExtra",
+         "webshot2", "sessioninfo", 
          "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
-         "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes", "cowplot", "paletteer", "ggpubr",
+         "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes", "patchwork", "cowplot",
          "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet",
-         "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg")
+         "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg", "manipulateWidget", "htmlwidgets", "boot")
 invisible(lapply(lib, library, character.only = TRUE))  
 rm(lib)  
 
