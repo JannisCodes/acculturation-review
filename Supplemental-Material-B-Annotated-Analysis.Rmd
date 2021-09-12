@@ -11,7 +11,7 @@ author:
 - "Author Information:"
 - "Correspondence concerning this supplemental material should be addressed to ██████ ██████████, ██████████ ██ ██████████, █████████ ██ ██████████, █████ ██████████ ███, ████ ██ █████████ ████████████████. E-mail: █████████████████"
 - 'The main manuscript is available at <a href="https://www.doi.org/ToBePublished" target="_blank">doi.org/ToBePublished</a>'
-- 'The data repository for this manuscript is available at <a href="https://www.doi.org/ToBeUpdated" target="_blank">doi.org/ToBePublished</a>'
+- 'The data repository for this manuscript is available at <a href="https://doi.org/10.34894/U988DU" target="_blank">https://doi.org/10.34894/U988DU</a>'
 date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
 output: 
   bookdown::html_document2:
