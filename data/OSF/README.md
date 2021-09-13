@@ -27,7 +27,7 @@ This appendix file documents the full search strategy of our systematic review. 
     - Search Strategy ('_Appendix-A-Search-Strategy.pdf_')
 
 2. **Coding Protocol**
-This protocol document lays out detailed informationfor coders of the (included) manuscripts. This document serves as an instructive manual to the coders and documents the operationalizations of the coded variables. The full manuscript selection (i.e., screening) and coding procedures (i.e., data extraction) for each of the theoretical, methodological, and empirical dataset are documented in the coding protocol.
+This protocol document lays out detailed information for coders of the (included) manuscripts. This document serves as an instructive manual to the coders and documents the operationalizations of the coded variables. The full manuscript selection (i.e., screening) and coding procedures (i.e., data extraction) for each of the theoretical, methodological, and empirical dataset are documented in the coding protocol.
    - Coding Protocol ('_Supplemental-Material-A-Coding-Protocol.pdf_')
 
 ---
@@ -47,12 +47,12 @@ This folder documents the title, abstract, and full-text screening of the search
     - Screening of the empirical literature '_empirical02_SearchScreened.csv_ '
 
 3. **Literature Coding**
-This folder documents the full coding of the theoretical, methodological, and empirical databases that resulted from our literature searches. And live interactive database of the methodological literature (i.e., with search and filter options) is available at: LINK GOES HERE. The resulting data files are:
+This folder documents the full coding of the theoretical, methodological, and empirical databases that resulted from our literature searches. A live interactive database of the methodological literature (i.e., with search and filter options) is available at: [www.acculturation-review.shinyapps.io/scale-directory/](https://acculturation-review.shinyapps.io/scale-directory/). The resulting data files are:
     - Coded database theoretical literature ('_theoretical03_DatabaseCoded.csv_ ')
-    - Coded database methodological literature (_methodological01_DatabaseCoded.csv_)
+    - Coded database methodological literature (_methodological03_DatabaseCoded.csv_)
     - Coded database empirical literature ('_theoretical03_DatabaseCoded.csv_ ')
 
-4. **Scimago Journal Database (v.2019)**
+1. **Scimago Journal Database (v.2019)**
 This folder acts as a database version control of the exact version downloaded from the [Scimago Journal & Country Rank](https://www.scimagojr.com/journalrank.php) that was used for our analyses. The folder includes the following types of files:
     - The full database file ('_scimagojr 2019.csv_')
     - The subject area specific database files ('_scimagojr 2019  Subject Area - [...].csv_')
