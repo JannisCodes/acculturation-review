@@ -47,10 +47,11 @@ This folder documents the title, abstract, and full-text screening of the search
     - Screening of the empirical literature '_empirical02_SearchScreened.csv_ '
 
 3. **Literature Coding**
-This folder documents the full coding of the theoretical, methodological, and empirical databases that resulted from our literature searches. A live interactive database of the methodological literature (i.e., with search and filter options) is available at: [www.acculturation-review.shinyapps.io/scale-directory/](https://acculturation-review.shinyapps.io/scale-directory/). The resulting data files are:
+This folder documents the full coding of the theoretical, methodological, and empirical databases that resulted from our literature searches. We also supply a codebook of the coded databases. A live interactive database of the methodological literature (i.e., with search and filter options) is available at: [www.acculturation-review.shinyapps.io/scale-directory/](https://acculturation-review.shinyapps.io/scale-directory/). The resulting data files are:
     - Coded database theoretical literature ('_theoretical03_DatabaseCoded.csv_ ')
     - Coded database methodological literature (_methodological03_DatabaseCoded.csv_)
     - Coded database empirical literature ('_theoretical03_DatabaseCoded.csv_ ')
+    - Codebook ('_Acculturation-Review-Codebook.xlsx_')
 
 1. **Scimago Journal Database (v.2019)**
 This folder acts as a database version control of the exact version downloaded from the [Scimago Journal & Country Rank](https://www.scimagojr.com/journalrank.php) that was used for our analyses. The folder includes the following types of files:
