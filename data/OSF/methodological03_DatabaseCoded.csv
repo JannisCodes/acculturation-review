@@ -72,8 +72,8 @@ B&C:
 8. At home, I eat American food 
 9. At restaurants, I eat American food
 10. Now, my friends are American 
-11. How much do you speak English at home?","11","1","5","1 = strongly disagree to 5= strongly agree
-1 = very much to 5= not at all",NA,NA,1,1,NA,NA,1,1,NA,NA,NA,NA,NA,NA,1,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","consumption/shopping,entertainment/media/news,recreation/sport/art,friends/aquaintances,community",NA,NA,NA,NA,"women","post","0",NA,NA,NA,NA,"United States of America",NA,NA,NA,NA,NA,NA,"China",NA,"2015"
+11. How much do you speak English at home?","11","1","5","1 = strongly disagree to 5 = strongly agree
+1 = very much to 5 = not at all",NA,NA,1,1,NA,NA,1,1,NA,NA,NA,NA,NA,NA,1,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","consumption/shopping,entertainment/media/news,recreation/sport/art,friends/aquaintances,community",NA,NA,NA,NA,"women","post","0",NA,NA,NA,NA,"United States of America",NA,NA,NA,NA,NA,NA,"China",NA,"2015"
 "3","Acceptance of American Cultural Values","own review","Moon2007","Moon, S., & Park, C. Y. (2007). Media Effects on Acculturation and Biculturalism: A Case Study of Korean Immigrants in Los Angeles’ Koreatown. Mass Communication and Society, 10(3), 319–343. https://doi.org/10.1080/15205430701407330","10.1080/15205430701407330","Cognitions:
 1.        You feel strong bonds toward American culture
 2.        You believe that being American is a positive experience
@@ -253,7 +253,9 @@ c. friendships (e.g., relationships with peers of the same country of origin and
 Central:
 d. family relationships
 e. religious choices (e.g., beliefs, traditions and religious practices) 
-f. ways of thinking (e.g., principles and values that are considered important).","12","2","5","1 = not at all, 5 = very much + I don't know",NA,NA,NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,1,NA,"complex scale","continuous (incl. scale)","spirituality/religion,home/family,consumption/shopping,education/school,friends/aquaintances",NA,NA,NA,NA,"youth","post","1",NA,NA,NA,NA,"Spain",NA,NA,NA,NA,NA,NA,"any",NA,"2014"
+f. ways of thinking (e.g., principles and values that are considered important).","12","2","5","1 = not at all, 
+5 = very much 
++ I don't know",NA,NA,NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,1,NA,"complex scale","continuous (incl. scale)","spirituality/religion,home/family,consumption/shopping,education/school,friends/aquaintances",NA,NA,NA,NA,"youth","post","1",NA,NA,NA,NA,"Spain",NA,NA,NA,NA,NA,NA,"any",NA,"2014"
 "13","Acculturation Attitudes Scale (Kim, 1988)","own review","Kim2010a","Kim, U. (2010). Acculturation Attitudes Scale: Development and Validation of the Scale with Korean. Indonesian Psychological Association Conference.","https://www.researchgate.net/publication/309722447_Acculturation_Attitudes_Scale_Development_and_Validation_of_the_Scale_with_Korean_and_Korean-Canadian_Samples
 ","Friendship
 1.        Assimilation: I value having Canadian friends, but I do not value having Korean friends.
@@ -512,7 +514,7 @@ items 8-11 are: (1) All Native culture, (2) More Native culture than other race/
 9. what foods they normally eat at home (1 = only South Asian food; 6 = never eat at home)
 10. what foods they normally eat in restaurants (1 = only South Asian food; 6 = never eat in restaurants)
 11. how often their family shops at South Asian grocery stores or markets (1 = two or three times per week; 5 = almost never or never)
-12. which country or culture most of their friends belong to (1 = only South Asian; 5 = only other ethnic groups).","12","1","5","Q1-Q7:  (1 = absolutely; 5 = not at all)",NA,NA,1,NA,1,NA,1,NA,1,NA,NA,NA,NA,NA,1,NA,1,NA,1,NA,"independent","continuous (incl. scale)","spirituality/religion,home/family,health/care,consumption/shopping",NA,NA,NA,NA,"general","post","0",NA,NA,NA,NA,"United States of America",NA,NA,NA,NA,NA,NA,"South Asia",NA,"2017"
+12. which country or culture most of their friends belong to (1 = only South Asian; 5 = only other ethnic groups).","12","1","5","see items",NA,NA,1,NA,1,NA,1,NA,1,NA,NA,NA,NA,NA,1,NA,1,NA,1,NA,"independent","continuous (incl. scale)","spirituality/religion,home/family,health/care,consumption/shopping",NA,NA,NA,NA,"general","post","0",NA,NA,NA,NA,"United States of America",NA,NA,NA,NA,NA,NA,"South Asia",NA,"2017"
 "21","Acculturation Intergenerational Conflict Scale (AIC)","own review","Lee2004b","Lee, J.-S. (2004). Intergenerational Conflict, Ethnic Identity and Their Influences on Problem Behaviors Among Korean American Adolescents. University of Pittsburgh.",NA,"Below are statements that describe situations that may cause conflict between you and your parents. For each item, please indicate how often your parents’ behavior has resulted in conflict (or caused problems) between you and your parents during the last 6 months, using the following scale: 
 1. Your parents want you to obey everything that they say
 2. Your parents enter your room without knocking on the door
@@ -616,7 +618,7 @@ Marginalization Items
 7 = strongly agree",NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,1,NA,"complex scale","continuous (incl. scale)","recreation/sport/art,friends/aquaintances",NA,NA,NA,NA,"general, student","post","0",NA,NA,NA,NA,"United Kingdom",NA,NA,NA,NA,NA,NA,"any",NA,"2014"
 "25","Acculturation preferences (Christ et al., 2013)","own review","Christ2013","Christ, O., Asbrock, F., Dhont, K., Pettigrew, T. F., & Wagner, U. (2013). The Effects of Intergroup Climate on Immigrants’ Acculturation Preferences. Zeitschrift Für Psychologie, 221(4), 252–257. https://doi.org/10.1027/2151-2604/a000155","10.1027/2151-2604/a000155","1. We should try to live in this country as we are accustomed to (cultural maintenance)
 2. We should try to participate completely in German life (maintenance of intergroup relations)","2","2","4","1 = fully disagree
-4= fully agree",NA,NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","general",NA,NA,NA,NA,"general","post","1",NA,NA,NA,NA,"Germany",NA,NA,NA,NA,NA,NA,"any",NA,"2013"
+4 = fully agree",NA,NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","general",NA,NA,NA,NA,"general","post","1",NA,NA,NA,NA,"Germany",NA,NA,NA,NA,NA,NA,"any",NA,"2013"
 "26","Acculturation Questionnaire for Children","@Matsudaira2006","VanDeVijver1999","Van De Vijver, F. J. R., Helms-Lorenz, M., & Feltzer, M. J. A. (1999). Acculturation and cognitive performance of migrant children in the Netherlands. International Journal of Psychology, 34(3), 149–162. https://doi.org/10.1080/002075999399936","10.1080/002075999399936","for all ten life domains:
 integration: ""I like [some aspect of the Dutch culture] and I like [the same aspect of the original culture]’’
 assimilation: ""I like [some aspect of the Dutch culture] but I do not like [the same aspect of the original culture]’’
@@ -930,11 +932,11 @@ I write only in English","14","?","2, 4, 5","see items","potentially also a 10 i
 "31","Acculturation Scale (ACC) (Abbas et al.)","@Abbas2018","Abbas2018","Abbas, M., Sitharthan, G., Hough, M. J., & Hossain, S. Z. (2018). An exploratory study of acculturation among Muslims in Australia. Social Identities, 24(6), 764–778. https://doi.org/10.1080/13504630.2018.1500279","10.1080/13504630.2018.1500279","language spoken, 
 language preferred,
 language read,
-language written.","4",NA,"5","1. Only Native
-2. Mostly Native
-3. Equally
-4. Mostly English
-5. Only English",NA,NA,1,1,NA,NA,1,1,NA,NA,NA,NA,NA,NA,1,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","general",NA,NA,NA,NA,"general","post","0",NA,NA,NA,NA,"Australia",NA,NA,NA,NA,NA,NA,"Muslims",NA,"2018"
+language written.","4",NA,"5","1: Only Native
+2: Mostly Native
+3: Equally
+4: Mostly English
+5: Only English",NA,NA,1,1,NA,NA,1,1,NA,NA,NA,NA,NA,NA,1,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","general",NA,NA,NA,NA,"general","post","0",NA,NA,NA,NA,"Australia",NA,NA,NA,NA,NA,NA,"Muslims",NA,"2018"
 "32","Acculturation Scale (Arends-Tóth & van de Vijver, 2000)","own review","Arends-Toth2000","Arends-Tóth, J., & van de Vijver, F. (2000). Multiculturalisme: Spanning tussen ideaal en realiteit. Nederlands Tijdschrift Voor de Psychologie, 55, 159–168.","https://www.researchgate.net/publication/235660983_Multiculturalisme_Spanning_tussen_ideaal_en_realiteit","1. Turkse allochtonen hebben op het werk evenveel mogelijkheden als autochtone Nederlanders.
 2. Turkse allochtonen hebben op school evenveel mogelijkheden als autochtone Nederlanders.
 3. Een Turkse allochtoon met hetzelfde diploma als een autochtone Nederlander heeft evenveel kans op een baan te vinden in Nederland.
@@ -1479,8 +1481,8 @@ Factor 3: Family orientation/adolescent indepencence
 Factor 4: Global involvement 
 48. It is important to me to incorporate American ways.
 49. I would like to adopt or take up the American way of life. 
-50. As far as behaviours and values, I am ‘‘American’’.","50","8","5","attitude (1 ˆ strongly disagree, 2 ˆ disagree, 3 ˆ neutral, 4 ˆ agree, 5 ˆ strongly disagree)
-behaviour (1 ˆ never, 2 ˆ rarely, 3 ˆ sometimes, 4 ˆ often, 5 ˆ always)",NA,1,1,1,1,1,1,1,1,NA,NA,NA,NA,1,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","home/family,consumption/shopping,entertainment/media/news,work/money/finances,education/school,recreation/sport/art,friends/aquaintances,community",NA,NA,NA,NA,"students","post","0",NA,NA,NA,NA,"United States of America",NA,NA,NA,NA,NA,NA,"Vietnam",NA,"2002"
+50. As far as behaviours and values, I am ‘‘American’’.","50","8","5","attitude (1 = strongly disagree, 2 = disagree, 3 = neutral, 4 = agree, 5 = strongly disagree)
+behaviour (1 = never, 2 = rarely, 3 = sometimes, 4 = often, 5 = always)",NA,1,1,1,1,1,1,1,1,NA,NA,NA,NA,1,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","home/family,consumption/shopping,entertainment/media/news,work/money/finances,education/school,recreation/sport/art,friends/aquaintances,community",NA,NA,NA,NA,"students","post","0",NA,NA,NA,NA,"United States of America",NA,NA,NA,NA,NA,NA,"Vietnam",NA,"2002"
 "42","Acculturation Strategies (Mancini, & Bottura, 2014)","own review","Mancini2014","Mancini, T., & Bottura, B. (2014). Acculturation processes and intercultural relations in peripheral and central domains among native Italian and migrant adolescents. An application of the Relative Acculturation Extended Model (RAEM). International Journal of Intercultural Relations, 40, 49–63. https://doi.org/10.1016/j.ijintrel.2013.12.002","10.1016/j.ijintrel.2013.12.002","1. How much are you currently maintaining traditions of your country of origin, in each of the following domains or contexts?
 2. How much have you adopted the traditions of Italy, in each of the following domains or contexts?
 
@@ -1491,7 +1493,9 @@ c. friendships (e.g., relationships with peers of the same country of origin and
 Central:
 d. family relationships
 e. religious choices (e.g., beliefs, traditions and religious practices) 
-f. ways of thinking (e.g., principles and values that are considered important).","12","2","5","1 = not at all, 5 = very much + I don't know",NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,1,NA,"complex scale","continuous (incl. scale)","spirituality/religion,home/family,consumption/shopping,education/school,friends/aquaintances",NA,NA,NA,NA,"youth","post","1",NA,NA,NA,NA,"Spain",NA,NA,NA,NA,NA,NA,"any",NA,"2014"
+f. ways of thinking (e.g., principles and values that are considered important).","12","2","5","1 = not at all, 
+5 = very much 
++ I don't know",NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,1,NA,"complex scale","continuous (incl. scale)","spirituality/religion,home/family,consumption/shopping,education/school,friends/aquaintances",NA,NA,NA,NA,"youth","post","1",NA,NA,NA,NA,"Spain",NA,NA,NA,NA,NA,NA,"any",NA,"2014"
 "43","Acculturation Strategies and Attitudes Questionnaire, immigrants’ version","own review","Luque2004","Luque, M. N., Fernández, P. P., Miranda, J. S., Fernández, M. C. G., Tejada, A. J. R., Guirado, I. C., García, M. A., & Prados, J. S. F. (2004). strategias y actitudes de aculturación: la perspectiva de los inmigrantes y de los autóctonos en Almería [Acculturation strategies and attitudes: The perspective of immigrants and natives in Almería]. Dirección General de Coordinación de Políticas Migratorias.",NA,"A continuación se le van a leer una serie de frases relacionadas con diversos temas. Su tarea consiste en valorarlas expresando su grado de acuerdo o desacuerdo (1: Muy en desacuerdo; 2: En desacuerdo; 3: Ni de acuerdo ni en desacuerdo; 4: De acuerdo; 5: Muy de acuerdo): 
 
 1. Las personas de su país deberían intentar vivir en España de acuerdo con sus costumbres
@@ -1901,7 +1905,8 @@ Integration:
 8.        I generally do not trust members of the other ethnic groups. R
 9.        I sometimes feel it would be better if different ethnic groups did not try to mix together. R
 10.        It is important for me to be accepted both by my ethnic group and the overall Australian culture.
-","10","2","5","1=strongly disagree to 5=strongly agree",NA,1,NA,1,1,1,NA,1,1,NA,NA,NA,NA,1,NA,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","general",NA,NA,NA,NA,"general","post","0",NA,NA,NA,NA,"Australia",NA,NA,NA,NA,NA,NA,"China",NA,"2006"
+","10","2","5","1=strongly disagree 
+5=strongly agree",NA,1,NA,1,1,1,NA,1,1,NA,NA,NA,NA,1,NA,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","general",NA,NA,NA,NA,"general","post","0",NA,NA,NA,NA,"Australia",NA,NA,NA,NA,NA,NA,"China",NA,"2006"
 "54","Adapted Measurement of Acculturation Strategies for People of African Descent (MASPAD) - UK","own review","Onyigbuo2018","Onyigbuo, C. C., Alexis Garsee, C., & van den Akker, O. (2018). Adaptation of the Measurement of Acculturation Strategies for People of African Decent (MASPAD) in measuring acculturation in British Nigerians. Mental Health, Religion & Culture, 21(9–10), 973–985. https://doi.org/10.1080/13674676.2018.1455650","10.1080/13674676.2018.1455650","1. I take a great deal of pride in being a person of African ancestry (African, African American, Black Cuban, Black Brazilian, Trinidadian, Jamaican, etc.) 
 2. If I have children, I will give them an African naming ceremony. 
 3. I do not feel connected to my African heritage 
@@ -2394,7 +2399,9 @@ cultural identiy, language, cultural knowledge, food consumption",1,1,1,1,1,1,1,
 48.        I practice all the food-related beliefs of my religion in the US
 49.        I celebrate Indian festivals by eating specialty foods for the occasion
 50.        I celebrate non-Indian festivals by eating specialty foods for the occasion
-","50","1","5","1 = strongly agree…5 = strongly disagree",NA,1,1,1,NA,1,1,1,NA,NA,NA,NA,NA,1,1,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","home/family,consumption/shopping,entertainment/media/news,work/money/finances,education/school,recreation/sport/art",NA,NA,NA,NA,"general","post","0",NA,NA,NA,NA,"United States of America",NA,NA,NA,NA,NA,NA,"Asian Indian",NA,"2017"
+","50","1","5","1 = strongly agree
+…
+5 = strongly disagree",NA,1,1,1,NA,1,1,1,NA,NA,NA,NA,NA,1,1,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","home/family,consumption/shopping,entertainment/media/news,work/money/finances,education/school,recreation/sport/art",NA,NA,NA,NA,"general","post","0",NA,NA,NA,NA,"United States of America",NA,NA,NA,NA,NA,NA,"Asian Indian",NA,"2017"
 "67","Asian Values Scale","@Matsudaira2006; @Zane2004","Kim1999","Kim, B. S. K., Atkinson, D. R., & Yang, P. H. (1999). The Asian Values Scale: Development, factor analysis, validation, and reliability. Journal of Counseling Psychology, 46(3), 342–352. https://doi.org/10.1037/0022-0167.46.3.342","10.1037/0022-0167.46.3.342","Factor 1: Conformity to Norms:
 1.        One should not deviate from familial and social norms. 
 2.        Following familial and social expectations is important. 
@@ -2500,22 +2507,26 @@ Items that did not load onto the factor structure:
 23. I am now quite used to the Swiss manner of conversation (intonation, gesticulation, and hand signs).
 24. I feel that the Swiss manner of entertainment would never fully satisfy me.
 25. My incomplete knowledge of German (speaking and grammar) causes me worries.
-","25","1","4","1=I agree
-2=I agree more than I disagree
-3=I disagree more than I agree
-4=I disagree","During the past two years ...",1,1,1,1,1,1,1,1,NA,NA,NA,NA,1,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","home/family,health/care,consumption/shopping,entertainment/media/news,work/money/finances,recreation/sport/art,friends/aquaintances",NA,NA,NA,NA,"refugees","post","0",NA,NA,NA,NA,"Switzerland",NA,NA,NA,NA,NA,NA,"Czechoslovakia",NA,"1990"
+","25","1","4","1 = I agree
+2 = I agree more than I disagree
+3 = I disagree more than I agree
+4 = I disagree","During the past two years ...",1,1,1,1,1,1,1,1,NA,NA,NA,NA,1,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","home/family,health/care,consumption/shopping,entertainment/media/news,work/money/finances,recreation/sport/art,friends/aquaintances",NA,NA,NA,NA,"refugees","post","0",NA,NA,NA,NA,"Switzerland",NA,NA,NA,NA,NA,NA,"Czechoslovakia",NA,"1990"
 "70","Assimilation to French Culture","own review","Badea2012","Badea, C. (2012). Modèles d’intégration, identification nationale et attitudes envers les immigrés en France. L’Année Psychologique, 112(04), 575–592. https://doi.org/10.4074/s0003503312004034","10.4074/s0003503312004034","1. les immigrés doivent adopter les coutumes et les traditions françaises 
 2. les immigrés doivent connaître la culture traditionnelle française 
 3. les immigrés doivent parler couramment le français 
 4. la nation française doit être considérée comme une et indivisible 
-5. les immigrés doivent connaître l’histoire de la France","5","1","7","1 « pas du tout d’accord » à7 « tout à fait d’accord »
+5. les immigrés doivent connaître l’histoire de la France","5","1","7","1 « pas du tout d’accord » à 7 « tout à fait d’accord »
 1 “totally disagree” to 7 “totally agree”","Google Translate:
 1. immigrants must adopt French customs and traditions
 2. immigrants must know traditional French culture
 3. immigrants must speak French fluently
 4. the French nation must be considered as one and indivisible
 5. immigrants must know the history of France",NA,1,1,NA,NA,NA,1,NA,NA,"X",NA,NA,NA,1,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","general",NA,NA,NA,NA,"general","N/A","1",NA,NA,NA,NA,"France",NA,NA,NA,NA,NA,NA,"France","not migrant","2012"
-"71","attitudes toward homosexuality (ESS)","own review","Fitzgerald2014","Fitzgerald, R., Winstone, L., & Prestage, Y. (2014). Searching For Evidence of Acculturation: Attitudes Toward Homosexuality Among Migrants Moving From Eastern to Western Europe. International Journal of Public Opinion Research, 26(3), 323–341. https://doi.org/10.1093/ijpor/edu021","10.1093/ijpor/edu021","1. Please say to what extent you agree or disagree with the following statement: Gay men and lesbians should be free to live their own lives as they wish.","1","1","5","1=agree strongly; 2=agree; 3=neither agree nor disagree; 4=disagree; 5=disagree strongly",NA,NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,1,NA,"N/A","continuous (incl. scale)","general",NA,NA,NA,NA,"general","post","1",NA,NA,NA,NA,"Europe",NA,NA,NA,NA,NA,NA,"any",NA,"2014"
+"71","attitudes toward homosexuality (ESS)","own review","Fitzgerald2014","Fitzgerald, R., Winstone, L., & Prestage, Y. (2014). Searching For Evidence of Acculturation: Attitudes Toward Homosexuality Among Migrants Moving From Eastern to Western Europe. International Journal of Public Opinion Research, 26(3), 323–341. https://doi.org/10.1093/ijpor/edu021","10.1093/ijpor/edu021","1. Please say to what extent you agree or disagree with the following statement: Gay men and lesbians should be free to live their own lives as they wish.","1","1","5","1=agree strongly; 
+2=agree; 
+3=neither agree nor disagree; 
+4=disagree; 
+5=disagree strongly",NA,NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,1,NA,"N/A","continuous (incl. scale)","general",NA,NA,NA,NA,"general","post","1",NA,NA,NA,NA,"Europe",NA,NA,NA,NA,NA,NA,"any",NA,"2014"
 "72","Attitudes towards minority culture maintenance and inter-ethnic contact scale","own review","Nigbur2008","Nigbur, D., Brown, R., Cameron, L., Hossain, R., Landau, A., Le Touze, D., Rutland, A., & Watters, C. (2008). Acculturation, well-being and classroom behaviour among white British and British Asian primary-school children in the south–east of England: Validating a child-friendly measure of acculturation attitudes. International Journal of Intercultural Relations, 32(6), 493–504. https://doi.org/10.1016/j.ijintrel.2008.03.001","10.1016/j.ijintrel.2008.03.001","minority children should ....
 
 Culture maintenance:
@@ -2529,7 +2540,11 @@ Contact and participation:
 6.        be friends with white English children, 
 7.        play together with white English children, 
 8.        have lunch together with white English children
-","8","2","5","‘‘not at all’’, ‘‘a little bit’’, ‘‘in the middle’’, ‘‘quite a bit’’, ‘‘a lot’’","response options visualised by images of balloons of increasing sizes",NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,1,NA,"N/A","continuous (incl. scale)","spirituality/religion,consumption/shopping,entertainment/media/news,education/school,friends/aquaintances",NA,NA,NA,NA,"youth","post","1",NA,NA,NA,NA,"United Kingdom",NA,NA,NA,NA,NA,NA,"any",NA,"2008"
+","8","2","5","‘‘not at all’’, 
+‘‘a little bit’’, 
+‘‘in the middle’’, 
+‘‘quite a bit’’, 
+‘‘a lot’’","response options visualised by images of balloons of increasing sizes",NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,1,NA,"N/A","continuous (incl. scale)","spirituality/religion,consumption/shopping,entertainment/media/news,education/school,friends/aquaintances",NA,NA,NA,NA,"youth","post","1",NA,NA,NA,NA,"United Kingdom",NA,NA,NA,NA,NA,NA,"any",NA,"2008"
 "73","Banal Integration","own review","Ekmanis2017","Ekmanis, I. D. (2017). Host land or homeland?: Civic-cultural identity and banal integration in Latvia. University of Washington.",NA,"1. Have you ever participated in an interest group, sports team, amateur artists' collective (choir, dance collective, wind orchestra, kokle ensemble, etc.)? Mark one answer!
 Currently participating [1]
 Previously participated [2]
@@ -2918,7 +2933,8 @@ Instructions: Sometimes life is not as we really want it. If you could have your
 21. Dances: 
 22. Radio programs: 
 23. Way of celebrating birthdays: 
-24. Way of celebrating weddings:","24","1","5","The anchors for items 1 through 8 are: (1) Spanish all of the time, (2) Spanish most of the time, (3) Spanish and English equally, (4) English most of the time, and (5) English all of the time. The anchors for items 9 through 12 are: (1) Cuban all of the time, (2) Cuban most of the time, (3) Cuban at times and American other times, (4) American most of the time, (5) American all of the time. 
+24. Way of celebrating weddings:","24","1","5","The anchors for items 1 through 8 are: (1) Spanish all of the time, (2) Spanish most of the time, (3) Spanish and English equally, (4) English most of the time, and (5) English all of the time. 
+The anchors for items 9 through 12 are: (1) Cuban all of the time, (2) Cuban most of the time, (3) Cuban at times and American other times, (4) American most of the time, (5) American all of the time. 
 The anchors for items 13 through 15 are: (1) Completely Cuban, (2) Mostly Cuban, (3) Mixed: Sometimes Cuban and others American, (4) Mostly American, (5) Completely American. 
 The anchors for items 16 through 24 are: (1) I would wish this to be completely Cuban, (2) 1 would wish this to be mostly Cuban, (3) I would wish this to be both Cuban and American, (4) I would wish this to be mostly American, (5) I would wish this to be completely American.",NA,NA,1,1,1,NA,1,1,1,NA,NA,NA,NA,NA,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","home/family,consumption/shopping,entertainment/media/news,work/money/finances,education/school,recreation/sport/art,friends/aquaintances","language, daily customs, daily habits, idealized lifestyle",NA,NA,NA,"general","post","1","United States of America",NA,NA,NA,"United States of America","Cuba",NA,NA,NA,NA,NA,"Cuba",NA,"1978"
 "75","Benet-Martinez Acculturation Scale","@Celenk2011","BenetMartinez2006","Benet-Martínez, V. (2006). Benet-Martínez Acculturation Scale. Retrieved from http://www.ocf.berkeley.edu/~psych/bmas.html",NA,"Your Ethnicity (cultural background):
@@ -4344,7 +4360,8 @@ Assimilation
 16.        I would like to have a job where I can serve as a model for others.
 17.        Abortion is okay when the mother's health is at risk.
 18.        Children should learn to be tolerant of others.
-","18","1","7","(1 = strongly disagree, 7 = strongly agree)","* Reverse scored",NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,1,NA,"N/A","continuous (incl. scale)","home/family,work/money/finances,politics","values",NA,NA,NA,"students","post","1","United States of America",NA,NA,NA,"United States of America","Asia",NA,NA,NA,NA,NA,"Asia",NA,"2001"
+","18","1","7","1 = strongly disagree
+7 = strongly agree","* Reverse scored",NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,1,NA,"N/A","continuous (incl. scale)","home/family,work/money/finances,politics","values",NA,NA,NA,"students","post","1","United States of America",NA,NA,NA,"United States of America","Asia",NA,NA,NA,NA,NA,"Asia",NA,"2001"
 "116","European-American Values Scale for Asian-Americans—Revised (EAVS-AA-R)","own review","Hong2005","Hong, S., Kim, B. S. K., & Wolfe, M. M. (2005). A psychometric revision of the european american values scale for Asian Americans using the rasch model. Measurement and Evaluation in Counseling and Development, 37(4), 194–207. https://doi.org/10.1080/07481756.2005.11909760","10.1080/07481756.2005.11909760","1. I think it is fine for an unmarried woman to have a child.
 2. Sometimes, it is necessary for the government to stifle individual development. *
 3. You can do anything you put your mind to.
@@ -4484,7 +4501,7 @@ Children’s Rghts: 2, 5, 7, 11",NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA
 14. I use Turkish mass media (TV, press, magazines, etc.). 
 15. Most of my friends come from my home country
 ","15","1","7","0 = absolutely not
-6= absolutely",NA,1,1,1,1,1,1,1,1,NA,NA,NA,NA,1,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","spirituality/religion,home/family,entertainment/media/news,friends/aquaintances,politics",NA,NA,NA,NA,"student men","post","1",NA,NA,NA,NA,"Germany",NA,NA,NA,NA,NA,NA,"Turkey",NA,"2002"
+6 = absolutely",NA,1,1,1,1,1,1,1,1,NA,NA,NA,NA,1,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","spirituality/religion,home/family,entertainment/media/news,friends/aquaintances,politics",NA,NA,NA,NA,"student men","post","1",NA,NA,NA,NA,"Germany",NA,NA,NA,NA,NA,NA,"Turkey",NA,"2002"
 "122","General Acculturation Index (GAI)","own review","Balcazar1995","Balcazar, H., Castro, F. G., & Krull, J. L. (1995). Cancer Risk Reduction in Mexican American Women: The Role of Acculturation, Education, and Health Risk Factors. Health Education Quarterly, 22(1), 61–84. https://doi.org/10.1177/109019819502200107","10.1177/109019819502200107","1. I speak:
 1. Only Spanish
 2. Spanish better than English
@@ -5340,7 +5357,8 @@ The average citizen can influence governmental decisions","55","4","7","seven-po
 "141","interethnic contact","own review","Martinovic2009","Martinovic, B., Tubergen, F. van, & Maas, I. (2009). Changes in immigrants’ social integration during the stay in the host country: The case of non-western immigrants in the Netherlands. Social Science Research, 38(4), 870–882. https://doi.org/10.1016/j.ssresearch.2009.06.001","10.1016/j.ssresearch.2009.06.001","‘contact with Dutch people in associations’ (yes/no), 
 ‘having Dutch people over for a visit’ (yes/no),
 ‘predominantly having contact with Dutch in free time’ (yes/no)","3","1","3","count 'yes' [0, 1, 2, 3]","not validated",NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,1,NA,"N/A","continuous (incl. scale)","recreation/sport/art,friends/aquaintances",NA,NA,NA,NA,"general","post","0",NA,NA,NA,NA,"Netherlands",NA,NA,NA,NA,NA,NA,"any",NA,"2009"
-"142","Internal-External Ethnic Identity Measure","@Celenk2011","Kwan1997","Kwan, K. L. K., & Sodowsky, G. R. (1997). Internal and external ethnic identity and their correlates: A study of Chinese American immigrants. Journal of Multicultural Counseling and Development, 25(1), 51–67. https://doi.org/10.1002/j.2161-1912.1997.tb00315.x","10.1002/j.2161-1912.1997.tb00315.x","home/family,consumption/shopping,entertainment/media/news,transport/travel,recreation/sport/art,friends/aquaintances,community","24","4","6","6 = agree strongly to 1 = disagree strongly",NA,NA,1,1,1,NA,1,1,1,NA,NA,NA,NA,NA,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","home/family,consumption/shopping,entertainment/media/news,transport/travel,recreation/sport/art,friends/aquaintances,community","food, damily, social contacts, community, values",NA,NA,NA,"general","post","0","United States of America",NA,NA,NA,"United States of America","China",NA,NA,NA,NA,NA,"China",NA,"1997"
+"142","Internal-External Ethnic Identity Measure","@Celenk2011","Kwan1997","Kwan, K. L. K., & Sodowsky, G. R. (1997). Internal and external ethnic identity and their correlates: A study of Chinese American immigrants. Journal of Multicultural Counseling and Development, 25(1), 51–67. https://doi.org/10.1002/j.2161-1912.1997.tb00315.x","10.1002/j.2161-1912.1997.tb00315.x","home/family,consumption/shopping,entertainment/media/news,transport/travel,recreation/sport/art,friends/aquaintances,community","24","4","6","1 = disagree strongly
+6 = agree strongly",NA,NA,1,1,1,NA,1,1,1,NA,NA,NA,NA,NA,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","home/family,consumption/shopping,entertainment/media/news,transport/travel,recreation/sport/art,friends/aquaintances,community","food, damily, social contacts, community, values",NA,NA,NA,"general","post","0","United States of America",NA,NA,NA,"United States of America","China",NA,NA,NA,NA,NA,"China",NA,"1997"
 "143","Iranian Acculturation Scale","own review","Shahim2007","Shahim, S. (2007). Psychometric characteristics of the Iranian Acculturation Scale. Psychological Reports, 101(5), 55. https://doi.org/10.2466/PR0.101.5.55-60",NA,"How important is it that Iranian tradition be followed:
 1. In what language do you usually think? 
 2. When did you read a book in Farsi? 
@@ -5445,7 +5463,8 @@ Italian Identification and attachment
 28.        I have the sentiment of ‘‘italianita’’. 
 29.        I consider myself to be Italian. 
 30.        I would like to be known as ‘‘Italian’’ by people of Italian descent.
-","30","5","9","1=Disagree Strongly and 9=Agree Strongly","language use, mass media exposure, social interactions, identification, attachment",1,1,1,1,1,1,1,1,NA,NA,NA,NA,1,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","home/family,entertainment/media/news,recreation/sport/art,friends/aquaintances","language, mass media, social interactions, identification, attachment",NA,NA,NA,"general","post","0","Canada",NA,NA,NA,"Canada","Italy",NA,NA,NA,NA,NA,"Italy",NA,"2001"
+","30","5","9","1=Disagree Strongly 
+9=Agree Strongly","language use, mass media exposure, social interactions, identification, attachment",1,1,1,1,1,1,1,1,NA,NA,NA,NA,1,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","home/family,entertainment/media/news,recreation/sport/art,friends/aquaintances","language, mass media, social interactions, identification, attachment",NA,NA,NA,"general","post","0","Canada",NA,NA,NA,"Canada","Italy",NA,NA,NA,NA,NA,"Italy",NA,"2001"
 "147","Ladakh Acculturation Scale – Tridimensional (LAS-T) Scale","own review","Ozer2016","Ozer, S., & Schwartz, S. J. (2016). Measuring globalization-based acculturation in Ladakh: Investigating possible advantages of a tridimensional acculturation scale. International Journal of Intercultural Relations, 53, 1–15. https://doi.org/10.1016/j.ijintrel.2016.05.002","10.1016/j.ijintrel.2016.05.002","1. I feel good and proud wearing Ladakhi clothes (gonja & sulma). 
 2. I like to wear Indian clothes. 
 3. I like to wear Western clothes. 
@@ -5497,9 +5516,9 @@ How well do you
 4.write [national language]?
 ","8","2","5","1=Not at all
 2=Not very well
-3=Somewhat
-4=Fairly well
-5= Very well",NA,NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,1,NA,"N/A","continuous (incl. scale)","general",NA,NA,NA,NA,"youth","post","0",NA,NA,NA,NA,"multiple",NA,NA,NA,NA,NA,NA,"multiple",NA,"2006"
+3=Somewhat
+4=Fairly well
+5= Very well",NA,NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,1,NA,"N/A","continuous (incl. scale)","general",NA,NA,NA,NA,"youth","post","0",NA,NA,NA,NA,"multiple",NA,NA,NA,NA,NA,NA,"multiple",NA,"2006"
 "149","Language Use (ICSEY)","own review","ICSEYteam2006","ICSEY team. (2006). International Comparative Study of Ethno-Cultural Youth 2006. https://doi.org/10.17026/dans-zsm-w6kb","10.17026/dans-zsm-w6kb","What language do you speak at home?
 
 With parents
@@ -5972,7 +5991,7 @@ The answer choices for questions 25-28 were the same as for question 4.
 49. Children should always be polite when speaking to any adult. (RESP: .46, .51)
 50. A wife should always support her husband’s decisions, even if she does not agree with him. (TGEN: .51, .49)","50","9","5","1 = Not at all.
 2 = A little.
-3 = Somewhat.
+3 = Somewhat.
 4 = Very much.
 5 = Completely.","subscales Mexican:
 Familism - Support
@@ -6014,7 +6033,8 @@ Asset integration:
 "163","minority and majority group contact (SIM)","own review","Maliepaard2012","Maliepaard, M., & Phalet, K. (2012). Social Integration and Religious Identity Expression among Dutch Muslims: The role of minority and majority group contact. Social Psychology Quarterly, 75(2), 131–148. https://doi.org/10.1177/0190272511436353","10.1177/0190272511436353","1. How often do you have contact with your Turkish/Moroccan friends/acquaintances
 2. How often do you have contact with your Turkish/Moroccan neighbors/people in your neighbourhood
 3. How often do you have contact with your Dutch friends/acquaintances
-4. How often do you have contact with your Dutch neighbors/people in your neighbourhood","4","2","5","less than once a year/never (1) to daily (5)",NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,1,NA,"N/A","continuous (incl. scale)","friends/aquaintances,community",NA,NA,NA,NA,"general","post","0",NA,NA,NA,NA,"Netherlands",NA,NA,NA,NA,NA,NA,"Marocco, Turkey",NA,"2012"
+4. How often do you have contact with your Dutch neighbors/people in your neighbourhood","4","2","5","less than once a year/never (1) 
+daily (5)",NA,NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,1,NA,"N/A","continuous (incl. scale)","friends/aquaintances,community",NA,NA,NA,NA,"general","post","0",NA,NA,NA,NA,"Netherlands",NA,NA,NA,NA,NA,NA,"Marocco, Turkey",NA,"2012"
 "164","Modified Bicultural Involvement Questionnaire","own review","Johnson-Agbakwu2016","Johnson-Agbakwu, C. E., Flynn, P., Asiedu, G. B., Hedberg, E., & Breitkopf, C. R. (2016). Adaptation of an Acculturation Scale for African Refugee Women. Journal of Immigrant and Minority Health, 18(1), 252–262. https://doi.org/10.1007/s10903-014-9998-6","10.1007/s10903-014-9998-6","1.	What is your native language?
 2.	How often do you speak your native language at home?
 3.	How often do you speak your native language at work?
@@ -6091,7 +6111,8 @@ No Factor items
 5. It is exciting to go to places with a different cultural heritage, even though I don‟t know what might happen. 
 6. Sometimes it is important for me to put my own culture into perspective and acknowledge different views. 
 7. It gives me pleasure to meet people from other cultures. 
-8. It gives me pleasure to go to places where people from other countries display their culture (e.g. markets, arts festivals, concerts).","8","1","7","1 (strongly disagree) to 7 (strongly agree)",NA,1,1,1,NA,1,1,1,NA,NA,NA,NA,NA,1,1,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","consumption/shopping,entertainment/media/news,friends/aquaintances",NA,NA,NA,NA,"general","post","0",NA,NA,NA,NA,"New Zealand",NA,NA,NA,NA,NA,NA,"any",NA,"2017"
+8. It gives me pleasure to go to places where people from other countries display their culture (e.g. markets, arts festivals, concerts).","8","1","7","1 (strongly disagree) 
+7 (strongly agree)",NA,1,1,1,NA,1,1,1,NA,NA,NA,NA,NA,1,1,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","consumption/shopping,entertainment/media/news,friends/aquaintances",NA,NA,NA,NA,"general","post","0",NA,NA,NA,NA,"New Zealand",NA,NA,NA,NA,NA,NA,"any",NA,"2017"
 "167","Motivation for Cultural Maintenance (MCM)","own review","Recker2017","Recker, C., Milfont, T. L., & Ward, C. (2017). A dual-process motivational model of acculturation behaviors and adaptation outcomes. Universitas Psychologica, 16(5), 1–15. https://doi.org/10.11144/javeriana.upsy16-5.dmma","10.11144/javeriana.upsy16-5.dmma","1. It is important for me to celebrate the holidays of my country of origin. 
 2. It gives me a sense of security to socialise with people who share my cultural heritage. 
 3. It is important to keep my cultural traditions because they are part of who I am. 
@@ -6100,7 +6121,8 @@ No Factor items
 6. Maintaining my cultural traditions helps me to structure my life here in New Zealand. 
 7. It is deeply satisfying for me to have an emotional link with my cultural heritage. 
 8. I do not feel the need to practice my ethnic traditions. (R) 
-9. It gives me pleasure to meet people who share my cultural heritage.","9","1","7","1 (strongly disagree) to 7 (strongly agree)",NA,1,1,1,1,1,1,1,1,NA,NA,NA,NA,1,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","friends/aquaintances,community",NA,NA,NA,NA,"general","post","0",NA,NA,NA,NA,"New Zealand",NA,NA,NA,NA,NA,NA,"any",NA,"2017"
+9. It gives me pleasure to meet people who share my cultural heritage.","9","1","7","1 (strongly disagree) 
+7 (strongly agree)",NA,1,1,1,1,1,1,1,1,NA,NA,NA,NA,1,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","friends/aquaintances,community",NA,NA,NA,NA,"general","post","0",NA,NA,NA,NA,"New Zealand",NA,NA,NA,NA,NA,NA,"any",NA,"2017"
 "168","Multicultural Acculturation Scale","@Matsudaira2006","Wong-Rieger1987","Wong-Rieger, D., & Quintana, D. (1987). Comparative Acculturation of Southeast Asian and Hispanic Immigrants and Sojourners. Journal of Cross-Cultural Psychology, 18(3), 345–362. https://doi.org/10.1177/0022002187018003005","10.1177/0022002187018003005","Degree to which the following are typically like those of their culture of origin:
 1.        daily activities
 2.        work
@@ -6449,7 +6471,8 @@ friends",NA,NA,1,1,NA,NA,1,1,NA,NA,NA,NA,NA,NA,1,1,NA,1,NA,"complex scale","cont
 ","21","1","2","Yes / No",NA,NA,1,1,NA,NA,1,1,NA,NA,NA,NA,NA,NA,1,1,NA,NA,1,NA,"complex scale","various","spirituality/religion,home/family,consumption/shopping,recreation/sport/art,community","general",NA,NA,NA,"general","N/A","1","United States of America",NA,NA,NA,"United States of America","Native",NA,NA,NA,NA,NA,"Native","not migration","1993"
 "178","National Identity","own review","Fuller-Rowell2013","Fuller-Rowell, T. E., Ong, A. D., & Phinney, J. S. (2013). National Identity and Perceived Discrimination Predict Changes in Ethnic Identity Commitment: Evidence from a Longitudinal Study of Latino College Students. Applied Psychology, 62(3), 406–426. https://doi.org/10.1111/j.1464-0597.2012.00486.x","10.1111/j.1464-0597.2012.00486.x","1. I strongly endorse the values of mainstream American culture
 2. I have a strong feeling of belonging to, or being part of, American culture
-3. I feel strongly attached to American society or culture","3","1","5","“strongly disagree” (1) to “strongly agree” (5)",NA,1,NA,1,NA,1,NA,1,NA,NA,NA,NA,NA,1,NA,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","general",NA,NA,NA,NA,"student","post","1",NA,NA,NA,NA,"United States of America",NA,NA,NA,NA,NA,NA,"LatinX",NA,"2013"
+3. I feel strongly attached to American society or culture","3","1","5","“strongly disagree” (1) 
+“strongly agree” (5)",NA,1,NA,1,NA,1,NA,1,NA,NA,NA,NA,NA,1,NA,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","general",NA,NA,NA,NA,"student","post","1",NA,NA,NA,NA,"United States of America",NA,NA,NA,NA,NA,NA,"LatinX",NA,"2013"
 "179","Native American Acculturation Scale","@Celenk2011; @Matsudaira2006","Garrett2000","Garrett, M. T., & Pichette, E. F. (2000). Red as an apple: Native American acculturation and counseling with or without reservation. Journal of Counseling and Development, 78(1), 3–13. https://doi.org/10.1002/j.1556-6676.2000.tb02554.x","10.1002/j.1556-6676.2000.tb02554.x","Instructions: This questionnaire will collect information about your background and cultural identity. For each item, choose the one answer that best describes you by filling in the blank.
 
 ___1. What language can you speak?
@@ -6630,8 +6653,18 @@ How often do the following people treat you unfairly or negatively because of yo
 7. Other adults outside school
 8. Other students
 9. Other kids/teens outside school
-","9","1","5","Item 1-5: 1=strong agree, 2=s’what disagree, 3=Not sure/neutral, 4=Somewhat agree, 5=Strongly agree
-Item 6-9: 1=Never, 2=Rarely, 3=Sometimes, 4=Often, 5=Very often",NA,1,NA,1,NA,1,NA,1,NA,NA,NA,NA,NA,1,NA,1,NA,NA,1,NA,"N/A","continuous (incl. scale)","education/school",NA,NA,NA,NA,"youth","post","0",NA,NA,NA,NA,"multiple",NA,NA,NA,NA,NA,NA,"multiple",NA,"2006"
+","9","1","5","Item 1-5: 
+1=strong agree
+2=somewhat disagree
+3=Not sure/neutral
+4=Somewhat agree
+5=Strongly agree
+Item 6-9: 
+1=Never
+2=Rarely
+3=Sometimes
+4=Often
+5=Very often",NA,1,NA,1,NA,1,NA,1,NA,NA,NA,NA,NA,1,NA,1,NA,NA,1,NA,"N/A","continuous (incl. scale)","education/school",NA,NA,NA,NA,"youth","post","0",NA,NA,NA,NA,"multiple",NA,NA,NA,NA,NA,NA,"multiple",NA,"2006"
 "182","Perceived Discrimination (MIRIPS)","@Celenk2011","Berry2010","Berry, J. W. (2010). Mutual Intercultural Relations in Plural Societies (MIRIPS) questionnaire. https://www.wgtn.ac.nz/cacr/research/mirips/mirips-questionnaires-and-presentations/MIRIPSquestionnaire.pdf","https://www.wgtn.ac.nz/cacr/research/mirips/mirips-questionnaires-and-presentations/MIRIPSquestionnaire.pdf","When people with different backgrounds are together, one may sometimes feel unfairly treated. The following questions are about these kinds of experiences.
 
 1.        I think that others have behaved in an unfair or negative way towards my [ethnic/national] group
@@ -6742,8 +6775,11 @@ Place dependence:
 “strongly agree” (5)","“X” refers to the specific location",NA,1,1,NA,NA,1,1,NA,NA,NA,NA,NA,NA,1,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","general",NA,NA,NA,NA,"students","N/A","1",NA,NA,NA,NA,"United States of America",NA,NA,NA,NA,NA,NA,"United States of America","not validated with migrants","2003"
 "186","political participation (Jeong, & Kim, 2016)","own review","Jeong2016","Jeong, H. O., & Kim, Y. S. (2016). North Korean women defectors in South Korea and their political participation. International Journal of Intercultural Relations, 55, 20–31. https://doi.org/10.1016/j.ijintrel.2016.07.008","10.1016/j.ijintrel.2016.07.008","(1) “I will take part in voting if there is a parliamentary by-election this Saturday” (labeled as the voting participation variable).
 (2) “I am willing to participate in political activities, such as election activities, joining a party, etc.” (denoted as the variable on participation in elections or parties).
-(3) “I am willing to work for civic organizations if provided the opportunity” (designated as the variable on participation in civic organizations).","3","1","5","“absolutely disagree” = 1, “disagree” = 2, “neither
-agree nor disagree” = 3, “agree” = 4, “absolutely agree” = 5",NA,NA,1,1,NA,NA,1,1,NA,NA,NA,NA,NA,NA,1,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","community,politics",NA,NA,NA,NA,"refugees","post","0",NA,NA,NA,NA,"South Korea",NA,NA,NA,NA,NA,NA,"North Korea",NA,"2016"
+(3) “I am willing to work for civic organizations if provided the opportunity” (designated as the variable on participation in civic organizations).","3","1","5","“absolutely disagree” = 1
+“disagree” = 2
+“neither agree nor disagree” = 3
+“agree” = 4
+“absolutely agree” = 5",NA,NA,1,1,NA,NA,1,1,NA,NA,NA,NA,NA,NA,1,1,NA,NA,1,NA,"complex scale","continuous (incl. scale)","community,politics",NA,NA,NA,NA,"refugees","post","0",NA,NA,NA,NA,"South Korea",NA,NA,NA,NA,NA,NA,"North Korea",NA,"2016"
 "187","Preferred and Perceived Acculturation Strategies","own review","Zagefka2002","Zagefka, H., & Brown, R. (2002). The relationship between acculturation strategies, relative fit and intergroup relations: Immigrant-majority relations in Germany. European Journal of Social Psychology, 32(2), 171–188. https://doi.org/10.1002/ejsp.73","10.1002/ejsp.73","Attitude towards culture maintenance:
 1. ‘I think it is important that my cultural group in Germany maintains its culture’
 2. ‘I think my cultural group in Germany should maintain its religion, language and clothing’ 
@@ -6809,8 +6845,18 @@ generation: 0 to 2","4th optional",NA,1,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,
 13. I worry a lot of the time.
 14. I feel lonely even with other people.
 15. I lose interest and pleasure in things which I usually enjoy.
-","15","3","5","Item 1-9: 1=strongly disagree, 2=s’what disagree, 3=not sure/neutral, 4=S’what agree, 5=strongly agree
-Item 10-15: 1=Never, 2=Rarely, 3=Sometimes, 4=Often, 5=Very often","Dimensions:
+","15","3","5","Item 1-9: 
+1=strongly disagree
+2=somewhat disagree
+3=not sure/neutral
+4=somewhat agree
+5=strongly agree
+Item 10-15: 
+1=Never
+2=Rarely
+3=Sometimes
+4=Often
+5=Very often","Dimensions:
 Item 1-5: Psychosomatic
 Item 6-10: Anxiety
 Item 11-15: Depression
@@ -6889,7 +6935,7 @@ Please indicate the degree to which you would like to adopt the host culture in 
 24.        Ways of thinking: principles and values
 ","24","4","5","1: not at all
 2: a little
-3: some’
+3: some
 4: quite a lot
 5: very much",NA,NA,1,1,1,NA,1,1,1,NA,NA,NA,NA,NA,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","spirituality/religion,home/family,work/money/finances,friends/aquaintances","work, economic, social relations, family relations, religion, ways of thinking",NA,NA,NA,"general","post","1","Spain",NA,NA,NA,"Spain","Morocco","Sub-Saharan Africa",NA,NA,NA,NA,"Morocco, Sub-Saharan Africa",NA,"2007"
 "196","Revised Multidimensional Inventory of Black Identity","own review","Pawar2014","Sellers, R. M., Rowley, S. A. J., Chavous, T. M., Shelton, J. N., & Smith, M. A. (1997). Multidimensional Inventory of Black Identity: A preliminary investigation of reliability and constuct validity. Journal of Personality and Social Psychology, 73(4), 805–815. https://doi.org/10.1037/0022-3514.73.4.805","10.1037/0022-3514.73.4.805","Centrality Scale 
@@ -7393,10 +7439,26 @@ extreme diffculty",NA,NA,1,1,NA,NA,1,1,NA,NA,NA,NA,NA,NA,1,1,NA,NA,1,NA,"complex
 6. I feel lonely at school.
 7. I believe my teacher thinks my school performance is
 8. My present average grade is
-9. I have been absent from school all day or part of the day without a valid reason.","9","1","5","Item 1-6: 1=Strongly disagree, 2=S-what disagree, 3=Not sure/neutral, 4=Somewhat agree, 5=Strongly agree
-Item 7: 1=Poor, 2=Below average, 3=Average, 4=Above average, 5=Very good
-Item 8: free text entry
-Item 9: 1=Never, 2=almost never, 3=A few times a year, 4=A few times a month, 5=A few times a week",NA,1,1,1,1,1,1,1,1,NA,NA,NA,NA,1,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","education/school",NA,NA,NA,NA,"youth","post","0",NA,NA,NA,NA,"multiple",NA,NA,NA,NA,NA,NA,"multiple",NA,"2006"
+9. I have been absent from school all day or part of the day without a valid reason.","9","1","5","Item 1-6: 
+1=Strongly disagree
+2=Somewhat disagree
+3=Not sure/neutral
+4=Somewhat agree
+5=Strongly agree
+Item 7: 
+1=Poor
+2=Below average
+3=Average
+4=Above average
+5=Very good
+Item 8: 
+free text entry
+Item 9: 
+1=Never
+2=almost never
+3=A few times a year
+4=A few times a month
+5=A few times a week",NA,1,1,1,1,1,1,1,1,NA,NA,NA,NA,1,1,1,1,NA,1,NA,"complex scale","continuous (incl. scale)","education/school",NA,NA,NA,NA,"youth","post","0",NA,NA,NA,NA,"multiple",NA,NA,NA,NA,NA,NA,"multiple",NA,"2006"
 "216","Sociocultural Adaptation Scale","@Celenk2011","Ward1994","Ward, C., & Kennedy, A. (1994). Acculturation strategies, psychological adjustment, and sociocultural competence during cross-cultural transitions. International Journal of Intercultural Relations, 18(3), 329–343. https://doi.org/10.1016/0147-1767(94)90036-1","10.1016/0147-1767(94)90036-1","1.        Making friends
 2.        Using the transport system
 3.        Making yourself understood
@@ -7496,7 +7558,7 @@ cultural differences: 1 = very similar to 7 = very different",NA,NA,1,1,NA,NA,1,
 19.        Adapting to the pace of life. 
 20.        Understanding and speaking the host language. 
 21.        Reading and writing the host language.
-","21","5","5","1 = No difficulty, 
+","21","5","5","1 = No difficulty
 5 = Extreme difficulty","Subscales:
 1 = Interpersonal Communication; 
 2 = Academic/Work Performance; 
