@@ -11,7 +11,7 @@ author:
 - "Author Information:"
 - "Correspondence concerning this supplemental material should be addressed to ██████ ██████████, ██████████ ██ ██████████, █████████ ██ ██████████, █████ ██████████ ███, ████ ██ █████████ ████████████████. E-mail: █████████████████"
 - 'The main manuscript is available at <a href="https://www.doi.org/ToBePublished" target="_blank">doi.org/ToBePublished</a>'
-- 'The data repository for this manuscript is available at <a href="https://doi.org/10.34894/U988DU" target="_blank">doi.org/10.34894/U988DU</a>'
+- 'The data repository for this manuscript is available at <a href="https://osf.io/n587w/?view_only=0809085870604eda8349baa90b4fd3e5" target="_blank">https://osf.io/n587w/?view_only=0809085870604eda8349baa90b4fd3e5</a>'
 - 'The GitHub repository for this manuscript is available at <a href="https://github.com/maskedForPeerReview" target="_blank">github.com/maskedForPeerReview</a>'
 - 'An interactive directory of all included acculturation scales is available at <a href="https://acculturation-review.shinyapps.io/scale-directory/" target="_blank">acculturation-review.shinyapps.io/scale-directory/</a>'
 date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
