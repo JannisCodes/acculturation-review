@@ -57,7 +57,7 @@ csl: apa.csl
 # !IMPORTANT!
 # BEFORE FIRST RENDER:
 # To install all relevant packages please run "renv::restore()" (or renv::init() and then initiate from lockfile) in the console before the first use to ensure that all packages are using the correct version.
-# to store the packages in a contained library within the project folder: renv::settings$use.cache(FALSE)
+# to store the packages in a contained library within the project folder: renv::settings$use.cache(FALSE) and add 'RENV_CONFIG_SANDBOX_ENABLED = FALSE' to an '.Renviron' file 
 # remotes::install_github("rstudio/webshot2")
 lib <- c("rmarkdown", "knitr", "remedy", "bookdown", "rmdfiltr", "psych",
          "ggplot2", "ggthemes", "haven", "RColorBrewer", "plotly", "forcats", "wordcloud", "visNetwork", "ggwordcloud", "gridExtra",
