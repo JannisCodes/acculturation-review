@@ -402,6 +402,19 @@ Our main goal was to assess the use of the four affect, behavior, cognition, and
 
 Looking at the number of aspects considered together we also see substantial differences in what kind of theories include a certain aspect. Theories that included behaviors considered an average of `r format(round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Behavior"],2)-1,nsmall=2)` other aspects (\textit{SD} = `r format(round(TheoElementComplexity$sdComplexity[TheoElementComplexity$Element=="Behavior"],2),nsmall=2)`), and theories considering cognitions, on average, also included `r format(round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Cognition"],2)-1,nsmall=2)` other aspects (\textit{SD} = `r format(round(TheoElementComplexity$sdComplexity[TheoElementComplexity$Element=="Cognition"],2),nsmall=2)`). Theories that included the more internal aspects of affect or desire showed a considerably higher number of additional aspects considered (affect: \textit{M} = `r format(round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Affect"],2),nsmall=2)`, \textit{SD} = `r format(round(TheoElementComplexity$sdComplexity[TheoElementComplexity$Element=="Affect"],2),nsmall=2)`; desire: \textit{M} = `r format(round(TheoElementComplexity$avgComplexity[TheoElementComplexity$Element=="Desire"],2),nsmall=2)`, \textit{SD} = `r format(round(TheoElementComplexity$sdComplexity[TheoElementComplexity$Element=="Desire"],2),nsmall=2)`). Thus, most scales measure multiple dimensions of acculturation (\textit{M} = `r format(round(TheoComplexityAverage,2),nsmall=2)`, \textit{SD} = `r format(round(ThoeComplexitySD,2),nsmall=2)`; also see Figure \ref{fig:LiteratureComparison}). Yet they tend to focus on more external aspects of behavioral and cognitive acculturation, and less on internal aspects  of affects and desires. This is also visible in the observation that there were no theories that exclusively focused on emotional or motivational acculturation while this was the case for both cognitions and behaviors. And if emotional or desire aspects were considered they were found in theories that tended to already include a higher number of other experience aspects. 
 
+<!-- Process -->
+```{r theoreticalProcess, include=F}
+theoProcessFocus <- as.data.frame(summarytools::freq(dt.Theories.Included$Time, order = "freq"))
+names(theoProcessFocus) <- gsub("% ", "Perc", names(theoProcessFocus))
+```
+
+\color{blue}
+To assess the process focus of the theoretical works, we assessed whether authors self-identified their works as a process or outcome focused. We found that `r theoProcessFocus["dynamic",]$Freq` of the `r theoProcessFocus["Total",]$Freq` theoretical works proposed dynamic conceptualizations of psychological acculturation (`r round(theoProcessFocus["dynamic",]$PercValid,2)`\%). This slight majority is a notably high percentage, considering that past reviews of the acculturation literature have pointed to a small number of studies actually testing dynamic theories \citep[e.g.,][]{Brown2011, Ward2019}.  
+
+Content
+
+\color{black}
+
 \begin{figure}[h]
 \centering
 \caption{Theoretical Literature: Bar graph of the experience element combinations.}
@@ -1390,7 +1403,6 @@ ggstatsplot:::ggsignif_adder(
   df_pairwise = df_pair,
   ggsignif.args = list(textsize = 4, tip_length = 0.00025)
 )
-
 ```
 
 ```{r  FieldPlotComplexityAverage1, include=F, fig.width=16, fig.height=9}

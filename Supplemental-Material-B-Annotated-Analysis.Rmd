@@ -956,6 +956,30 @@ ggdraw() +
 ```
 
 
+## Process  
+
+To assess the focus on psychological acculturation as a process or an outcome, we coded whether authors self-identified the theory as a process (e.g., 'process', 'development', 'longitudinal',  'temporal', 'dynamic') or an outcome (e.g., 'static', 'outcome', 'markers', 'consequence'). 
+
+```{r theoryProcess}
+dt.Theories.Included %>%
+  dplyr::select(Time) %>%
+  mutate(Time = replace_na(Time, "N/A")) %>%
+  group_by(Time) %>%
+  summarise(Frequency = n(),
+            Percentage = Frequency/nrow(.)*100) %>%
+  arrange(desc(Frequency)) %>%
+  kbl(., caption = "Theoretical Literature: <br>Process Focus",
+      format = "html",
+      digits = 2,
+      col.names = c("Conceptualisation", "Frequency", "Percentage")) %>%
+  kable_classic(full_width = F, 
+                lightable_options = "hover", 
+                html_font = "Cambria")
+
+```
+
+We find that a slight majority of theories focuses on dynamic conceptualizations of psychological acculturation. This is a relatively high percentage, considering that past reviews of the acculturation literature have pointed to a small number of studies actually testing dynamic theories [@Ward2019].
+
 # **Methodological Literature**  
 
 ## Descriptives  
@@ -2877,7 +2901,8 @@ empiricalDataDisciplines %>%
   summarise(Frequency=n()) %>%
   spread(discipline02, Frequency) %>%
   arrange(desc(Psychology)) %>%
-  mutate_if(is.numeric, funs(replace_na(., ""))) %>%
+  ungroup %>%
+  mutate_if(is.numeric, funs(replace_na(as.character(.), ""))) %>%
   dplyr::select(Term, Psychology, 
                 `Medicine, Nursing, & Health`,
                 `Social Sciences (miscellaneous)`,
@@ -2902,7 +2927,7 @@ empiricalDataDisciplines %>%
   summarise(Frequency=n()) %>%
   spread(discipline02, Frequency) %>%
   arrange(desc(Psychology)) %>%
-  mutate_if(is.numeric, funs(replace_na(., ""))) %>%
+  mutate_if(is.numeric, funs(replace_na(as.character(.), ""))) %>%
   dplyr::select(Method, Psychology, 
                 `Medicine, Nursing, & Health`,
                 `Social Sciences (miscellaneous)`,
@@ -2945,7 +2970,7 @@ empiricalDataDisciplines %>%
   summarise(Frequency=n()) %>%
   spread(discipline02, Frequency) %>%
   arrange(desc(Psychology)) %>%
-  mutate_if(is.numeric, funs(replace_na(., ""))) %>%
+  mutate_if(is.numeric, funs(replace_na(as.character(.), ""))) %>%
   dplyr::select(Measure, Psychology, 
                 `Medicine, Nursing, & Health`,
                 `Social Sciences (miscellaneous)`,
@@ -3011,7 +3036,7 @@ empiricalDataDisciplines %>%
   spread(discipline02, Frequency) %>%
   filter(!is.na(`Variable Type`)) %>%
   arrange(desc(Psychology)) %>%
-  mutate_if(is.numeric, funs(replace_na(., ""))) %>%
+  mutate_if(is.numeric, funs(replace_na(as.character(.), ""))) %>%
   dplyr::select(`Variable Type`, Psychology, 
                 `Medicine, Nursing, & Health`,
                 `Social Sciences (miscellaneous)`,
@@ -3035,7 +3060,7 @@ empiricalDataDisciplines %>%
   spread(discipline02, Frequency) %>%
   arrange(desc(Psychology)) %>%
   filter(!is.na(`Includes Majority`)) %>%
-  mutate_if(is.numeric, funs(replace_na(., ""))) %>%
+  mutate_if(is.numeric, funs(replace_na(as.character(.), ""))) %>%
   dplyr::select(`Includes Majority`, 
                 Psychology, 
                 `Medicine, Nursing, & Health`,
@@ -3256,7 +3281,7 @@ empiricalDataDisciplines %>%
   spread(discipline02, Frequency) %>%
   arrange(desc(Psychology)) %>%
   filter(!is.na(MigrationTime)) %>%
-  mutate_if(is.numeric, funs(replace_na(., ""))) %>%
+  mutate_if(is.numeric, funs(replace_na(as.character(.), ""))) %>%
   dplyr::select(MigrationTime, Psychology, 
                 `Medicine, Nursing, & Health`,
                 `Social Sciences (miscellaneous)`,
@@ -3279,7 +3304,7 @@ empiricalDataDisciplines %>%
   spread(discipline02, Frequency) %>%
   filter(!is.na(Analysis)) %>%
   arrange(desc(Psychology)) %>%
-  mutate_if(is.numeric, funs(replace_na(., ""))) %>%
+  mutate_if(is.numeric, funs(replace_na(as.character(.), ""))) %>%
   dplyr::select(Analysis, Psychology, 
                 `Medicine, Nursing, & Health`,
                 `Social Sciences (miscellaneous)`,
