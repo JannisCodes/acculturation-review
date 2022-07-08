@@ -409,7 +409,7 @@ names(theoProcessFocus) <- gsub("% ", "Perc", names(theoProcessFocus))
 ```
 
 \color{blue}
-To assess the process focus of the theoretical works, we assessed whether authors self-identified their works as a process or outcome focused. We found that `r theoProcessFocus["dynamic",]$Freq` of the `r theoProcessFocus["Total",]$Freq` theoretical works proposed dynamic conceptualizations of psychological acculturation (`r round(theoProcessFocus["dynamic",]$PercValid,2)`\%). This slight majority is a notably high percentage, considering that past reviews of the acculturation literature have pointed to a small number of studies actually testing dynamic theories \citep[e.g.,][]{Brown2011, Ward2019}.  
+To assess the process focus of the theoretical works, we assessed whether authors self-identified their works as a process or outcome focused. We found that `r theoProcessFocus["dynamic",]$Freq` of the `r theoProcessFocus["Total",]$Freq` coded theoretical works proposed dynamic conceptualizations of psychological acculturation (`r round(theoProcessFocus["dynamic",]$PercValid,2)`\%). This slight majority is a notably high percentage, considering that past reviews of the acculturation literature have pointed to a small number of studies actually offering dynamic tests of theories \citep[e.g.,][]{Brown2011, Ward2019}.  
 
 Content
 
