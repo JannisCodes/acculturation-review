@@ -442,8 +442,6 @@ A final observation has been that while the inclusion of desire components was g
 
 Potentially: one example of single aspect focused theorizing \citep[e.g.][]{Weinreich2009}.
 
-
-
 \color{black}
 
 \begin{figure}[h]
