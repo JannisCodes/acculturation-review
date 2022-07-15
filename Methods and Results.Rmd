@@ -288,7 +288,7 @@ rowPack <- c(rep(paste0("Theoretical (N = ",nrow(dt.Theories.Included), ")"),4),
 rbind(theoElementCor, scaleElementCor, empElementCor) %>%
   kbl(., 
         #label = "",
-        caption = "Bivariate Asspociation of Aspects for all Literature Levels.",
+        caption = "Bivariate Association of Aspects for all Literature Levels.",
         format = "latex", 
         linesep = "",
         booktabs = T,
