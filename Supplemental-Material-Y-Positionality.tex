@@ -1,0 +1,112 @@
+% define document type (i.e., template. Here: A4 APA manuscript with 12pt font)
+\documentclass[man, 12pt, a4paper]{apa7}
+
+% add packages
+\usepackage[american]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage{hyperref}
+\usepackage[style=apa, sortcites=true, sorting=nyt, backend=biber, natbib=true, uniquename=false, uniquelist=false, useprefix=true]{biblatex}
+\usepackage{authblk}
+\usepackage{graphicx}
+\usepackage{setspace,caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{lipsum}
+\usepackage{soul}
+\usepackage{xcolor}
+\usepackage{fourier}
+\usepackage{stackengine}
+\usepackage{scalerel}
+\usepackage{fontawesome}
+\usepackage[normalem]{ulem}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{afterpage}
+\usepackage{float}
+\usepackage{titling}
+\usepackage{censor}
+\usepackage{tcolorbox}
+\usepackage{pdfpages}
+
+% formatting links in the PDF file
+\hypersetup{
+pdfpagemode={UseOutlines},
+bookmarksopen=true,
+bookmarksopenlevel=0,
+hypertexnames=false,
+colorlinks   = true, %Colours links instead of ugly boxes
+urlcolor     = blue, %Colour for external hyperlinks
+linkcolor    = blue, %Colour of internal links
+citecolor   = cyan, %Colour of citations
+pdfstartview={FitV},
+unicode,
+breaklinks=true,
+}
+
+% language settings
+\DeclareLanguageMapping{american}{american-apa}
+
+% add reference library file
+\addbibresource{references.bib}
+
+% Title and header
+\title{Supplemental Information Y: Positionality and Reflexivity}
+\shorttitle{SI Y: Positionality and Reflexivity}
+%\author{Jannis Kreienkamp, Laura F. Bringmann, Raili F. Engler, Peter de Jonge, Kai Epstude}
+\author{[authors masked for peer review]}
+
+% set indentation size
+\setlength\parindent{1.27cm}
+
+% adapt table and figure labels
+\setcounter{equation}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\setcounter{page}{1}
+\makeatletter
+\renewcommand{\theequation}{S\arabic{equation}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+
+% Start of the main document:
+\begin{document}
+
+% add title information (incl. title page and abstract)
+\begin{titlepage}
+	{\noindent\Large Supplementary Information for \par}
+	\vspace{0.5cm}
+	{\noindent\Large The Migration Experience: A Conceptual Framework and Systematic Review of Psychological Acculturation\par}
+	\vspace{1.5cm}
+	{\noindent\LARGE\bfseries \thetitle \par}
+	\vspace{2cm}
+	{\noindent\Large\itshape \theauthor \par}
+	\vfill
+	%\noindent Corresponding Author: Jannis Kreienkamp\par
+	%\noindent E-mail: j.kreienkamp@rug.nl\par
+	\noindent Corresponding Author: [masked for peer review]\par
+	\noindent E-mail: [masked for peer review]\par
+	\vfill
+
+    % Bottom of the page
+	{\noindent Last updated: \today\par}
+\end{titlepage}
+
+% add title again on page 1 (after title page)
+\begin{center}
+   \textbf{\thetitle} 
+\end{center}
+
+As part of our transparency-efforts, we would like to situate our framework, its application, and its limitations more broadly. For such a reflection, it is essential to expand on how our own beliefs, judgments, and practices have shaped the development of the framework and its application. 
+
+In the most practical sense, the extensive, multiyear efforts of this project grew out of a research-NGO collaboration and an academic frustration. The conceptual question of what we mean with `acculturation' and how we should assess it was initially raised during this local collaboration with a refugee resettlement organization. However, trying to make sense of the heterogeneous acculturation conceptualizations within the academic literature to develop more sustainable metrics for practitioners, initially highlighted that we miss an overarching manner in which we make sense of the concept. 
+
+Our own approach to this question was certainly guided by our own backgrounds and past experiences. The main author has been working with forced migrants for over 10 years in three countries around the world --- in refugee resettlement programs under the UNHCR, as a volunteer, language teacher, and integration coach with several smaller and larger migration organizations. Additionally, three of the five authors were first-generation migrants at the time of the writing of this article. Our own, decidedly applied experiences with the importance and diversity of psychological acculturation, have assuredly influenced our research process. Most notable are our choices to begin this project with a qualitative study and to take a phenomenological perspective. Both decisions showcase our focus on the migrant minority perspective in understanding the psychological mechanisms of acculturation. While we have not discussed the qualitative study in great methodological detail within the main text, taking a bottom-up and migrant-centered focus was fundamental to our approach.
+
+Similarly, all five authors have contributed a unique view on this project in terms of their academic background. The author-team consists of two social psychologists, but also includes a clinical-developmental, and an organizational psychologist, as well as a methodologist and statistician. The team not only exemplifies the diversity of fields that are affected by questions of acculturation but also brought about the basic structure of the framework we suggest. Making sense of the qualitative responses and the past conceptual literature, the ABCD division of the human experience is arguably a multidisciplinary structure that coherently conformed to the bodies of literature we were familiar with prior to the systematic scoping review. 
+
+Finally on a more abstract level, we would like to address some of the ontological and epistemological influences that have shaped our approach. Our research question and conceptual framework is fundamentally motivated by our structuralist ontology. One prime example of this is how our work assumes cultural universalism. Here we follow the stance that others like \citet[][]{Berry2009a} have taken, where we argue that the experiences of affect, behavior, cognition, and desire are culturally universal. Importantly, in our view, this does not imply cultural determinism or deny cultural and individual diversity. While we argue that everyone has the capacity for emotions, we do not argue that this determines which emotions an individual will feel at any given moment. In extension, the same holds true for affective acculturation, where we argue for its structural existence but not a culturally universal content. Similarly, the way in which we sought to validate our framework is arguably the result of our own empiricist epistemological background. In particular, we chose to systematically collect past academic literature and extracted conceptual aspects to apply the framework. Thus, while we have included some qualitative review elements, our efforts were mainly deductive and had a hypothesis-testing rather than hypothesis-generating quality in its application.
+
+\printbibliography
+
+\end{document}
