@@ -139,7 +139,7 @@ prismaGr(found = nrow(dt.TheorySearch),
   rsvg_pdf("./Figures/PRISMA_Theories.pdf")
 ```
 
-The most abstract level of our review was concerned with how researchers conceptualized psychological acculturation in their theoretical work. Our theory-specific literature search produced a total of `r nrow(dt.TheorySearch)` results from which we identified `r nrow(dt.TheorySearch.included)` theories. From our review of the empirical literature, we added an additional `r dt.TheorySearch.added` theories (total N = `r nrow(dt.Theories.Included)`, for exclusion reasons, see Table \ref{tab:ExclusionsCombined} and for our PRISMA diagram see Figure \ref{fig:PrismaCombined} A. A full table of all theories, with references, and final coding is available in our Supplemental Materials as well as on our open science repository \citep[see][]{Kreienkamp2021d, Kreienkamp2021e}. 
+The most abstract level of our review was concerned with how researchers conceptualized psychological acculturation in their theoretical work. Our theory-specific literature search produced a total of `r nrow(dt.TheorySearch)` results from which we identified `r nrow(dt.TheorySearch.included)` theories. From our review of the empirical literature, we added an additional `r dt.TheorySearch.added` theories (total N = `r nrow(dt.Theories.Included)`, for exclusion reasons, see Table \ref{tab:ExclusionsCombined} and for our PRISMA diagram see \hyperref[fig:PrismaCombined]{Figure \ref*{fig:PrismaCombined} A}. A full table of all theories, with references, and final coding is available in our Supplemental Materials as well as on our open science repository \citep[see][]{Kreienkamp2021d, Kreienkamp2021e}. 
 
 
 <!-- \begin{figure}[h] -->
@@ -908,7 +908,7 @@ empDisciplines <- as.data.frame(summarytools::freq(empiricalDataDisciplines$disc
 names(empDisciplines) <- gsub("% ", "Perc", names(empDisciplines))
 ```
 
-To summarize the journal data we then classified the journal fields into super-ordinate discipline codes. These discipline codes are based in part on the U.S. Department of Education’s subject classifications \citep[i.e., CIP;][]{InstituteofEducationSciences2020}, the U.K. academic coding system \citep[JACS 3.0;][]{HigherEducationStatisticsAgency2013}, the Australian and New Zealand Standard Research Classification \citep[ANZSRC 2020;][]{AustralianBureauofStatistics2020}, as well as the Fields of Knowledge project \citep{ThingsmadeThinkable2014}. We ultimately classified each journal into one of four mutually exclusive disciplines ('psychology': \textit{N} = `r empDisciplines["Psychology",]$Freq`, 'multidisciplinary': \textit{N} = `r empDisciplines["Multidisciplinary / Crossdisciplinary",]$Freq`, 'medicine, nursing, and health': \textit{N} = `r empDisciplines["Medicine, Nursing, & Health",]$Freq`, and 'social sciences (miscellaneous)': \textit{N} = `r empDisciplines["Social Sciences (miscellaneous)",]$Freq`. For a full discussion of the classifications see Online Supplemental Material B).  
+To summarize the journal data we then classified the journal fields into super-ordinate discipline codes. These discipline codes are based in part on the U.S. Department of Education’s subject classifications \citep[i.e., CIP,][]{InstituteofEducationSciences2020}, the U.K. academic coding system \citep[JACS 3.0,][]{HigherEducationStatisticsAgency2013}, the Australian and New Zealand Standard Research Classification \citep[ANZSRC 2020,][]{AustralianBureauofStatistics2020}, as well as the Fields of Knowledge project \citep{ThingsmadeThinkable2014}. We ultimately classified each journal into one of four mutually exclusive disciplines ('psychology': \textit{N} = `r empDisciplines["Psychology",]$Freq`, 'multidisciplinary': \textit{N} = `r empDisciplines["Multidisciplinary / Crossdisciplinary",]$Freq`, 'medicine, nursing, and health': \textit{N} = `r empDisciplines["Medicine, Nursing, & Health",]$Freq`, and 'social sciences (miscellaneous)': \textit{N} = `r empDisciplines["Social Sciences (miscellaneous)",]$Freq`. For a full discussion of the classifications see Online Supplemental Material B).  
 
 \subsubsection{Results}
 ```{r EmpElementCalc, include=F}
@@ -1714,6 +1714,7 @@ ggplot(FieldElementComplexity, aes(fill=field_labs_lng, y=avgComplexity, x=reord
 <!-- \label{fig:FieldElementComp} -->
 <!-- \end{figure} -->
 
+\subsection{Comparing Literature Levels}
 
 ```{r CombinedABCDBar, include=F, fig.width=16, fig.height=9}
 ElementFrequencyAll <- gdata::combine(Theoretical = TheoElementFreq,
@@ -2107,27 +2108,11 @@ cowplot::plot_grid(CombinedABCDBar, CombinedComplexityBar, CombinedAspectComplex
   draw_plot_label(c("(A)", "(B)", "(C)"), c(0, 0, 0), c(1, 2/3, 1/3), size = 18)
 ```
 
-<!-- \begin{figure}[h] -->
-<!-- \centering -->
-<!-- \caption{Literature Levels: Bar graph of the experience aspect frequencies for theoretical, methodological, and broader empirical literature.} -->
-<!-- \includegraphics[width=\textwidth]{Figures/CombinedABCDBar-1} -->
-<!-- \label{fig:CombinedAspects} -->
-<!-- \end{figure} -->
+\color{blue}
 
-<!-- \begin{figure}[h] -->
-<!-- \centering -->
-<!-- \caption{Literature Levels: Bar graph of the number of experience aspects used for theoretical, methodological, and broader empirical literature.} -->
-<!-- \includegraphics[width=\textwidth]{Figures/CombinedComplexityBar-1} -->
-<!-- \label{fig:CombinedComplexity} -->
-<!-- \end{figure} -->
+As a final step we aim to compare the three levels of literature we have reviewed (i.e., theoretical-methodological-empirical). We find that all three bodies of literature focus more readily on the more external aspects of behaviors and cognitions, and less on more internal affects and desires. However, we also see that desires (i.e., motivations) play a more prominent role in the theoretical literature and interest decreases with more applied research (also see \hyperref[fig:LiteratureComparison]{Figure \ref*{fig:LiteratureComparison}A}). Looking at the combinations of different experience aspects, we find that across all three bodies of literature a combination of two or three aspects is most common (often including behaviors or cognitions). However, we also find that single aspect conceptualizations are substantially more common in the more applied empirical works, whereas conceptualizations that include all four experience aspects are substantially more common in the more abstract theoretical literature (also see \hyperref[fig:LiteratureComparison]{Figure \ref*{fig:LiteratureComparison}B}). Yet, we also see that the most undervalued aspects often are considered in works that have already included a larger number of other aspects (also see \hyperref[fig:LiteratureComparison]{Figure \ref*{fig:LiteratureComparison}C}).
 
-<!-- \begin{figure}[h] -->
-<!-- \centering -->
-<!-- \caption{Literature Levels: Average number of additional aspects included when the aspect was considered for theoretical, methodological, and broader empirical literature [Mean ± 95\%CI].} -->
-<!-- \includegraphics[width=\textwidth]{Figures/CombinedAspectComplexityMean-1} -->
-<!-- \caption*{Note that within each literature body the aspects are not mutually exclusive (and thus not independent) because scales can include multiple experience aspects.} -->
-<!-- \label{fig:CombinedAspectComplexity} -->
-<!-- \end{figure} -->
+\color{black}
 
 \begin{figure}[h]
 \centering
