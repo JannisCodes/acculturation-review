@@ -458,10 +458,10 @@ A final observation has been that while the inclusion of desire components was g
 Based on the systematic \textcolor{blue}{scoping} review and its coding, the first empirical dataset we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review, we found five major works that reviewed the measurement of acculturation \citep{Celenk2011, Maestas2000, Matsudaira2006, Wallace2010, Zane2004}. After removal of duplicate scales, we added any scale validation that was present in our own systematic \textcolor{blue}{scoping} review but not included in the previous reviews. For each measure, we extracted the full item list as well as the item scoring prior to coding. A comprehensive and interactive database of the scales, with all available items, reference- and publication information, as well as our experience elements and -context coding are available in Supplemental Material D (also see \fgrref{fig:DirectoryScreen} for an illustration).
 
 \begin{figure}[ht!]
-\centering
-    \caption{Screenshot of the \textit{Acculturation Scale Directory}. Top: Main table of the included acculturation scales as well as the filter interface. Bottom: Detailed view of selected scale with item, response, sample, and life domain information. A full description of the directory is available in Supplemental Material D and the directory is available via: \href{https://acculturation-review.shinyapps.io/scale-directory/}{https://acculturation-review.shinyapps.io/scale-directory/}.}
-\includegraphics[width=0.9\textwidth]{Figures/AcculturationDIrectoryScreenshot.pdf}
-\label{fig:DirectoryScreen}
+  \centering
+  \caption{Screenshot of the \textit{Acculturation Scale Directory}. Top: Main table of the included acculturation scales as well as the filter interface. Bottom: Detailed view of selected scale with item, response, sample, and life domain information. A full description of the directory is available in Supplemental Material D and the directory is available at: \href{https://acculturation-review.shinyapps.io/scale-directory/}{https://acculturation-review.shinyapps.io/scale-directory/}.}
+  \includegraphics[width=\textwidth]{Figures/AcculturationDIrectoryScreenshot.pdf}
+  \label{fig:DirectoryScreen}
 \end{figure}
 
 ```{=tex}
