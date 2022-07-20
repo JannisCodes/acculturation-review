@@ -293,7 +293,7 @@ desires, or goals of the minority and majority'' (p.~2). \color{black}
 
 \input{Tables/CombinedElementCooccurrences}
 
-\subsection{Methodological Literature}
+\subsection{\textcolor{blue}{Psychometric} Literature}
 
 Based on the systematic \textcolor{blue}{scoping} review and its coding,
 the first empirical dataset we assess is a database of scale
@@ -311,6 +311,12 @@ items, reference- and publication information, as well as our experience
 elements and -context coding are available in Supplemental Material D as
 well as on our open science repository
 \citep[see][]{Kreienkamp2021d, Kreienkamp2021e}.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hl{TODO: SCALE REPOSITORY FIGURE HERE}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \subsubsection{Methods}  
 \paragraph{Dataset}
@@ -339,14 +345,7 @@ agreements were 97.85\% or above and all Cohen's \(\varkappa\)s were
 above 0.95, \(\varkappa_{pooled}\) = 0.96; for full inter-rater
 reliability see Supplemental Material B).
 
-At this stage, we also noted if items measured concepts that relate to
-multiple experience aspects. As an example, a single item asking about
-`satisfaction with the new life' might include emotional and cognitive
-elements. In this case, we code the manuscript as measuring both
-emotions and cognitions, but note that these elements are not measured
-independently. We also noted if the measures do not consider an
-individual's experiences, such as reporting migration status or length
-of residency.
+\textcolor{blue}{At this stage, we also noted if scales or items measured concepts that relate to multiple experience aspects. As an example, a single item asking about 'satisfaction with the new life' might include emotional and cognitive elements. In this case, we code the manuscript as measuring both emotions and cognitions, and noted that these elements are not measured independently. We also noted if the measures do not consider an individual's experiences, such as reporting migration status or length of residency.}
 
 \paragraph{Process}
 
@@ -356,20 +355,9 @@ information on assessed migration times (e.g., pre-migration,
 post-migration) and the the validation type (e.g., cross-sectional,
 longitudinal).
 
-\paragraph{Context}
-
-We additionally coded a range of contextual variables, including the
-type of sample collected (e.g., student, clinical), the life domain
-targeted (e.g., school, family), the cultures considered (i.e., host and
-migrant groups), the type of analysis conducted (e.g., correlation,
-regression), the measurement type (e.g., continuous scale, categorical
-classification), as well as the variable type of acculturation in the
-analysis (e.g., predictor, dependent). Further information as well as
-analyses of the contextual variables go beyond the scope of the
-immediate framework validation and are thus only presented in
-Supplemental Materials B and C.
-
 \subsubsection{Results}
+
+\paragraph{ABCD prevalence.}
 
 With our main aim of examining the experience structure within the
 scales, we examined whether scales included a specific experience
@@ -387,6 +375,8 @@ aspects. A majority of scales either measured behavioral and cognitive
 aspects (23.61\%) or behavioral, cognitive, and affective elements
 (19.31\%; also see \fgrref{fig:ElementsScales} and
 \tblref{tab:CombinedCooccurrences}).
+
+\paragraph{ABCD composition.}
 
 Looking at the number of aspects measured together we also see
 substantial differences in what kind of scales include a certain aspect.
@@ -416,6 +406,8 @@ cognitions and behaviors).
 \label{fig:ElementsScales}
 \end{figure}
 
+\paragraph{Process.}
+
 To assess the process focus of the scales we also assessed the migration
 time the scale validators considered. Except for a single scale that was
 validated for potential migrants, all scales were validated using
@@ -423,12 +415,59 @@ cross-sectional data after the migrant arrived in the settlement
 society. This is in line with observations by previous reviews of the
 field \citep[e.g.,][]{Brown2011}.
 
+\color{blue}
+\paragraph{Content.}
+
+While a discussion of all the topics addressed by the included scales
+lies beyond the scope of this study, we would like to describe some of
+the larger patterns authors have focused on. To that aim, we offer
+illustrations of the patterns we observed during the reading,
+extraction, and coding of the acculturation scales. We additionally, ran
+a machine learning topic modeling procedure on the items of the scales
+to identify content topics.
+
+A first key observation is that there was considerable diversity between
+the scales in how many experience aspects and topics were addressed.
+That might not generally be surprising, considering that the scales had
+between 1 and 136 items, and included between 1 and 12 life domains (see
+Supplemental Material C). Additionally, scales were also either more
+focused on a specific aspect
+\citep[e.g., `Asian Value Scale';][]{Kim1999, Kim2004a} or aimed to
+capture acculturation more broadly
+\citep[e.g., `Asian American Multidimensional Acculturation Scale'][]{GimChung2004}.
+Another trend that we observed was a separation between a factual and
+counter-factual acculturation
+\citep[e.g., real vs. ideal][]{Navas2005, Navas2007, BenetMartinez2006}.
+Additionally, while a large number of scales separately assessed ABCDs
+as they related to the dominant culture and the heritage culture, we saw
+a trend towards explicitly asking about different life domains
+\citep[e.g., family, work, media;][also see Supplemental Material C]{Kim2010a, Arends-Toth2007, Mancini2014}.
+
+When considering the content of the aspects that were included across
+acculturation scales, the topic modeling analysis offers a number of key
+insights that mostly align with our reading of the literature. For the
+topic modeling of the acculturation scales, we particularly used the
+scale items in a Latent Dirichlet Allocation (LDA) analysis, an
+unsupervised machine learning method common within the natural language
+processing literature. The analysis essentially extracts sets of terms
+that tended to occur together, assuming that scales that measure a
+specific topic have more words that relate to the topic than scales that
+measure other topics
+\citep[we followed the procedures outlined by][for a full methodological detail see Supplemental Material B]{Schweinberger2022}.
+
+\begin{itemize}
+  \item behavior: language (often separated between at home and outside the home; in different facets of life, e.g., media consumption, among friends), food, ethnicity of people interacted with.
+  \item cognition: identity
+  \item affect: pride, discomfort
+\end{itemize}
+\color{black}
+
 \subsection{Empirical Literature}
 
 At the most applied level, we assessed the broader empirical studies.
 This final database included the largest number of manuscripts and is in
 theory the application of the theoretical and methodological literature.
-The search produced a total of 1629 results to which we added 133
+The search produced a total of 1,629 results to which we added 133
 articles through contacts with experts in the field and from referenced
 works within the review. After duplicate removal, title--, abstract--,
 and full-text screening we coded a total of 526 empirical works (for

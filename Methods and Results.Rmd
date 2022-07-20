@@ -453,9 +453,15 @@ A final observation has been that while the inclusion of desire components was g
 
 <!-- \input{Tables/CombinedElementComplexity} -->
 
-\subsection{Methodological Literature}
+\subsection{\textcolor{blue}{Psychometric} Literature}
 
 Based on the systematic \textcolor{blue}{scoping} review and its coding, the first empirical dataset we assess is a database of scale validations. We bring together the scales suggested in previous reviews as well as validation studies we identified in our own review. Throughout our literature review, we found five major works that reviewed the measurement of acculturation \citep{Celenk2011, Maestas2000, Matsudaira2006, Wallace2010, Zane2004}. After removal of duplicate scales, we added any scale validation that was present in our own systematic \textcolor{blue}{scoping} review but not included in the previous reviews. For each measure, we extracted the full item list as well as the item scoring prior to coding. A comprehensive and interactive database of the scales, with all available items, reference- and publication information, as well as our experience elements and -context coding are available in Supplemental Material D as well as on our open science repository \citep[see][]{Kreienkamp2021d, Kreienkamp2021e}.
+
+--- 
+
+\hl{TODO: SCALE REPOSITORY FIGURE HERE}
+
+---
 
 ```{=tex}
 \subsubsection{Methods}  
@@ -483,15 +489,11 @@ dt.Scales.Included <- dt.Scales.Included %>%
 
 We extracted data on the experience aspects by primarily focusing on the measured concepts and their operationalizations (also see \tblref{tab:AspectExamples}). For each article, we retrieved the items used and coded whether the measure included references to affects, behaviors, cognitions, and desires. Because this concerned the most central aspect of our framework, each manuscript was double-coded and inconsistent codes were resolved after discussion (all inter-rater agreements were `r format(round(min(kMeth$Po, na.rm = TRUE)*100, 2), nsmall=2)`% or above and all Cohen's $\varkappa$s were above `r format(round(min(kMeth$k, na.rm = TRUE), 2), nsmall=2)`, $\varkappa_{pooled}$ = `r format(round(kMethPooled$k.pooled, 2), nsmall=2)`; for full inter-rater reliability see Supplemental Material B).
 
-At this stage, we also noted if items measured concepts that relate to multiple experience aspects. As an example, a single item asking about \`satisfaction with the new life' might include emotional and cognitive elements. In this case, we code the manuscript as measuring both emotions and cognitions, but note that these elements are not measured independently. We also noted if the measures do not consider an individual's experiences, such as reporting migration status or length of residency.
+\textcolor{blue}{At this stage, we also noted if scales or items measured concepts that relate to multiple experience aspects. As an example, a single item asking about 'satisfaction with the new life' might include emotional and cognitive elements. In this case, we code the manuscript as measuring both emotions and cognitions, and noted that these elements are not measured independently. We also noted if the measures do not consider an individual's experiences, such as reporting migration status or length of residency.}
 
 \paragraph{Process}
 
 To extract an indicator of whether the scales were aimed at psychological acculturation as a process or an outcome, we collected information on assessed migration times (e.g., pre-migration, post-migration) and the the validation type (e.g., cross-sectional, longitudinal).
-
-\paragraph{Context}
-
-We additionally coded a range of contextual variables, including the type of sample collected (e.g., student, clinical), the life domain targeted (e.g., school, family), the cultures considered (i.e., host and migrant groups), the type of analysis conducted (e.g., correlation, regression), the measurement type (e.g., continuous scale, categorical classification), as well as the variable type of acculturation in the analysis (e.g., predictor, dependent). Further information as well as analyses of the contextual variables go beyond the scope of the immediate framework validation and are thus only presented in Supplemental Materials B and C.
 
 ```{r ScalesExclusion}
 data.frame(table(Exclusion = dt.Scales$MissingNote)) %>%
@@ -605,8 +607,10 @@ scaleElementCooccure %>%
   save_kable("Tables/ScaleElementCooccurrences.tex")
 ```
 
+\paragraph{ABCD prevalence.}
 With our main aim of examining the experience structure within the scales, we examined whether scales included a specific experience element but also examined the used elements in their complex combinations. In terms of general inclusion of elements, most studies included a measure of cognition (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Cognition"]*100,2)`%) and behavior (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Behavior"]*100,2)`%), whereas only roughly half the studies included a measure of affect (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Affect"]*100,2)`%) and only a fourth of the scales included a measure of desires (`r round(ScaleElementFreq$Percentage[ScaleElementFreq$Element=="Desire"]*100,2)`%). However, only a minority of scales included only a single aspect. There were only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Cognition"]` scales that exclusively relied on cognitions (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Cognition"],2)`%) and `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Behavior"]` scales that measured only behaviors (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior"],2)`%). Yet, inversely, there were also only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"]` scales that measured all four aspects (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition, Desire"],2)`%). Most studies measured two (`r ScaleElementCombFreq %>% filter(complexity == 2) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`%) or three (`r ScaleElementCombFreq %>% filter(complexity == 3) %>% select(Frequency) %>% summarise(Perc = round(sum(.)/nrow(dt.Scales.Included)*100, 2))`%) aspects. A majority of scales either measured behavioral and cognitive aspects (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Behavior, Cognition"],2)`%) or behavioral, cognitive, and affective elements (`r round(ScaleElementCombFreq$Percentage[ScaleElementCombFreq$ExperienceCombination=="Affect, Behavior, Cognition"],2)`%; also see \fgrref{fig:ElementsScales} and \tblref{tab:CombinedCooccurrences}).
 
+\paragraph{ABCD composition.}
 Looking at the number of aspects measured together we also see substantial differences in what kind of scales include a certain aspect. Scales that included cognitions also measured an average of `r format(round(scaleElementComplexity$avgComplexity[scaleElementComplexity$Element=="Cognition"],2)-1,nsmall=2)` others aspects (\textit{SD} = `r format(round(scaleElementComplexity$sdComplexity[scaleElementComplexity$Element=="Cognition"],2),nsmall=2)`), scales measuring behavior, on average, also included `r format(round(scaleElementComplexity$avgComplexity[scaleElementComplexity$Element=="Behavior"],2)-1,nsmall=2)` other aspects (\textit{SD} = `r format(round(scaleElementComplexity$sdComplexity[scaleElementComplexity$Element=="Cognition"],2),nsmall=2)`). Scales measuring affect or desire measures included substantially more other aspects. Scales that included affect measures also included `r format(round(scaleElementComplexity$avgComplexity[scaleElementComplexity$Element=="Affect"],2)-1,nsmall=2)` other aspects (\textit{SD} = `r format(round(scaleElementComplexity$sdComplexity[scaleElementComplexity$Element=="Affect"],2),nsmall=2)`) and scales measuring desires even measured an average of `r format(round(scaleElementComplexity$avgComplexity[scaleElementComplexity$Element=="Desire"],2)-1,nsmall=2)` other aspects per scale (\textit{SD} = `r format(round(scaleElementComplexity$sdComplexity[scaleElementComplexity$Element=="Desire"],2),nsmall=2)`; also see \fgrref{fig:LiteratureComparison}). Thus, most scales measure multiple dimensions (\textit{M} = `r format(round(scaleComplexityAverage,2),nsmall=2)`, \textit{SD} = `r format(round(scaleComplexitySD,2),nsmall=2)`), yet they focus on external accessible aspects of psychological acculturation (i.e., behavior and cognition), less of what is considered 'internal' or 'subjective' (i.e., affect and desires). And if affect or desire elements are considered, they often only occur in scales that already include a higher number of other aspects. This is further underscored by the observation that there were only `r ScaleElementCombFreq$Frequency[ScaleElementCombFreq$ExperienceCombination=="Affect"]` scales that exclusively measured emotional acculturation and not a single scale that exclusively focused on motivational acculturation (while this was the case for both cognitions and behaviors).
 
 ```{r  ABCDFreq, include=F, fig.width=12, fig.height=12}
@@ -724,7 +728,195 @@ ggdraw() +
 summarytools::freq(dt.Scales.Included$MigrationTime, order = "freq")
 ```
 
+\paragraph{Process.}
 To assess the process focus of the scales we also assessed the migration time the scale validators considered. Except for a single scale that was validated for potential migrants, all scales were validated using cross-sectional data after the migrant arrived in the settlement society. This is in line with observations by previous reviews of the field \citep[e.g.,][]{Brown2011}.
+
+```{r ScaleItemDescr, include=F}
+scaleItemDescr <- psych::describe(as.numeric(dt.Scales.Included$NItems))
+scaleDomainDescr <- psych::describe(as.numeric(str_count(dt.Scales.Included$lifeDomain, ',')+1))
+
+
+# Based on 
+# Schweinberger, Martin. 2022. Topic Modeling with R. Brisbane: The University of Queensland. url: https://slcladal.github.io/topicmodels.html (Version 2022.05.21).
+library(DT)
+library(tm)
+library(topicmodels)
+library(reshape2)
+library(ggplot2)
+library(wordcloud)
+library(pals)
+library(SnowballC)
+library(lda)
+library(ldatuning)
+library(flextable)
+textdata <- base::readRDS(url("https://slcladal.github.io/data/sotu_paragraphs.rda", "rb"))
+textdata <- dt.Scales.Included %>%
+  select(
+    Scale,
+    CitationKey,
+    Item
+  ) %>%
+  mutate(
+    doc_id = row_number(),
+    text = gsub("[\r\n]", "", Item)
+  ) %>%
+  select(
+    -Item
+  ) %>% 
+  as.data.frame
+
+# load stopwords
+english_stopwords <- readLines("https://slcladal.github.io/resources/stopwords_en.txt", encoding = "UTF-8")
+
+# create corpus object
+corpus <- Corpus(DataframeSource(textdata))
+# Preprocessing chain
+processedCorpus <- tm_map(corpus, content_transformer(tolower))
+processedCorpus <- tm_map(processedCorpus, removeWords, english_stopwords)
+processedCorpus <- tm_map(processedCorpus, removePunctuation, preserve_intra_word_dashes = TRUE)
+processedCorpus <- tm_map(processedCorpus, removeNumbers)
+processedCorpus <- tm_map(processedCorpus, stemDocument, language = "en")
+processedCorpus <- tm_map(processedCorpus, stripWhitespace)
+
+# compute document term matrix with terms >= minimumFrequency
+minimumFrequency <- 5
+DTM <- DocumentTermMatrix(processedCorpus, control = list(bounds = list(global = c(minimumFrequency, Inf))))
+# have a look at the number of documents and terms in the matrix
+dim(DTM)
+
+# due to vocabulary pruning, we have empty rows in our DTM
+# LDA does not like this. So we remove those docs from the
+# DTM and the metadata
+sel_idx <- slam::row_sums(DTM) > 0
+DTM <- DTM[sel_idx, ]
+textdata <- textdata[sel_idx, ]
+
+# create models with different number of topics
+result <- ldatuning::FindTopicsNumber(
+  DTM,
+  topics = seq(from = 2, to = 20, by = 1),
+  metrics = c("CaoJuan2009",  "Deveaud2014"),
+  method = "Gibbs",
+  control = list(seed = 77),
+  verbose = TRUE
+)
+
+FindTopicsNumber_plot(result)
+
+# number of topics
+K <- 20
+# set random number generator seed
+set.seed(9161)
+# compute the LDA model, inference via 1000 iterations of Gibbs sampling
+topicModel <- LDA(DTM, K, method="Gibbs", control=list(iter = 500, verbose = 25))
+
+# have a look a some of the results (posterior distributions)
+tmResult <- posterior(topicModel)
+# format of the resulting object
+attributes(tmResult)
+# lengthOfVocab
+nTerms(DTM) 
+# get beta from results
+beta <- tmResult$terms   
+dim(beta)  
+# rows in beta sum to 1
+rowSums(beta)    
+# size of collection
+nDocs(DTM)               
+# for every document we have a probability distribution of its contained topics
+theta <- tmResult$topics 
+dim(theta)               # nDocs(DTM) distributions over K topics
+
+exampleTermData <- terms(topicModel, 10)
+exampleTermData[, 1:8]
+
+top5termsPerTopic <- terms(topicModel, 5)
+topicNames <- apply(top5termsPerTopic, 2, paste, collapse=" ")
+
+# visualize topics as word cloud
+topicToViz <- 11 # change for your own topic of interest
+topicToViz <- grep('feel', topicNames)[1] # Or select a topic by a term contained in its name
+# select to 40 most probable terms from the topic by sorting the term-topic-probability vector in decreasing order
+
+topTopicTerms <- list()
+topTopicTermsPlot <- list()
+mycolors <- brewer.pal(8, "Dark2")
+
+for (i in 1:K) {
+  top40terms <- sort(tmResult$terms[i,], decreasing=TRUE)[1:40]
+  topTopicTerms[[i]] <- top40terms
+  topTopicTermsPlot[[i]] <- ggwordcloud(names(top40terms), top40terms, random.order = FALSE, color = mycolors)
+}
+
+#grid.arrange(grobs = topTopicTermsPlot, ncol = 5)
+
+# focus on unique topics
+set.seed(9161)
+topicModel2 <- LDA(DTM, K, method="Gibbs", control=list(iter = 500, verbose = 25, alpha = 0.2))
+tmResult <- posterior(topicModel2)
+theta <- tmResult$topics
+beta <- tmResult$terms
+topicNames <- apply(terms(topicModel2, 5), 2, paste, collapse = " ")  # reset topicnames
+
+
+# re-rank top topic terms for topic names
+topicNames <- apply(lda::top.topic.words(beta, 5, by.score = T), 2, paste, collapse = " ")
+
+
+## APROACH 1
+# What are the most probable topics in the entire collection?
+topicProportions <- colSums(theta) / nDocs(DTM)  # mean probabilities over all paragraphs
+names(topicProportions) <- topicNames     # assign the topic names we created before
+sort(topicProportions, decreasing = TRUE) # show summed proportions in decreased order
+
+soP <- sort(topicProportions, decreasing = TRUE)
+paste(round(soP, 5), ":", names(soP))
+
+## APPROACH 2
+countsOfPrimaryTopics <- rep(0, K)
+names(countsOfPrimaryTopics) <- topicNames
+for (i in 1:nDocs(DTM)) {
+  topicsPerDoc <- theta[i, ] # select topic distribution for document i
+  # get first element position from ordered list
+  primaryTopic <- order(topicsPerDoc, decreasing = TRUE)[1] 
+  countsOfPrimaryTopics[primaryTopic] <- countsOfPrimaryTopics[primaryTopic] + 1
+}
+sort(countsOfPrimaryTopics, decreasing = TRUE)
+
+so <- sort(countsOfPrimaryTopics, decreasing = TRUE)
+paste(so, ":", names(so))
+
+
+# SCALES:
+# get mean topic proportions per decade
+topic_proportion_per_scale <- aggregate(theta, by = list(scale = textdata$CitationKey), mean)
+# set topic names to aggregated columns
+colnames(topic_proportion_per_scale)[2:(K+1)] <- topicNames
+# reshape data frame
+vizDataFrame <- melt(topic_proportion_per_scale, id.vars = "scale")
+# plot topic proportions per decade as bar plot
+ggplot(vizDataFrame, aes(x=scale, y=value, fill=variable)) + 
+  geom_bar(stat = "identity") + ylab("proportion") + 
+  scale_fill_manual(values = paste0(alphabet(20), "FF"), name = "scale") + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+\color{blue}
+\paragraph{Content.}
+While a discussion of all the topics addressed by the included scales lies beyond the scope of this study, we would like to describe some of the larger patterns authors have focused on. To that aim, we offer illustrations of the patterns we observed during the reading, extraction, and coding of the acculturation scales. We additionally, ran a machine learning topic modeling procedure on the items of the scales to identify content topics.
+
+A first key observation is that there was considerable diversity between the scales in how many experience aspects and topics were addressed. That might not generally be surprising, considering that the scales had between `r scaleItemDescr$min` and `r scaleItemDescr$max` items, and included between `r scaleDomainDescr$min` and `r scaleDomainDescr$max` life domains (see Supplemental Material C). Additionally, scales were also either more focused on a specific aspect \citep[e.g., `Asian Value Scale';][]{Kim1999, Kim2004a} or aimed to capture acculturation more broadly \citep[e.g., `Asian American Multidimensional Acculturation Scale'][]{GimChung2004}. Another trend that we observed was a separation between a factual and counter-factual acculturation \citep[e.g., real vs. ideal][]{Navas2005, Navas2007, BenetMartinez2006}. Additionally, while a large number of scales separately assessed ABCDs as they related to the dominant culture and the heritage culture, we saw a trend towards explicitly asking about different life domains \citep[e.g., family, work, media;][also see Supplemental Material C]{Kim2010a, Arends-Toth2007, Mancini2014}. 
+
+When considering the content of the aspects that were included across acculturation scales, the topic modeling analysis offers a number of key insights that mostly align with our reading of the literature. For the topic modeling of the acculturation scales, we particularly used the scale items in a Latent Dirichlet Allocation (LDA) analysis, an unsupervised machine learning method common within the natural language processing literature. The analysis essentially extracts sets of terms that tended to occur together, assuming that scales that measure a specific topic have more words that relate to the topic than scales that measure other topics \citep[we followed the procedures outlined by][for a full methodological detail see Supplemental Material B]{Schweinberger2022}. 
+
+
+\begin{itemize}
+  \item behavior: language (often separated between at home and outside the home; in different facets of life, e.g., media consumption, among friends), food, ethnicity of people interacted with.
+  \item cognition: identity
+  \item affect: pride, discomfort
+\end{itemize}
+\color{black}
 
 \subsection{Empirical Literature}
 
@@ -843,7 +1035,7 @@ prismaGr(found = nrow(dt.Empirical),
   rsvg_pdf("./Figures/PrismaEmpirical.pdf")
 ```
 
-At the most applied level, we assessed the broader empirical studies. This final database included the largest number of manuscripts and is in theory the application of the theoretical and methodological literature. The search produced a total of `r nrow(dt.Empirical)` results to which we added 133 articles through contacts with experts in the field and from referenced works within the review. After duplicate removal, title--, abstract--, and full-text screening we coded a total of `r nrow(dt.Empirical.included)` empirical works (for exclusion reasons see \tblref{tab:ExclusionsCombined} and for the PRISMA diagram see \fgrref[ C]{fig:PrismaCombined}).
+At the most applied level, we assessed the broader empirical studies. This final database included the largest number of manuscripts and is in theory the application of the theoretical and methodological literature. The search produced a total of `r format(nrow(dt.Empirical), big.mark=",")` results to which we added 133 articles through contacts with experts in the field and from referenced works within the review. After duplicate removal, title--, abstract--, and full-text screening we coded a total of `r nrow(dt.Empirical.included)` empirical works (for exclusion reasons see \tblref{tab:ExclusionsCombined} and for the PRISMA diagram see \fgrref[ C]{fig:PrismaCombined}).
 
 <!-- Scale  chart goes somewhere here} -->
 
