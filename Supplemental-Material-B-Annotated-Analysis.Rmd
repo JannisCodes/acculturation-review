@@ -1628,6 +1628,207 @@ dt.Scales.Included %>%
                 html_font = "Cambria")
 ```
 
+### Content
+
+While a discussion of all the topics addressed by the included scales lies beyond the scope of this study, we would like to describe some of the larger patterns authors have focused on. To that aim, we ran a machine learning topic modeling procedure on the items of the scales to identify content topics. 
+
+For the topic modeling of the acculturation scales, we particularly used the scale items in a Latent Dirichlet Allocation (LDA) analysis, an unsupervised machine learning method common within the natural language processing literature. The analysis essentially extracts sets of terms that tended to occur together, assuming that scales that measure a specific topic have more words that relate to the topic than scales that measure other topics. We followed the procedures outlined by @Schweinberger2022. 
+
+In particular, we:
+
+1. Transformed the items as a Text Corpus object 
+2. Pre-processed the text data
+    a. all words in lower case
+    b. English stop words removed
+    c. punctuation removed
+    d. numerals removed
+    e. word stems extracted
+    f. superfluous white spaces removed
+3. transformed the text corpus into a Document Term Matrix
+4. determined the appropriate number of topics to extract
+5. ran the LDA with varying alphas
+6. extracted the most probable topics
+
+```{r ScaleItemDescr, results='hide'}
+scaleItemDescr <- psych::describe(as.numeric(dt.Scales.Included$NItems))
+scaleDomainDescr <- psych::describe(as.numeric(str_count(dt.Scales.Included$lifeDomain, ',')+1))
+
+
+# Based on 
+# Schweinberger, Martin. 2022. Topic Modeling with R. Brisbane: The University of Queensland. url: https://slcladal.github.io/topicmodels.html (Version 2022.05.21).
+library(DT)
+library(tm)
+library(topicmodels)
+library(reshape2)
+library(ggplot2)
+library(wordcloud)
+library(pals)
+library(SnowballC)
+library(lda)
+library(ldatuning)
+library(flextable)
+textdata <- base::readRDS(url("https://slcladal.github.io/data/sotu_paragraphs.rda", "rb"))
+textdata <- dt.Scales.Included %>%
+  select(
+    Scale,
+    CitationKey,
+    Item
+  ) %>%
+  mutate(
+    doc_id = row_number(),
+    text = gsub("[\r\n]", "", Item)
+  ) %>%
+  select(
+    -Item
+  ) %>% 
+  as.data.frame
+
+# load stopwords
+english_stopwords <- readLines("https://slcladal.github.io/resources/stopwords_en.txt", encoding = "UTF-8")
+
+# create corpus object
+corpus <- Corpus(DataframeSource(textdata))
+# Preprocessing chain
+processedCorpus <- tm_map(corpus, content_transformer(tolower))
+processedCorpus <- tm_map(processedCorpus, removeWords, english_stopwords)
+processedCorpus <- tm_map(processedCorpus, removePunctuation, preserve_intra_word_dashes = TRUE)
+processedCorpus <- tm_map(processedCorpus, removeNumbers)
+processedCorpus <- tm_map(processedCorpus, stemDocument, language = "en")
+processedCorpus <- tm_map(processedCorpus, stripWhitespace)
+
+# compute document term matrix with terms >= minimumFrequency
+minimumFrequency <- 5
+DTM <- DocumentTermMatrix(processedCorpus, control = list(bounds = list(global = c(minimumFrequency, Inf))))
+# have a look at the number of documents and terms in the matrix
+dim(DTM)
+
+# due to vocabulary pruning, we have empty rows in our DTM
+# LDA does not like this. So we remove those docs from the
+# DTM and the metadata
+sel_idx <- slam::row_sums(DTM) > 0
+DTM <- DTM[sel_idx, ]
+textdata <- textdata[sel_idx, ]
+
+# create models with different number of topics
+result <- ldatuning::FindTopicsNumber(
+  DTM,
+  topics = seq(from = 2, to = 20, by = 1),
+  metrics = c("CaoJuan2009",  "Deveaud2014"),
+  method = "Gibbs",
+  control = list(seed = 77),
+  verbose = TRUE
+)
+
+FindTopicsNumber_plot(result)
+
+# number of topics
+K <- 20
+# set random number generator seed
+set.seed(9161)
+# compute the LDA model, inference via 1000 iterations of Gibbs sampling
+topicModel <- LDA(DTM, K, method="Gibbs", control=list(iter = 500, verbose = 25))
+
+# have a look a some of the results (posterior distributions)
+tmResult <- posterior(topicModel)
+# format of the resulting object
+#attributes(tmResult)
+# lengthOfVocab
+#nTerms(DTM) 
+# get beta from results
+beta <- tmResult$terms   
+#dim(beta)  
+# rows in beta sum to 1
+#rowSums(beta)    
+# size of collection
+#nDocs(DTM)               
+# for every document we have a probability distribution of its contained topics
+theta <- tmResult$topics 
+#dim(theta)               # nDocs(DTM) distributions over K topics
+
+exampleTermData <- terms(topicModel, 10)
+exampleTermData[, 1:8]
+
+top5termsPerTopic <- terms(topicModel, 5)
+topicNames <- apply(top5termsPerTopic, 2, paste, collapse=" ")
+
+# visualize topics as word cloud
+topicToViz <- 11 # change for your own topic of interest
+topicToViz <- grep('feel', topicNames)[1] # Or select a topic by a term contained in its name
+# select to 40 most probable terms from the topic by sorting the term-topic-probability vector in decreasing order
+
+topTopicTerms <- list()
+topTopicTermsPlot <- list()
+mycolors <- brewer.pal(8, "Dark2")
+
+for (i in 1:K) {
+  top40terms <- sort(tmResult$terms[i,], decreasing=TRUE)[1:40]
+  topTopicTerms[[i]] <- top40terms
+  topTopicTermsPlot[[i]] <- ggwordcloud(names(top40terms), top40terms, random.order = FALSE, color = mycolors)
+}
+
+#grid.arrange(grobs = topTopicTermsPlot, ncol = 5)
+
+# focus on unique topics
+set.seed(9161)
+topicModel2 <- LDA(DTM, K, method="Gibbs", control=list(iter = 500, verbose = 25, alpha = 0.2))
+tmResult <- posterior(topicModel2)
+theta <- tmResult$topics
+beta <- tmResult$terms
+topicNames <- apply(terms(topicModel2, 5), 2, paste, collapse = " ")  # reset topicnames
+
+
+# re-rank top topic terms for topic names
+topicNames <- apply(lda::top.topic.words(beta, 5, by.score = T), 2, paste, collapse = " ")
+
+
+## APROACH 1
+# What are the most probable topics in the entire collection?
+topicProportions <- colSums(theta) / nDocs(DTM)  # mean probabilities over all paragraphs
+names(topicProportions) <- topicNames     # assign the topic names we created before
+sort(topicProportions, decreasing = TRUE) # show summed proportions in decreased order
+
+soP <- sort(topicProportions, decreasing = TRUE)
+#paste(round(soP, 5), ":", names(soP))
+
+## APPROACH 2
+countsOfPrimaryTopics <- rep(0, K)
+names(countsOfPrimaryTopics) <- topicNames
+for (i in 1:nDocs(DTM)) {
+  topicsPerDoc <- theta[i, ] # select topic distribution for document i
+  # get first element position from ordered list
+  primaryTopic <- order(topicsPerDoc, decreasing = TRUE)[1] 
+  countsOfPrimaryTopics[primaryTopic] <- countsOfPrimaryTopics[primaryTopic] + 1
+}
+sort(countsOfPrimaryTopics, decreasing = TRUE)
+
+so <- sort(countsOfPrimaryTopics, decreasing = TRUE)
+#paste(so, ":", names(so))
+
+# SCALES:
+# get mean topic proportions per decade
+topic_proportion_per_scale <- aggregate(theta, by = list(scale = textdata$CitationKey), mean)
+# set topic names to aggregated columns
+colnames(topic_proportion_per_scale)[2:(K+1)] <- topicNames
+# reshape data frame
+vizDataFrame <- melt(topic_proportion_per_scale, id.vars = "scale")
+# plot topic proportions per decade as bar plot
+ggplot(vizDataFrame, aes(x=scale, y=value, fill=variable)) + 
+  geom_bar(stat = "identity") + ylab("proportion") + 
+  scale_fill_manual(values = paste0(alphabet(20), "FF"), name = "scale") + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+```{r ldaTbl}
+soP %>%
+  kbl(., 
+      caption = "LDA: Proportions of all 20 topics with the five most common terms extracted",
+      format = "html",
+      digits = 2) %>%
+  kable_classic(full_width = F, 
+                lightable_options = "hover", 
+                html_font = "Cambria")
+```
+
 
 # **Empirical Literature**  
 
@@ -1887,7 +2088,7 @@ kEmp %>%
       #booktabs = T,
       align = c('l', rep('c', length(.)-1)),
       digits=3)  %>%
-  footnote(general = paste0("$\\kappa_{pooled}$ = ",format(round(kEmpPooled$k.pooled, 2), nsmall=2), ", $95\\%CI_{boot}$[", format(round(kEmpPooled$lwr, 2), nsmall=2), ", ", format(round(kEmpPooled$upr, 2), nsmall=2), "]")) %>%
+  kableExtra::footnote(general = paste0("$\\kappa_{pooled}$ = ",format(round(kEmpPooled$k.pooled, 2), nsmall=2), ", $95\\%CI_{boot}$[", format(round(kEmpPooled$lwr, 2), nsmall=2), ", ", format(round(kEmpPooled$upr, 2), nsmall=2), "]")) %>%
   kable_classic(full_width = F, 
                 lightable_options = "hover", 
                 html_font = "Cambria")
@@ -2045,7 +2246,7 @@ empiricalComplexity %>%
         #linesep = "",
         #booktabs = T,
         align = c('l', rep('c', length(empiricalComplexity)-1)))  %>%
-  footnote(general = paste0("M = ",format(round(empiricalComplexityAverage, 2), nsmall=2), ", SD = ", format(round(empiricalComplexitySD, 2), nsmall=2))) %>%
+  kableExtra::footnote(general = paste0("M = ",format(round(empiricalComplexityAverage, 2), nsmall=2), ", SD = ", format(round(empiricalComplexitySD, 2), nsmall=2))) %>%
   kable_classic(full_width = F, 
                 lightable_options = "hover", 
                 html_font = "Cambria")
@@ -2343,7 +2544,7 @@ psychDataJournal %>%
   kable_classic(full_width = F, 
                 lightable_options = "hover", 
                 html_font = "Cambria") %>%
-  footnote(general = "SJR = Scimago Journal Rank Indicator; 
+  kableExtra::footnote(general = "SJR = Scimago Journal Rank Indicator; 
            CitesDoc2years = Average number of citations per document in a 2-year period; 
            Hindex = H Index (h number of articles that have been cited at least h times);
            RefDoc = Average number of references per document in 2019;
