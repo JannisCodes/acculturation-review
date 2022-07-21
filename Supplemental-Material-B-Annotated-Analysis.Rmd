@@ -1,5 +1,5 @@
 ---
-title: "Supplemental Information B: Full Annotated Analysis and Reproducible Code"
+title: "Supplemental Information C: Full Annotated Analysis and Reproducible Code"
 subtitle: "Suppplemental Material for 'The Migration Experience: A Conceptual Framework and Systematic Review of Psychological Acculturation'"
 author:
 - █████████████████^1^ #Jannis Kreienkamp^1^
@@ -3002,7 +3002,7 @@ cat("\\def \\nTheo {",nTheo,"}
 \\def \\nConceptualizations {", percTheoMissing, "}
 \\def \\percTheoMissing {", percConceptualizations, "}",
     sep = "", 
-    file = "Supplemental Material A - Coding Protocol/margins/theoNums.tex")
+    file = "Supplemental Material B - Coding Protocol/margins/theoNums.tex")
     
 ## Methodological:
 nScales <- nrow(dt.Scales.Included)
@@ -3019,7 +3019,7 @@ cat("\\def \\nScales {",nScales,"}
 \\def \\nMethInaccess {", nMethInaccess, "}
 \\def \\percMethInaccess {", percMethInaccess, "}",
     sep = "", 
-    file = "Supplemental Material A - Coding Protocol/margins/methNums.tex")
+    file = "Supplemental Material B - Coding Protocol/margins/methNums.tex")
 
 ## Empirical:
 nEmp <- nrow(dt.Empirical.included)
@@ -3073,13 +3073,13 @@ cat("\\def \\nEmp {",nEmp,"}
 \\def \\nChapter {", nChapter, "}
 \\def \\percChapter {", percChapter, "}",
     sep = "", 
-    file = "Supplemental Material A - Coding Protocol/margins/empNums.tex")
+    file = "Supplemental Material B - Coding Protocol/margins/empNums.tex")
 
 cat("\\def \\nTheo {",nTheo,"}
 \\def \\nScales {",nScales,"}
 \\def \\nEmp {", nEmp, "}",
     sep = "", 
-    file = "Supplemental Material A - Coding Protocol/margins/nNums.tex")
+    file = "Supplemental Material B - Coding Protocol/margins/nNums.tex")
 ```
 
 
