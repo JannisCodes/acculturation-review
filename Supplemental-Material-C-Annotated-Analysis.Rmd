@@ -2054,16 +2054,22 @@ dt.Empirical.included %>%
   mutate(MeasureDefinition = tolower(MeasureDefinition)) %>%
   group_by(MeasureDefinition) %>%
   summarise(Frequency = n(),
-            Percentage = Frequency/nrow(.)*100) %>%
+            Percentage = Frequency / nrow(.) * 100) %>%
+  filter(MeasureDefinition != "") %>%
   arrange(desc(Frequency)) %>%
-  kbl(., caption = "Empirical Literature: Measure used",
-      format = "html",
-      digits = 2,
-      col.names = c("Measure", "Frequency", "Percentage")) %>%
-  kable_classic(full_width = F, 
-                lightable_options = "hover", 
-                html_font = "Cambria") %>%
-   scroll_box(width = "100%", height = "500px")
+  kbl(
+    .,
+    caption = "Empirical Literature: Measure used",
+    format = "html",
+    digits = 2,
+    col.names = c("Measure", "Frequency", "Percentage")
+  ) %>%
+  kable_classic(
+    full_width = F,
+    lightable_options = "hover",
+    html_font = "Cambria"
+  ) %>%
+  scroll_box(width = "100%", height = "500px")
 ```
 
 ## Experience  
@@ -2531,7 +2537,8 @@ psychData %>%
 
 This meant that we ultimately had journal metrics for `r nrow(psychData %>% filter(!is.na(PublicationTitleDb)))` empirical articles. The frequencies of the journals, and a selection of their impact metrics is shown in Table \@ref(tab:JournalFreqTab).    
 
-```{r JournalFreqTab, results='asis', warning=F, message=F}
+```{r JournalFreqTab}
+# {r JournalFreqTab, results='asis', warning=F, message=F}
 # table with basic frequencies and journal descriptives
 psychDataJournal %>%
   dplyr::select(PublicationTitleDb, SJR, Hindex, TotalDocs3years, CitesDoc2years, RefDoc, PublisherCountry) %>%
@@ -2872,10 +2879,8 @@ data.frame(table(empiricalDataDisciplines$discipline02)) %>%
 Given the small number of 'Business' journals we reclassified these into the 'Social Sciences (miscellaneous)' category (see Table \@ref(tab:Disciplines02FreqTabAdj) and Figure \@ref(fig:Disciplines02AdjSankey)).  
 
 ```{r Disciplines02FreqTabAdj, results='asis', warning=F}
-# re-code Business into Social Sciences
 empiricalDataDisciplines$discipline02[empiricalDataDisciplines$discipline02 == "Business"] <- "Social Sciences (miscellaneous)"
 
-# Frequencies of final discipline codes
 data.frame(table(empiricalDataDisciplines$discipline02)) %>%
   arrange(desc(Freq)) %>%
   kbl(., caption = "Discipline Frequency Ajusted",
