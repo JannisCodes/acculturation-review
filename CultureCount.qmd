@@ -79,7 +79,7 @@ n_contry_combs <- rbind(
 ```{r}
 #| label: get used citation keys from aux
 
-aux <- readLines("Citation Statement/main.aux")
+aux <- readLines("main.aux")
 
 main_keys <- str_extract_all(aux, "\\{([^\\},\\/\\s[[:punct:]]]{4,})(?:,\\s*([^\\},]+))*\\}") %>% 
   unlist %>%
