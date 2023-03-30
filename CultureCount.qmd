@@ -77,10 +77,31 @@ n_contry_combs <- rbind(
 ## Citations
 
 ```{r}
+#| label: get used citation keys from aux
+
+aux <- readLines("Citation Statement/main.aux")
+
+main_keys <- str_extract_all(aux, "\\{([^\\},\\/\\s[[:punct:]]]{4,})(?:,\\s*([^\\},]+))*\\}") %>% 
+  unlist %>%
+  str_extract_all(., ".*[[:digit:]].*") %>%
+  unlist %>%
+  gsub('^.|.$', '', .) %>%
+  unique
+  
+```
+
+
+```{r}
 #| label: citation subsetting
 
 # import full reference bib
 mybib <- bib2df::bib2df("references.bib")
+
+# filter and export theoretical
+mybib_main <- mybib %>%
+  filter(BIBTEXKEY %in% main_keys) %>%
+  distinct(., BIBTEXKEY, .keep_all = TRUE)
+bib2df::df2bib(mybib_main, file = "references_main.bib", append = FALSE)
 
 # filter and export theoretical
 mybib_theoretical <- mybib %>%
