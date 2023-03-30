@@ -1,0 +1,353 @@
+,CitationKey,Author,Gender,W,A,GendCat
+0,Park1921,"Robert,Park","male,99","0    0.910002
+Name: nh_white, dtype: float32",0.08999753,
+1,Park1921,"Ernest,Burgess","male,99","0    0.554288
+Name: nh_white, dtype: float32",0.44571227,malemale
+2,Bourhis1997a,"Richard,Bourhis","male,99","0    0.984299
+Name: nh_white, dtype: float32",0.015701141,
+3,Bourhis1997a,"Sacha,Senecal","male,66","0    0.388665
+Name: nh_white, dtype: float32",0.6113353,malemale
+4,Atkinson1993,"Donald,Atkinson","male,99","0    0.93518
+Name: nh_white, dtype: float32",0.064819634,
+5,Atkinson1993,"Derald,Sue","male,100","0    0.873723
+Name: nh_white, dtype: float32",0.12627697,malemale
+6,Giles1977,"Howard,Giles","male,99","0    0.810367
+Name: nh_white, dtype: float32",0.18963276,
+7,Giles1977,"Donald,Taylor","male,99","0    0.891123
+Name: nh_white, dtype: float32",0.10887654,malemale
+8,Berry1992,"John,Berry","male,99","0    0.911224
+Name: nh_white, dtype: float32",0.08877562,
+9,Berry1992,"John,Berry","male,99","0    0.911224
+Name: nh_white, dtype: float32",0.08877562,malemale
+10,Szapocznik1978,"Jos,Szapocznik","male,94","0    0.785453
+Name: nh_white, dtype: float32",0.21454677,
+11,Szapocznik1978,"Mara,Aranalde","female,94","0    0.141016
+Name: nh_white, dtype: float32",0.85898364,malefemale
+12,Meleis2000,"Afaf,Meleis","female,93","0    0.880778
+Name: nh_white, dtype: float32",0.11922248,
+13,Meleis2000,"Karen,Schumacher","female,96","0    0.987328
+Name: nh_white, dtype: float32",0.012672153,femalefemale
+14,Ferguson2015,"Gail,Ferguson","female,97","0    0.811774
+Name: nh_white, dtype: float32",0.18822624,
+15,Ferguson2015,"Marc,Bornstein","male,99","0    0.960447
+Name: nh_white, dtype: float32",0.03955294,femalemale
+16,Basch1994,"L,Basch","unknown,0","0    0.915048
+Name: nh_white, dtype: float32",0.084951885,
+17,Basch1994,"C,Szanton-Blanc","unknown,0","0    0.922276
+Name: nh_white, dtype: float32",0.077724114,unknownunknown
+18,Padilla1980,"Amado,Padilla","male,97","0    0.077148
+Name: nh_white, dtype: float32",0.92285204,
+19,Padilla1980,"Amado,Padilla","male,97","0    0.077148
+Name: nh_white, dtype: float32",0.92285204,malemale
+20,Cross1991,"W,Cross","unknown,0","0    0.815726
+Name: nh_white, dtype: float32",0.18427418,
+21,Cross1991,"W,Cross","unknown,0","0    0.815726
+Name: nh_white, dtype: float32",0.18427418,unknownunknown
+22,Portes1993,"Alejandro,Portes","male,99","0    0.028172
+Name: nh_white, dtype: float32",0.9718281,
+23,Portes1993,"Min,Zhou","male,65","0    0.015048
+Name: nh_white, dtype: float32",0.9849518,malemale
+24,Arends-Toth2006a,"Judit,Arends-Tth","female,99","0    0.830621
+Name: nh_white, dtype: float32",0.16937879,
+25,Arends-Toth2006a,"Fons,Vijver","male,97","0    0.752781
+Name: nh_white, dtype: float32",0.24721855,femalemale
+26,Berry2005,"John,Berry","male,99","0    0.911224
+Name: nh_white, dtype: float32",0.08877562,
+27,Berry2005,"John,Berry","male,99","0    0.911224
+Name: nh_white, dtype: float32",0.08877562,malemale
+28,Ali2010,"Alisha,Ali","female,97","0    0.282894
+Name: nh_white, dtype: float32",0.71710646,
+29,Ali2010,"Alisha,Ali","female,97","0    0.282894
+Name: nh_white, dtype: float32",0.71710646,femalefemale
+30,Piontkowski2002,"Ursula,Piontkowski","female,98","0    0.946083
+Name: nh_white, dtype: float32",0.053916883,
+31,Piontkowski2002,"Arnd,Florack","male,99","0    0.646892
+Name: nh_white, dtype: float32",0.35310802,femalemale
+32,Sam2003,"David,Sam","male,99","0    0.772796
+Name: nh_white, dtype: float32",0.22720397,
+33,Sam2003,"Brit,Oppedal","female,82","0    0.907951
+Name: nh_white, dtype: float32",0.09204891,malefemale
+34,Searle1990,"Wendy,Searle","female,96","0    0.955542
+Name: nh_white, dtype: float32",0.04445761,
+35,Searle1990,"Colleen,Ward","female,98","0    0.937306
+Name: nh_white, dtype: float32",0.06269431,femalefemale
+36,Cohen2011,"Erik,Cohen","male,96","0    0.947398
+Name: nh_white, dtype: float32",0.052601848,
+37,Cohen2011,"Erik,Cohen","male,96","0    0.947398
+Name: nh_white, dtype: float32",0.052601848,malemale
+38,Gordon1964a,"Milton,Gordon","male,99","0    0.53845
+Name: nh_white, dtype: float32",0.46155024,
+39,Gordon1964a,"Milton,Gordon","male,99","0    0.53845
+Name: nh_white, dtype: float32",0.46155024,malemale
+40,Masgoret2006,"Anne-Marie,Masgoret","female,98","0    0.904975
+Name: nh_white, dtype: float32",0.09502512,
+41,Masgoret2006,"Colleen,Ward","female,98","0    0.937306
+Name: nh_white, dtype: float32",0.06269431,femalefemale
+42,Baird2012,"Martha,Baird","female,97","0    0.895001
+Name: nh_white, dtype: float32",0.10499928,
+43,Baird2012,"Martha,Baird","female,97","0    0.895001
+Name: nh_white, dtype: float32",0.10499928,femalefemale
+44,Penaloza1989,"Lisa,Pealoza","female,98","0    0.681524
+Name: nh_white, dtype: float32",0.31847563,
+45,Penaloza1989,"Lisa,Pealoza","female,98","0    0.681524
+Name: nh_white, dtype: float32",0.31847563,femalefemale
+46,LaFromboise1993,"Teresa,LaFromboise","female,98","0    0.892384
+Name: nh_white, dtype: float32",0.107616365,
+47,LaFromboise1993,"Jennifer,Gerton","female,98","0    0.875886
+Name: nh_white, dtype: float32",0.124113664,femalefemale
+48,Karim2021,"Shahid,Karim","male,99","0    0.546053
+Name: nh_white, dtype: float32",0.45394754,
+49,Karim2021,"Shahid,Karim","male,99","0    0.546053
+Name: nh_white, dtype: float32",0.45394754,malemale
+50,Maertz2016,"Carl,Maertz","male,98","0    0.973477
+Name: nh_white, dtype: float32",0.026523001,
+51,Maertz2016,"Jieying,Chen","female,95","0    0.020479
+Name: nh_white, dtype: float32",0.9795211,malefemale
+52,Mistry2010,"Jayanthi,Mistry","female,93","0    0.089295
+Name: nh_white, dtype: float32",0.9107053,
+53,Mistry2010,"Jean,Wu","male,90","0    0.03089
+Name: nh_white, dtype: float32",0.9691096,femalemale
+54,Berry1998,"John,Berry","male,99","0    0.911224
+Name: nh_white, dtype: float32",0.08877562,
+55,Berry1998,"John,Berry","male,99","0    0.911224
+Name: nh_white, dtype: float32",0.08877562,malemale
+56,Weine2006,"Stevan,Weine","male,99","0    0.983124
+Name: nh_white, dtype: float32",0.016875617,
+57,Weine2006,"Ivan,Pavkovic","male,99","0    0.950649
+Name: nh_white, dtype: float32",0.049350493,malemale
+58,Salo2015,"Corrina,Salo","female,99","0    0.484877
+Name: nh_white, dtype: float32",0.5151235,
+59,Salo2015,"Dina,Birman","female,96","0    0.900589
+Name: nh_white, dtype: float32",0.09941141,femalefemale
+60,Navas2005,"Marisol,Navas","female,99","0    0.047463
+Name: nh_white, dtype: float32",0.95253676,
+61,Navas2005,"Juan,Fernndez","male,98","0    0.066985
+Name: nh_white, dtype: float32",0.93301535,femalemale
+62,Benet-Martinez2005,"Vernica,Benet-Martnez","female,89","0    0.101204
+Name: nh_white, dtype: float32",0.8987962,
+63,Benet-Martinez2005,"Jana,Haritatos","female,98","0    0.97687
+Name: nh_white, dtype: float32",0.02313022,femalefemale
+64,Croucher2011,"Stephen,Croucher","male,99","0    0.987749
+Name: nh_white, dtype: float32",0.012250738,
+65,Croucher2011,"Stephen,Croucher","male,99","0    0.987749
+Name: nh_white, dtype: float32",0.012250738,malemale
+66,Croucher2017,"Stephen,Croucher","male,99","0    0.987749
+Name: nh_white, dtype: float32",0.012250738,
+67,Croucher2017,"Eric,Kramer","male,99","0    0.983196
+Name: nh_white, dtype: float32",0.016803814,malemale
+68,Loon2021,"Mark,Loon","male,100","0    0.922906
+Name: nh_white, dtype: float32",0.07709432,
+69,Loon2021,"Agata,Vitale","female,98","0    0.551676
+Name: nh_white, dtype: float32",0.44832402,malefemale
+70,Ballard-Kang2017,"Jennifer,Ballard-Kang","female,98","0    0.933899
+Name: nh_white, dtype: float32",0.06610057,
+71,Ballard-Kang2017,"Jennifer,Ballard-Kang","female,98","0    0.933899
+Name: nh_white, dtype: float32",0.06610057,femalefemale
+72,Luedicke2011,"Marius,Luedicke","male,99","0    0.202092
+Name: nh_white, dtype: float32",0.79790837,
+73,Luedicke2011,"Marius,Luedicke","male,99","0    0.202092
+Name: nh_white, dtype: float32",0.79790837,malemale
+74,Bhatia2009,"Sunil,Bhatia","male,99","0    0.109194
+Name: nh_white, dtype: float32",0.89080644,
+75,Bhatia2009,"Anjali,Ram","female,98","0    0.256641
+Name: nh_white, dtype: float32",0.7433588,malefemale
+76,Ramakrishnan2018,"Saranya,Ramakrishnan","female,98","0    0.213593
+Name: nh_white, dtype: float32",0.78640753,
+77,Ramakrishnan2018,"Anne,Zhang","female,98","0    0.145585
+Name: nh_white, dtype: float32",0.8544151,femalefemale
+78,Crul2010,"Maurice,Crul","male,97","0    0.642434
+Name: nh_white, dtype: float32",0.35756558,
+79,Crul2010,"Jens,Schneider","male,99","0    0.963225
+Name: nh_white, dtype: float32",0.036775388,malemale
+80,Wood2014,"Jennifer,Wood","female,98","0    0.94883
+Name: nh_white, dtype: float32",0.051169865,
+81,Wood2014,"Jennifer,Wood","female,98","0    0.94883
+Name: nh_white, dtype: float32",0.051169865,femalefemale
+82,Mchitarjan2013,"Irina,Mchitarjan","female,98","0    0.790963
+Name: nh_white, dtype: float32",0.2090371,
+83,Mchitarjan2013,"Rainer,Reisenzein","male,99","0    0.92076
+Name: nh_white, dtype: float32",0.07923971,femalemale
+84,Robinson2019,"Alexandra,Robinson","female,98","0    0.686853
+Name: nh_white, dtype: float32",0.3131471,
+85,Robinson2019,"Alexandra,Robinson","female,98","0    0.686853
+Name: nh_white, dtype: float32",0.3131471,femalefemale
+86,Nolan2012,"Brian,Nolan","male,99","0    0.956351
+Name: nh_white, dtype: float32",0.04364941,
+87,Nolan2012,"Brian,Nolan","male,99","0    0.956351
+Name: nh_white, dtype: float32",0.04364941,malemale
+88,Alba1997,"Richard,Alba","male,99","0    0.529311
+Name: nh_white, dtype: float32",0.4706889,
+89,Alba1997,"Victor,Nee","male,99","0    0.682395
+Name: nh_white, dtype: float32",0.31760466,malemale
+90,Anzaldua1987,"Gloria,Anzalda","female,98","0    0.192661
+Name: nh_white, dtype: float32",0.8073387,
+91,Anzaldua1987,"Gloria,Anzalda","female,98","0    0.192661
+Name: nh_white, dtype: float32",0.8073387,femalefemale
+92,Schwartz2010a,"Seth,Schwartz","male,99","0    0.991876
+Name: nh_white, dtype: float32",0.008124441,
+93,Schwartz2010a,"Jos,Szapocznik","male,94","0    0.785453
+Name: nh_white, dtype: float32",0.21454677,malemale
+94,Tartakovsky2012,"Eugene,Tartakovsky","male,97","0    0.989588
+Name: nh_white, dtype: float32",0.010412264,
+95,Tartakovsky2012,"Eugene,Tartakovsky","male,97","0    0.989588
+Name: nh_white, dtype: float32",0.010412264,malemale
+96,Baird2015,"Martha,Baird","female,97","0    0.895001
+Name: nh_white, dtype: float32",0.10499928,
+97,Baird2015,"Pamela,Reed","female,98","0    0.895135
+Name: nh_white, dtype: float32",0.1048653,femalefemale
+98,Joy2018,"Simy,Joy","female,73","0    0.813407
+Name: nh_white, dtype: float32",0.18659303,
+99,Joy2018,"Ishita,Toshniwal","female,99","0    0.053788
+Name: nh_white, dtype: float32",0.9462124,femalefemale
+100,Madison2006,"Greg,Madison","male,99","0    0.819533
+Name: nh_white, dtype: float32",0.18046682,
+101,Madison2006,"Greg,Madison","male,99","0    0.819533
+Name: nh_white, dtype: float32",0.18046682,malemale
+102,Kim2019,"Byeong,Kim","male,100","0    0.048984
+Name: nh_white, dtype: float32",0.95101607,
+103,Kim2019,"Denise,Rousseau","female,98","0    0.897873
+Name: nh_white, dtype: float32",0.10212708,malefemale
+104,DeAbreu2013,"Guida,Abreu","female,92","0    0.096252
+Name: nh_white, dtype: float32",0.9037481,
+105,DeAbreu2013,"Hannah,Hale","female,99","0    0.945566
+Name: nh_white, dtype: float32",0.05443445,femalefemale
+106,Lee2018e,"Sookjung,Lee","female,75","0    0.006116
+Name: nh_white, dtype: float32",0.99388367,
+107,Lee2018e,"Sookjung,Lee","female,75","0    0.006116
+Name: nh_white, dtype: float32",0.99388367,femalefemale
+108,Esser2004,"Hartmut,Esser","male,99","0    0.93729
+Name: nh_white, dtype: float32",0.06270972,
+109,Esser2004,"Hartmut,Esser","male,99","0    0.93729
+Name: nh_white, dtype: float32",0.06270972,malemale
+110,Mannarini2017,"Terri,Mannarini","female,97","0    0.989325
+Name: nh_white, dtype: float32",0.01067527,
+111,Mannarini2017,"Fortuna,Procentese","female,81","0    0.350151
+Name: nh_white, dtype: float32",0.6498492,femalefemale
+112,Leong2014,"Chan-Hoong,Leong","male,68","0    0.004444
+Name: nh_white, dtype: float32",0.99555606,
+113,Leong2014,"Chan-Hoong,Leong","male,68","0    0.004444
+Name: nh_white, dtype: float32",0.99555606,malemale
+114,Hwang2006,"Wei-Chin,Hwang","male,67","0    0.019067
+Name: nh_white, dtype: float32",0.98093325,
+115,Hwang2006,"Wei-Chin,Hwang","male,67","0    0.019067
+Name: nh_white, dtype: float32",0.98093325,malemale
+116,Weinreich2009,"Peter,Weinreich","male,99","0    0.99357
+Name: nh_white, dtype: float32",0.006429576,
+117,Weinreich2009,"Peter,Weinreich","male,99","0    0.99357
+Name: nh_white, dtype: float32",0.006429576,malemale
+118,Huot2013,"Suzanne,Huot","female,98","0    0.926242
+Name: nh_white, dtype: float32",0.07375774,
+119,Huot2013,"Lilian,Magalhes","female,90","0    0.40872
+Name: nh_white, dtype: float32",0.59128004,femalefemale
+120,Ryan2008,"Dermot,Ryan","male,100","0    0.942109
+Name: nh_white, dtype: float32",0.057890527,
+121,Ryan2008,"Ciarn,Benson","unknown,0","0    0.725131
+Name: nh_white, dtype: float32",0.27486897,maleunknown
+122,Hajro2019,"Aida,Hajro","female,97","0    0.63078
+Name: nh_white, dtype: float32",0.36922008,
+123,Hajro2019,"Mila,Lazarova","female,96","0    0.873689
+Name: nh_white, dtype: float32",0.12631099,femalefemale
+124,Ward2012,"Colleen,Ward","female,98","0    0.937306
+Name: nh_white, dtype: float32",0.06269431,
+125,Ward2012,"Larissa,Kus","female,99","0    0.958296
+Name: nh_white, dtype: float32",0.04170421,femalefemale
+126,Serdarevic2005,"Mirsad,Serdarevic","male,97","0    0.696815
+Name: nh_white, dtype: float32",0.30318528,
+127,Serdarevic2005,"Krista,Chronister","female,98","0    0.919092
+Name: nh_white, dtype: float32",0.08090782,malefemale
+128,Epstein2015,"Gil,Epstein","male,91","0    0.98086
+Name: nh_white, dtype: float32",0.019140482,
+129,Epstein2015,"Odelia,Heizler","female,99","0    0.595659
+Name: nh_white, dtype: float32",0.4043414,malefemale
+130,Pan2014b,"Jia-Yan,Pan","male,68","0    0.062338
+Name: nh_white, dtype: float32",0.9376619,
+131,Pan2014b,"Jia-Yan,Pan","male,68","0    0.062338
+Name: nh_white, dtype: float32",0.9376619,malemale
+132,Tsuda2012,"Takeyuki,Tsuda","male,100","0    0.054512
+Name: nh_white, dtype: float32",0.9454879,
+133,Tsuda2012,"Takeyuki,Tsuda","male,100","0    0.054512
+Name: nh_white, dtype: float32",0.9454879,malemale
+134,DelPilar2004,"Jose,Del","male,97","0    0.058442
+Name: nh_white, dtype: float32",0.9415584,
+135,DelPilar2004,"Jocelynda,Udasco","female,75","0    0.302707
+Name: nh_white, dtype: float32",0.6972927,malefemale
+136,Ben-Shalom2003,"Uzi,Ben-Shalom","male,90","0    0.36157
+Name: nh_white, dtype: float32",0.6384302,
+137,Ben-Shalom2003,"Gabriel,Horenczyk","male,99","0    0.797669
+Name: nh_white, dtype: float32",0.20233077,malemale
+138,Phinney1990,"Jean,Phinney","male,90","0    0.859594
+Name: nh_white, dtype: float32",0.14040613,
+139,Phinney1990,"Jean,Phinney","male,90","0    0.859594
+Name: nh_white, dtype: float32",0.14040613,malemale
+140,Padilla2003,"Amado,Padilla","male,97","0    0.077148
+Name: nh_white, dtype: float32",0.92285204,
+141,Padilla2003,"William,Perez","male,99","0    0.163635
+Name: nh_white, dtype: float32",0.8363646,malemale
+142,Riedel2011,"Jeannette,Riedel","female,99","0    0.697446
+Name: nh_white, dtype: float32",0.30255368,
+143,Riedel2011,"Hans,Hannich","male,97","0    0.930272
+Name: nh_white, dtype: float32",0.06972855,femalemale
+144,Enriquez2014,"Laura,Enriquez","female,98","0    0.157923
+Name: nh_white, dtype: float32",0.8420774,
+145,Enriquez2014,"Laura,Enriquez","female,98","0    0.157923
+Name: nh_white, dtype: float32",0.8420774,femalefemale
+146,Portes2009,"Alejandro,Portes","male,99","0    0.028172
+Name: nh_white, dtype: float32",0.9718281,
+147,Portes2009,"William,Haller","male,99","0    0.965979
+Name: nh_white, dtype: float32",0.034020968,malemale
+148,Perez2018,"Rose,Perez","unknown,0","0    0.149567
+Name: nh_white, dtype: float32",0.8504327,
+149,Perez2018,"Ilona,Arnold-Berkovits","unknown,0","0    0.931533
+Name: nh_white, dtype: float32",0.06846687,unknownunknown
+150,Alitolppa-Niitamo2004,"Anne,Alitolppa-Niitamo","female,98","0    0.851614
+Name: nh_white, dtype: float32",0.1483861,
+151,Alitolppa-Niitamo2004,"Anne,Alitolppa-Niitamo","female,98","0    0.851614
+Name: nh_white, dtype: float32",0.1483861,femalefemale
+152,Kim1988,"Young,Kim","unknown,0","0    0.017931
+Name: nh_white, dtype: float32",0.9820691,
+153,Kim1988,"Young,Kim","unknown,0","0    0.017931
+Name: nh_white, dtype: float32",0.9820691,unknownunknown
+154,Rogler1994,"Lloyd,Rogler","unknown,0","0    0.925649
+Name: nh_white, dtype: float32",0.07435061,
+155,Rogler1994,"Lloyd,Rogler","unknown,0","0    0.925649
+Name: nh_white, dtype: float32",0.07435061,unknownunknown
+156,Davenport2017,"Lisa,Davenport","female,98","0    0.88606
+Name: nh_white, dtype: float32",0.11394051,
+157,Davenport2017,"Lisa,Davenport","female,98","0    0.88606
+Name: nh_white, dtype: float32",0.11394051,femalefemale
+158,Kemppainen2020,"Teemu,Kemppainen","unknown,0","0    0.464429
+Name: nh_white, dtype: float32",0.53557074,
+159,Kemppainen2020,"Pasi,Saukkonen","unknown,0","0    0.971492
+Name: nh_white, dtype: float32",0.028507676,unknownunknown
+160,Safdar2003,"Saba,Safdar","unknown,0","0    0.172067
+Name: nh_white, dtype: float32",0.82793295,
+161,Safdar2003,"Ward,Struthers","unknown,0","0    0.891675
+Name: nh_white, dtype: float32",0.10832532,unknownunknown
+162,Martiniello2014,"Marco,Martiniello","unknown,0","0    0.588053
+Name: nh_white, dtype: float32",0.41194704,
+163,Martiniello2014,"Andrea,Rea","unknown,0","0    0.879296
+Name: nh_white, dtype: float32",0.12070354,unknownunknown
+164,Kim2004,"Sun,Kim","unknown,0","0    0.004195
+Name: nh_white, dtype: float32",0.9958051,
+165,Kim2004,"Sun,Kim","unknown,0","0    0.004195
+Name: nh_white, dtype: float32",0.9958051,unknownunknown
+166,Faist2000,"Thomas,Faist","unknown,0","0    0.977684
+Name: nh_white, dtype: float32",0.022316229,
+167,Faist2000,"Thomas,Faist","unknown,0","0    0.977684
+Name: nh_white, dtype: float32",0.022316229,unknownunknown
+168,Ward2016,"Colleen,Ward","female,98","0    0.937306
+Name: nh_white, dtype: float32",0.06269431,
+169,Ward2016,"Nicolas,Geeraert","unknown,0","0    0.732563
+Name: nh_white, dtype: float32",0.26743743,femaleunknown
+170,Smith1999c,"LRipley,Smith","unknown,0","0    0.569811
+Name: nh_white, dtype: float32",0.43018892,
+171,Smith1999c,"LRipley,Smith","unknown,0","0    0.569811
+Name: nh_white, dtype: float32",0.43018892,unknownunknown
+172,Grove1985,"Cornelius,Grove","unknown,0","0    0.386316
+Name: nh_white, dtype: float32",0.6136837,
+173,Grove1985,"Ingemar,Torbirn","unknown,0","0    0.37688
+Name: nh_white, dtype: float32",0.6231198,unknownunknown
+174,WalsAparicio2009,"Sergio,Wals","unknown,0","0    0.45496
+Name: nh_white, dtype: float32",0.54503953,
+175,WalsAparicio2009,"Sergio,Wals","unknown,0","0    0.45496
+Name: nh_white, dtype: float32",0.54503953,unknownunknown

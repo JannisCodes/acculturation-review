@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2018)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: diversityStatement.aux
+The style file: ieeetr.bst
+Database file #1: ./bibfile.bib
+Warning--entry type for "zhou_dale_2020_3672110" isn't style-file defined
+--line 58 of file ./bibfile.bib
+You've used 12 entries,
+            1876 wiz_defined-function locations,
+            548 strings with 6280 characters,
+and the built_in function-call counts, 3365 in all, are:
+= -- 295
+> -- 204
+< -- 0
++ -- 72
+- -- 60
+* -- 263
+:= -- 516
+add.period$ -- 12
+call.type$ -- 12
+change.case$ -- 12
+chr.to.int$ -- 0
+cite$ -- 12
+duplicate$ -- 165
+empty$ -- 283
+format.name$ -- 60
+if$ -- 794
+int.to.chr$ -- 0
+int.to.str$ -- 12
+missing$ -- 11
+newline$ -- 39
+num.names$ -- 12
+pop$ -- 38
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 109
+stack$ -- 0
+substring$ -- 156
+swap$ -- 69
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 28
+width$ -- 14
+write$ -- 116
+(There was 1 warning)

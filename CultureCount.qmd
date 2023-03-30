@@ -4,13 +4,7 @@ format: html
 editor: visual
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+## Cultures
 
 ```{r}
 #| label: load data
@@ -18,31 +12,95 @@ When you click the **Render** button a document will be generated that includes 
 # load("data/wrangled.RData")
 
 # convert .RData -> .rdb/.rdx
-e = local({load("data/wrangled.RData"); environment()})
-tools:::makeLazyLoadDB(e, "data")
-
+tools:::makeLazyLoadDB(local({load("data/wrangled.RData"); environment()}), "data")
 lazyLoad("data")
-ls()
 
 library(dplyr)
+library(stringr)
+library(purrr)
 
-rbind(dt.Scales.Included$HostCountry, dt.Empirical.included$HostCountry) %>%
-  tolower %>%$
-  unique
+country_clean <- function(string) {
+  string %>%
+  stringr::str_split(., ", ") %>%
+  unlist %>%
+  stringr::str_split(., "; ") %>%
+  unlist %>%
+  tolower %>%
+  gsub("^uk$|great britainraine|^britain|great britain", "united kingdom", .) %>%
+  gsub("arabic countries|arabic speaking|arabs", "arab", .) %>%
+  str_replace(., "united states$", "united states of america") %>%
+  str_replace(., "^yugoslavia$", "former yugoslavia") %>%
+  str_replace(., "czechoslovacia", "czechoslovakia") %>%
+  str_replace(., "phillipines", "philippines") %>%
+  str_replace(., "pakistani", "pakistan") %>%
+  str_replace(., "indian", "india") %>%
+  str_replace(., "asian", "asia") %>%
+  str_replace(., "ethopia", "ethiopia") %>%
+  str_replace(., "ecuadorian", "ecuador") %>%
+  str_replace(., "canda", "canada") %>%
+  str_replace(., "hispanics", "hispanic") %>%
+  str_replace(., "amy", "any") %>%
+  str_replace(., "african cribbean", "african-caribbean") %>%
+  unique %>%
+  setdiff(., c("n/a", "many", "any", "multiple")) %>%
+  sort %>%
+  discard(., is.na) 
+}
 
-dt.Scales.Included$HostCountry %>%
-  tolower %>%
-  unique
-dt.Scales.Included$OriginCountry %>%
-  tolower %>%
-  unique
+n_host <- c(dt.Scales.Included$HostCountry, dt.Empirical.included$HostCountry) %>% 
+  country_clean %>%
+  length
+
+n_origin <- c(dt.Scales.Included$OriginCountry, dt.Empirical.included$OriginCountry) %>% 
+  country_clean %>%
+  length
+
+n_countries <- c(
+  dt.Scales.Included$HostCountry,
+  dt.Empirical.included$HostCountry,
+  dt.Scales.Included$OriginCountry,
+  dt.Empirical.included$OriginCountry
+) %>%
+  country_clean %>%
+  length
+
+n_contry_combs <- rbind(
+  dt.Scales.Included %>% select(HostCountry, OriginCountry),
+  dt.Empirical.included %>% select(HostCountry, OriginCountry)
+) %>%
+  distinct %>%
+  na.omit %>%
+  nrow
 ```
 
-You can add options to executable code like this
+
+## Citations
 
 ```{r}
-#| echo: false
-2 * 2
+#| label: citation subsetting
+
+# import full reference bib
+mybib <- bib2df::bib2df("references.bib")
+
+# filter and export theoretical
+mybib_theoretical <- mybib %>%
+  filter(BIBTEXKEY %in% unique(dt.Theories.Included$CitationKey)) %>%
+  distinct(., BIBTEXKEY, .keep_all = TRUE)
+bib2df::df2bib(mybib_theoretical, file = "references_theoretical.bib", append = FALSE)
+
+# filter and export psychometric
+mybib_psychometric <- mybib %>%
+  filter(BIBTEXKEY %in% unique(dt.Scales.Included$CitationKey)) %>%
+  distinct(., BIBTEXKEY, .keep_all = TRUE)
+bib2df::df2bib(mybib_psychometric, file = "references_psychometric.bib", append = FALSE)
+
+# filter and export empirical
+mybib_empirical <- mybib %>%
+  filter(BIBTEXKEY %in% unique(dt.Empirical.included$CitationKey)) %>%
+  distinct(., BIBTEXKEY, .keep_all = TRUE)
+bib2df::df2bib(mybib_empirical, file = "references_empirical.bib", append = FALSE)
+  
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+
+
