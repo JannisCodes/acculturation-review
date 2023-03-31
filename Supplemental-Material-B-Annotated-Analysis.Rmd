@@ -1,5 +1,5 @@
 ---
-title: "Supplemental Information C: Full Annotated Analysis and Reproducible Code"
+title: "Supplemental Information B: Full Annotated Analysis and Reproducible Code"
 subtitle: "Suppplemental Material for 'The Migration Experience: A Conceptual Framework and Systematic Scoping Review of Psychological Acculturation'"
 author:
 - █████████████████^1^ #Jannis Kreienkamp^1^
