@@ -16,7 +16,7 @@ csl: apa.csl
 lib <- c("rmarkdown", "knitr", "remedy", "bookdown", "rmdfiltr", "psych",
          "ggplot2", "ggthemes", "haven", "RColorBrewer", "plotly", "forcats", "wordcloud", "visNetwork", "ggwordcloud", "gridExtra",
          "webshot2", "sessioninfo", "summarytools","ggpubr",
-         "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2",
+         "data.table", "dplyr", "tidyr", "Hmisc", "kableExtra", "readxl", "stringr", "stringi", "reshape2", "purrr",
          "tibble", "sqldf", "networkD3", "GGally", "ggstatsplot","hrbrthemes", "patchwork", "cowplot",
          "mada", "naniar", "stats", "matrixStats", "ISOcodes", "pander", "lubridate", "gsheet",
          "DiagrammeR", "janitor", "DiagrammeRsvg", "rsvg", "manipulateWidget", "htmlwidgets", "boot")
@@ -44,11 +44,70 @@ rm(lib)
 load("data/wrangled.RData")
 ```
 
+```{r countryCount}
+country_clean <- function(string) {
+  string %>%
+  stringr::str_split(., ", ") %>%
+  unlist %>%
+  stringr::str_split(., "; ") %>%
+  unlist %>%
+  tolower %>%
+  gsub("^uk$|great britainraine|^britain|great britain", "united kingdom", .) %>%
+  gsub("arabic countries|arabic speaking|arabs", "arab", .) %>%
+  str_replace(., "united states$", "united states of america") %>%
+  str_replace(., "^yugoslavia$", "former yugoslavia") %>%
+  str_replace(., "czechoslovacia", "czechoslovakia") %>%
+  str_replace(., "phillipines", "philippines") %>%
+  str_replace(., "pakistani", "pakistan") %>%
+  str_replace(., "indian", "india") %>%
+  str_replace(., "asian", "asia") %>%
+  str_replace(., "ethopia", "ethiopia") %>%
+  str_replace(., "ecuadorian", "ecuador") %>%
+  str_replace(., "canda", "canada") %>%
+  str_replace(., "hispanics", "hispanic") %>%
+  str_replace(., "amy", "any") %>%
+  str_replace(., "african cribbean", "african-caribbean") %>%
+  unique %>%
+  setdiff(., c("n/a", "many", "any", "multiple")) %>%
+  sort %>%
+  discard(., is.na) 
+}
+
+n_host <- c(dt.Scales.Included$HostCountry, dt.Empirical.included$HostCountry) %>% 
+  country_clean %>%
+  length
+
+n_origin <- c(dt.Scales.Included$OriginCountry, dt.Empirical.included$OriginCountry) %>% 
+  country_clean %>%
+  length
+
+n_countries <- c(
+  dt.Scales.Included$HostCountry,
+  dt.Empirical.included$HostCountry,
+  dt.Scales.Included$OriginCountry,
+  dt.Empirical.included$OriginCountry
+) %>%
+  country_clean %>%
+  length
+
+n_contry_combs <- rbind(
+  dt.Scales.Included %>% select(HostCountry, OriginCountry),
+  dt.Empirical.included %>% select(HostCountry, OriginCountry)
+) %>%
+  distinct %>%
+  na.omit %>%
+  nrow
+```
+
 ```{=tex}
 \newcommand{\nTheo}{`r nrow(dt.Theories.Included)`}
 \newcommand{\nMeth}{`r nrow(dt.Scales.Included)`}
 \newcommand{\nEmp}{`r nrow(dt.Empirical.included)`}
+\newcommand{\nCultureHost}{`r n_host`}
+\newcommand{\nCultureOrigin}{`r n_origin`}
+\newcommand{\nCultureCombs}{`r n_contry_combs`}
 ```
+
 To assess the past empirical and theoretical literature on psychological acculturation, we performed a systematic scoping review. We first read seminal and review works within the field \citep[including,][]{Ward2019, Berry1997b, Berry2003, Szapocznik1978, Sam2006a, Rudmin2003a}. Based on our reading of the literature, we designed a comprehensive literature search strategy in an iterative fashion. For the empirical work on acculturation we performed a literature search on March 4\textsuperscript{th}, 2020 and February 14\textsuperscript{th}, 2021, within the "APA PsycINFO" bibliographic databases using the EBSCO\textit{host} provider. The databases also included the PsycARTICLES, PsycBOOKS, and PsycCRITIQUES databases as well ProQuest Dissertations with psychological relevance (for the full information on the search strategy see \hyperref[app:AppendixSearchStrategy]{Appendix \ref*{app:AppendixSearchStrategy}}.
 
 Together with past reviews, we used this literature search to identify validated scales as well as empirical works more generally. For the theoretical literature we collected the theories used in the empirical works and performed an additional, more specific, search of the same databases as well as the Web of Science Core Collection using the Clarivate Analytics provider on March 3\textsuperscript{rd}, 2021 (for full information see \hyperref[app:AppendixSearchStrategy]{Appendix \ref*{app:AppendixSearchStrategy}}).
@@ -901,7 +960,7 @@ ggplot(vizDataFrame, aes(x=scale, y=value, fill=variable)) +
 \paragraph{Content.}
 While a discussion of all the topics addressed by the included scales lies beyond the scope of this study, we would like to describe some of the larger patterns authors have focused on. To that aim, we offer illustrations of the patterns we observed during the reading, extraction, and coding of the acculturation scales. We additionally, ran a machine learning topic modeling procedure on the items of the scales to identify content topics.
 
-A first key observation is that there was considerable diversity between the scales in how many experience aspects and topics were addressed. That might not generally be surprising, considering that the scales had between `r scaleItemDescr$min` and `r scaleItemDescr$max` items, and included between `r scaleDomainDescr$min` and `r scaleDomainDescr$max` life domains (see Supplemental Material E). Additionally, scales were also either more focused on a specific aspect \citep[e.g., `Asian Value Scale';][]{Kim1999, Kim2004a} or aimed to capture acculturation more broadly \citep[e.g., `Asian American Multidimensional Acculturation Scale'][]{GimChung2004}. Another trend that we observed was a separation between a factual and counter-factual acculturation \citep[e.g., real vs. ideal,][]{Navas2005, Navas2007, BenetMartinez2006}. Additionally, while a large number of scales separately assessed ABCDs as they related to the dominant culture and the heritage culture, we saw a trend towards explicitly asking about different life domains \citep[e.g., family, work, media;][also see Supplemental Material E]{Kim2010a, Arends-Toth2007, Mancini2014}. 
+A first key observation is that there was considerable diversity between the scales in how many experience aspects and topics were addressed. That might not generally be surprising, considering that the scales had between `r scaleItemDescr$min` and `r scaleItemDescr$max` items, and included between `r scaleDomainDescr$min` and `r scaleDomainDescr$max` life domains (see Supplemental Material E). Additionally, scales were also either more focused on a specific aspect \citep[e.g., `Asian Value Scale';][]{Kim1999, Kim2004a} or aimed to capture acculturation more broadly \citep[e.g., `Asian American Multidimensional Acculturation Scale'][]{GimChung2004}. Another trend that we observed was a separation between a factual and counter-factual acculturation \citep[e.g., real vs. ideal,][]{Navas2005, Navas2007, BenetMartinez2006}. Additionally, while a large number of scales separately assessed ABCDs as they related to the dominant and the heritage cultural patterns, we saw a trend towards explicitly asking about different life domains \citep[e.g., family, work, media;][also see Supplemental Material E]{Kim2010a, Arends-Toth2007, Mancini2014}. 
 
 When considering the content of the aspects that were included across acculturation scales, the topic modeling analysis offers a number of key insights that mostly align with our reading of the literature. For the topic modeling of the acculturation scales, we particularly used the scale items in a Latent Dirichlet Allocation (LDA) analysis, an unsupervised machine learning method common within the natural language processing literature. The analysis essentially extracts sets of terms that tended to occur together, assuming that scales that measure a specific topic have more words that relate to the topic than scales that measure other topics \citep[we followed the procedures outlined by][for a full methodological detail see Supplemental Material C]{Schweinberger2022}. 
 

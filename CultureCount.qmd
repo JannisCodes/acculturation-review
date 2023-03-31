@@ -9,68 +9,17 @@ editor: visual
 ```{r}
 #| label: load data
 
-# load("data/wrangled.RData")
+# load libraries
+library(dplyr)
+library(stringr)
+library(purrr)
+library(bib2df)
+library(tools)
 
 # convert .RData -> .rdb/.rdx
 tools:::makeLazyLoadDB(local({load("data/wrangled.RData"); environment()}), "data")
 lazyLoad("data")
 
-library(dplyr)
-library(stringr)
-library(purrr)
-
-country_clean <- function(string) {
-  string %>%
-  stringr::str_split(., ", ") %>%
-  unlist %>%
-  stringr::str_split(., "; ") %>%
-  unlist %>%
-  tolower %>%
-  gsub("^uk$|great britainraine|^britain|great britain", "united kingdom", .) %>%
-  gsub("arabic countries|arabic speaking|arabs", "arab", .) %>%
-  str_replace(., "united states$", "united states of america") %>%
-  str_replace(., "^yugoslavia$", "former yugoslavia") %>%
-  str_replace(., "czechoslovacia", "czechoslovakia") %>%
-  str_replace(., "phillipines", "philippines") %>%
-  str_replace(., "pakistani", "pakistan") %>%
-  str_replace(., "indian", "india") %>%
-  str_replace(., "asian", "asia") %>%
-  str_replace(., "ethopia", "ethiopia") %>%
-  str_replace(., "ecuadorian", "ecuador") %>%
-  str_replace(., "canda", "canada") %>%
-  str_replace(., "hispanics", "hispanic") %>%
-  str_replace(., "amy", "any") %>%
-  str_replace(., "african cribbean", "african-caribbean") %>%
-  unique %>%
-  setdiff(., c("n/a", "many", "any", "multiple")) %>%
-  sort %>%
-  discard(., is.na) 
-}
-
-n_host <- c(dt.Scales.Included$HostCountry, dt.Empirical.included$HostCountry) %>% 
-  country_clean %>%
-  length
-
-n_origin <- c(dt.Scales.Included$OriginCountry, dt.Empirical.included$OriginCountry) %>% 
-  country_clean %>%
-  length
-
-n_countries <- c(
-  dt.Scales.Included$HostCountry,
-  dt.Empirical.included$HostCountry,
-  dt.Scales.Included$OriginCountry,
-  dt.Empirical.included$OriginCountry
-) %>%
-  country_clean %>%
-  length
-
-n_contry_combs <- rbind(
-  dt.Scales.Included %>% select(HostCountry, OriginCountry),
-  dt.Empirical.included %>% select(HostCountry, OriginCountry)
-) %>%
-  distinct %>%
-  na.omit %>%
-  nrow
 ```
 
 
@@ -79,8 +28,10 @@ n_contry_combs <- rbind(
 ```{r}
 #| label: get used citation keys from aux
 
+# read aux file
 aux <- readLines("main.aux")
 
+# extract citation keys
 main_keys <- str_extract_all(aux, "\\{([^\\},\\/\\s[[:punct:]]]{4,})(?:,\\s*([^\\},]+))*\\}") %>% 
   unlist %>%
   str_extract_all(., ".*[[:digit:]].*") %>%
@@ -97,7 +48,7 @@ main_keys <- str_extract_all(aux, "\\{([^\\},\\/\\s[[:punct:]]]{4,})(?:,\\s*([^\
 # import full reference bib
 mybib <- bib2df::bib2df("references.bib")
 
-# filter and export theoretical
+# filter and export bib from manuscript
 mybib_main <- mybib %>%
   filter(BIBTEXKEY %in% main_keys) %>%
   distinct(., BIBTEXKEY, .keep_all = TRUE)
