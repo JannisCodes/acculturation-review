@@ -4,7 +4,7 @@ format: html
 editor: visual
 ---
 
-## Cultures
+## Load Data 
 
 ```{r}
 #| label: load data
@@ -21,7 +21,6 @@ tools:::makeLazyLoadDB(local({load("data/wrangled.RData"); environment()}), "dat
 lazyLoad("data")
 
 ```
-
 
 ## Citations
 
@@ -40,7 +39,6 @@ main_keys <- str_extract_all(aux, "\\{([^\\},\\/\\s[[:punct:]]]{4,})(?:,\\s*([^\
   unique
   
 ```
-
 
 ```{r}
 #| label: citation subsetting
@@ -71,8 +69,8 @@ mybib_empirical <- mybib %>%
   filter(BIBTEXKEY %in% unique(dt.Empirical.included$CitationKey)) %>%
   distinct(., BIBTEXKEY, .keep_all = TRUE)
 bib2df::df2bib(mybib_empirical, file = "references_empirical.bib", append = FALSE)
+
+# Re-Export Directory Data without rerunning full supplemental
+save(dt.Scales, dt.Scales.Included, dt.Theories, dt.Theories.Included, file = "data/AcculturationScales.RData")
   
 ```
-
-
-
