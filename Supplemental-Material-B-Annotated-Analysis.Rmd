@@ -2926,7 +2926,7 @@ save(dt.Input,
      dt.Theories, dt.Theories.Included, dt.TheorySearch, 
      dt.Domains, empiricalDataDisciplines, file = "data/wrangled.RData")
 
-save(dt.Scales, dt.Scales.Included, file = "data/AcculturationScales.RData")
+save(dt.Scales, dt.Scales.Included, dt.Theories, dt.Theories.Included, file = "data/AcculturationScales.RData")
 
 # export reduced dataset for OSF repository
 theorySearchCleand <- dt.TheorySearch %>%
