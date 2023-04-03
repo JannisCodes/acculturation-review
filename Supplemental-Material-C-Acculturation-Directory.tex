@@ -1,0 +1,134 @@
+% define document type (i.e., template. Here: A4 APA manuscript with 12pt font)
+\documentclass[man, 12pt, a4paper]{apa7}
+
+% add packages
+\usepackage[american]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage{hyperref}
+\usepackage[style=apa, sortcites=true, sorting=nyt, backend=biber, natbib=true, uniquename=false, uniquelist=false, useprefix=true]{biblatex}
+\usepackage{authblk}
+\usepackage{graphicx}
+\usepackage{setspace,caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{lipsum}
+\usepackage{soul}
+\usepackage{xcolor}
+\usepackage{fourier}
+\usepackage{stackengine}
+\usepackage{scalerel}
+\usepackage{fontawesome}
+\usepackage[normalem]{ulem}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{afterpage}
+\usepackage{float}
+\usepackage{titling}
+\usepackage{censor}
+\usepackage{tcolorbox}
+
+% formatting links in the PDF file
+\hypersetup{
+pdfpagemode={UseOutlines},
+bookmarksopen=true,
+bookmarksopenlevel=0,
+hypertexnames=false,
+colorlinks   = true, %Colours links instead of ugly boxes
+urlcolor     = blue, %Colour for external hyperlinks
+linkcolor    = blue, %Colour of internal links
+citecolor   = cyan, %Colour of citations
+pdfstartview={FitV},
+unicode,
+breaklinks=true,
+}
+
+% language settings
+\DeclareLanguageMapping{american}{american-apa}
+
+% add reference library file
+\addbibresource{references.bib}
+
+% Title and header
+\title{Supplemental Information C: Acculturation Directory}
+\shorttitle{SI C: Acculturation Directory}
+%\author{Jannis Kreienkamp, Laura F. Bringmann, Raili F. Engler, Peter de Jonge, Kai Epstude}
+\author{[authors masked for peer review]}
+
+% set indentation size
+\setlength\parindent{1.27cm}
+
+% adapt table and figure labels
+\setcounter{equation}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\setcounter{page}{1}
+\makeatletter
+\renewcommand{\theequation}{S\arabic{equation}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+
+% Start of the main document:
+\begin{document}
+
+% add title information (incl. title page and abstract)
+\begin{titlepage}
+	{\noindent\Large Supplementary Information for \par}
+	\vspace{0.5cm}
+	{\noindent\Large The Migration Experience: A Conceptual Framework and Systematic Scoping Review of Psychological Acculturation\par}
+	\vspace{1.5cm}
+	{\noindent\LARGE\bfseries \thetitle \par}
+	\vspace{2cm}
+	{\noindent\Large\itshape \theauthor \par}
+	\vfill
+	%\noindent Corresponding Author: Jannis Kreienkamp\par
+	%\noindent E-mail: j.kreienkamp@rug.nl\par
+	\noindent Corresponding Author: [masked for peer review]\par
+	\noindent E-mail: [masked for peer review]\par
+	\vfill
+
+    % Bottom of the page
+	{\noindent Last updated: \today\par}
+\end{titlepage}
+
+% add title again on page 1 (after title page)
+\begin{center}
+   \textbf{\thetitle} 
+\end{center}
+
+This supplementary information introduces the acculturation directory. As part of the systematic scoping review, we collected and coded a wide range of theoretical and methodological manuscripts on psychological acculturation. From the literature, we were able to collect and code 233 acculturation scales as well as 93 acculturation theories. Given that this undertaking, to the best of our knowledge, brought together the largest collection of acculturation scales and theories to date, we decided to make the scales and theories as well as their attributes accessible to the readership. To this aim, we created an interactive acculturaction directory, which is available here:
+
+\vspace{.5cm}
+\begin{tcolorbox}
+    \vspace{0.2cm} \centering 
+    \href{https://acculturation-review.shinyapps.io/acculturation-directory/}{https://acculturation-review.shinyapps.io/acculturation-directory/}
+    \vspace{0.2cm} 
+\end{tcolorbox}
+
+\section{Features}
+This directory has three main functions, as it aims to (1) aid selection, (2) accessibility, and (3) exploration of the review results.
+
+The most practical function of this application is to aid researchers and practitioners in the selection of acculturation measurements and theories. The study of acculturation has produced an immense number of acculturation scales and theories. As a result, making a choice between these different approaches can be difficult. Not only is it difficult to gain an overview of the number of approaches used within the literature, but also the diversity in style and content can be overwhelming. We hope that the filter options we provide in our application can offer a first structured and intuitive entry into the plethora of acculturation scales and theories. It should be noted that this directory is not meant to replace a full literature review and only present a small amount of information on the scales and theories.
+
+We also hope to make the scales and theories more easily accessible to the users of the application. We do so by showcasing all (publicly) available scale items by clicking the eye icon in the 'View' column. We, additionally, list the full references to all works in the References tab (linked via a 'Reference' column in the scale and theory directories). 
+
+And finally, as part of the framework development and systematic review, we have arrived at a number of conclusions about the theoretical and methodological literature on acculturation. We hope that readers can use this directory in conjunction with the main article and explore the results themselves. The data table and the appended filter allow readers interactive access to the data and users might gain an intuitive understanding of the current state of the literature.
+
+
+\section{Interface}
+Users of the application arrive at the scale database, where they have interactive access to the scales themselves. There are three additional windows (i.e., tabs) available linking to the directory of the broader theoretical works (i.e., theories tab), a tab listing bibliographic information of the included works (i.e., references tab), as well as an introduction to the application and the broader review (i.e., about tab). Yet the core element of the application remains the scale and theory directories themselves, which each consist of three main interface elements, (1) an interactive data table of the selected works, (2) a filter section, and (3) a short information box.
+
+The visually largest space is taken up by the data table, which allows direct access to the directory. The table shows all results that fit the current filters and lists a number of key information about the included works. Next to the name of the scale or theory and the APA reference, the overview also indicates whether the scale included any of the affect, behavior, cognition, and/or desire aspects. Each of the directories also includes a number of idiosyncratic data columns, such as the number of items, or the number of life domains included in the work. Users can interact with this data table by sorting the columns based on their values and some columns are clickable areas, which gives access to additional information about the work. For the scales, we, for example, included (publicly) available scale items, response options, life domains considered, as well as some information on the validation sample.
+
+The filter section contains the main mechanisms for interacting with the directory. We currently offer three main filters to identify scales that fit the users' needs and more generally allow for exploration of the theoretical and methodological literature.
+\begin{itemize}
+\item The `Term Search Filter' allows users to search for any keyword(s) within the title of the theory or scale.
+\item The `Experience Aspect Filter' allows filtering the inclusion of the affect, behavior, cognition, and/or desire aspects. If this filter is disabled any combination of experience aspects will be displayed. Once enabled, the data table will display all works that fit the user's experience aspect focus.
+\item The `Number of Items Filter' and `Number of Domains Filter' are additional filters within the scale directory, which allow users to filter the acculturation scales by the number of items within the scale as well as the number of life domains (i.e., contact contexts) assessed within the scale. Users can use horizontal sliders to select the minimum and maximum number of items or domains that should be assessed within the scales.
+\end{itemize}
+
+The final, information section offers a top-level overview of the current scale selection. The current version shows the number of scales that fit the current filter choices, the average number of items of the selected scales, the total number of items of all selected scales, as well as a short general introduction to the directory.
+
+\printbibliography
+
+\end{document}
