@@ -6,7 +6,7 @@ This repository brings together the full manuscript (syncronized from Overleaf) 
 
 The full annotated analysis code is available [here](https://janniscodes.github.io/acculturation-review/Supplemental-Material-B-Annotated-Analysis).
 
-An interactive directory of the 233 included acculturation scales is available [here](https://acculturation-review.shinyapps.io/scale-directory/).
+An interactive directory of the 233 acculturation scales and 93 acculturation theories included in the manuscript is available [here](https://acculturation-review.shinyapps.io/acculturation-directory/).
 
 Please note that the full repository will remain 'private' until after the manuscript has been accepted for publication (to allow for blind peer review).
 
