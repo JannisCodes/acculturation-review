@@ -2,18 +2,18 @@
 title: "Supplemental Information B: Full Annotated Analysis and Reproducible Code"
 subtitle: "Suppplemental Material for 'The Migration Experience: A Conceptual Framework and Systematic Scoping Review of Psychological Acculturation'"
 author:
-- █████████████████^1^ #Jannis Kreienkamp^1^
-- ███████████████^1^ #Laura Bringmann^1^
-- ████████████^1^ #Raili Engler^1^
-- ██████████████^1^ #Peter de Jonge^1^
-- ███████████^1^ #Kai Epstude^1^
-- ^1^████████████████████ #University of Groningen
+- Jannis Kreienkamp^1^ # █████████████████^1^
+- Laura Bringmann^1^ # ███████████████^1^ 
+- Raili Engler^1^ # ████████████^1^ 
+- Peter de Jonge^1^ # ██████████████^1^ 
+- Kai Epstude^1^ # ███████████^1^ 
+- ^1^ University of Groningen #████████████████████ 
 - "Author Information:"
-- "Correspondence concerning this supplemental material should be addressed to ██████ ██████████, ██████████ ██ ██████████, █████████ ██ ██████████, █████ ██████████ ███, ████ ██ █████████ ████████████████. E-mail: █████████████████"
+- "Correspondence concerning this article should be addressed to Jannis Kreienkamp, Department of Psychology, University of Groningen, Grote Kruisstraat 2/1, 9712 TS Groningen (The Netherlands). E-mail: j.kreienkamp@rug.nl"
 - 'The main manuscript is available at <a href="https://www.doi.org/ToBePublished" target="_blank">doi.org/ToBePublished</a>'
-- 'The data repository for this manuscript is available at <a href="https://osf.io/n587w/?view_only=0809085870604eda8349baa90b4fd3e5" target="_blank">https://osf.io/n587w/?view_only=0809085870604eda8349baa90b4fd3e5</a>'
-- 'The GitHub repository for this manuscript is available at <a href="https://github.com/maskedForPeerReview" target="_blank">github.com/maskedForPeerReview</a>'
-- 'An interactive directory of all included acculturation scales is available at <a href="https://acculturation-review.shinyapps.io/scale-directory/" target="_blank">acculturation-review.shinyapps.io/scale-directory/</a>'
+- 'The data repository for this manuscript is available at <a href="https://osf.io/n587w/?view_only=3e8aed00f2d34942bd5d2f3a710e0de4" target="_blank">https://osf.io/n587w/?view_only=3e8aed00f2d34942bd5d2f3a710e0de4</a>'
+- 'The GitHub repository for this manuscript is available at <a href="https://github.com/JannisCodes/acculturation-review" target="_blank">github.com/JannisCodes/acculturation-review</a>'
+- 'An interactive directory of all included acculturation scales is available at <a href="https://acculturation-review.shinyapps.io/acculturation-directory/" target="_blank">acculturation-review.shinyapps.io/acculturation-directory/</a>'
 date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
 output: 
   bookdown::html_document2:
