@@ -24,9 +24,9 @@ invisible(lapply(lib, library, character.only = TRUE))
 rm(lib)  
 
 # Load Custom Packages  
-  source("./scripts/functions/fun.panel.R")
-  source("./scripts/functions/themes.R")
-  source("./scripts/functions/prismaGraph.R")
+  source("../scripts/functions/fun.panel.R")
+  source("../scripts/functions/themes.R")
+  source("../scripts/functions/prismaGraph.R")
 
 # Markdown Options
   knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file()) # set working directory
@@ -39,7 +39,7 @@ rm(lib)
 ```
 
 ```{r import}
-load("data/wrangled.RData")
+load("../data/wrangled.RData")
 ```
 
 \subsection{Methodological Literature}  
