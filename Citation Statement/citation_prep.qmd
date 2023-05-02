@@ -4,7 +4,7 @@ format: html
 editor: visual
 ---
 
-## Load Data 
+## Load Data
 
 ```{r}
 #| label: load data
@@ -28,7 +28,7 @@ lazyLoad("data")
 #| label: get used citation keys from aux
 
 # read aux file
-aux <- readLines("main.aux")
+aux <- readLines("Citation Statement/main.aux")
 
 # extract citation keys
 main_keys <- str_extract_all(aux, "\\{([^\\},\\/\\s[[:punct:]]]{4,})(?:,\\s*([^\\},]+))*\\}") %>% 
