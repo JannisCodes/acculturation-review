@@ -50,25 +50,25 @@ mybib <- bib2df::bib2df("references.bib")
 mybib_main <- mybib %>%
   filter(BIBTEXKEY %in% main_keys) %>%
   distinct(., BIBTEXKEY, .keep_all = TRUE)
-bib2df::df2bib(mybib_main, file = "references_main.bib", append = FALSE)
+bib2df::df2bib(mybib_main, file = "Citation Statement/references_main.bib", append = FALSE)
 
 # filter and export theoretical
 mybib_theoretical <- mybib %>%
   filter(BIBTEXKEY %in% unique(dt.Theories.Included$CitationKey)) %>%
   distinct(., BIBTEXKEY, .keep_all = TRUE)
-bib2df::df2bib(mybib_theoretical, file = "references_theoretical.bib", append = FALSE)
+bib2df::df2bib(mybib_theoretical, file = "Citation Statement/references_theoretical.bib", append = FALSE)
 
 # filter and export psychometric
 mybib_psychometric <- mybib %>%
   filter(BIBTEXKEY %in% unique(dt.Scales.Included$CitationKey)) %>%
   distinct(., BIBTEXKEY, .keep_all = TRUE)
-bib2df::df2bib(mybib_psychometric, file = "references_psychometric.bib", append = FALSE)
+bib2df::df2bib(mybib_psychometric, file = "Citation Statement/references_psychometric.bib", append = FALSE)
 
 # filter and export empirical
 mybib_empirical <- mybib %>%
   filter(BIBTEXKEY %in% unique(dt.Empirical.included$CitationKey)) %>%
   distinct(., BIBTEXKEY, .keep_all = TRUE)
-bib2df::df2bib(mybib_empirical, file = "references_empirical.bib", append = FALSE)
+bib2df::df2bib(mybib_empirical, file = "Citation Statement/references_empirical.bib", append = FALSE)
 
 # Re-Export Directory Data without rerunning full supplemental
 save(dt.Scales, dt.Scales.Included, dt.Theories, dt.Theories.Included, file = "data/AcculturationScales.RData")
