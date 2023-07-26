@@ -9,8 +9,6 @@
 
 Welcome to the GitHub Repository for the 'Migration Experience' Project.
 
-This repository accompanies the publication: "The Migration Experience: A Conceptual Framework and Systematic Scoping Review of Psychological Acculturation". An open-access version of the publication is available via the *Personality and Social Psychology Review* journal at: [https://doi.org/10.1177/10888683231183479](https://doi.org/10.1177/10888683231183479).
-
 <!-- This repository accompanies the publication: "The Migration Experience: A Conceptual Framework and Systematic Scoping Review of Psychological Acculturation". An open-access version of the publication is available via the *Personality and Social Psychology Review* journal at: [https://doi.org/10.1177/10888683231183479](https://doi.org/10.1177/10888683231183479). -->
 
 This repository brings together the full manuscript (synchronized from Overleaf) as well as all data sets and their analysis markdown files (synchronized from a local RStudio instance in RMarkdown files as well as Python Jupyter Notebooks).
