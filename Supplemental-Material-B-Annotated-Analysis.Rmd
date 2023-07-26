@@ -10,7 +10,7 @@ author:
 - ^1^ University of Groningen #████████████████████ 
 - "Author Information:"
 - "Correspondence concerning this article should be addressed to Jannis Kreienkamp, Department of Psychology, University of Groningen, Grote Kruisstraat 2/1, 9712 TS Groningen (The Netherlands). E-mail: j.kreienkamp@rug.nl"
-- 'The main manuscript is available at <a href="https://www.doi.org/ToBePublished" target="_blank">doi.org/ToBePublished</a>'
+- 'The main manuscript is available at <a href="https://doi.org/10.1177/10888683231183479" target="_blank">https://doi.org/10.1177/10888683231183479</a>'
 - 'The data repository for this manuscript is available at <a href="https://osf.io/n587w/?view_only=3e8aed00f2d34942bd5d2f3a710e0de4" target="_blank">https://osf.io/n587w/?view_only=3e8aed00f2d34942bd5d2f3a710e0de4</a>'
 - 'The GitHub repository for this manuscript is available at <a href="https://github.com/JannisCodes/acculturation-review" target="_blank">github.com/JannisCodes/acculturation-review</a>'
 - 'An interactive directory of all included acculturation scales is available at <a href="https://acculturation-review.shinyapps.io/acculturation-directory/" target="_blank">acculturation-review.shinyapps.io/acculturation-directory/</a>'
