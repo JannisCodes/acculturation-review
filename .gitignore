@@ -19,4 +19,8 @@ data/lit search/Theories
 data/lit search/Mendeley Export
 Feedback/
 Backup/
+backup/
 Misc/
+Tracked changes/
+data/backup/
+.ipynb_checkpoints/*

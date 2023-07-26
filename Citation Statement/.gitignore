@@ -1,3 +1,8 @@
 .DS_Store
 .ipynb_checkpoints/*
 env/*
+/backup/*
+/Feedback
+/Misc
+/Tracked changes
+/data/backup
